@@ -22,6 +22,9 @@ export default function Home({
       </Head>
       <section className={utilStyles.headingMd}>
         <p>[Your Self Introduction]</p>
+        <h1 className={utilStyles.headingXl}>
+          Read <Link href="/posts/First-post">this page!</Link>
+        </h1>
         <p>
           (This is a sample website - you’ll be building a site like this in{' '}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
@@ -45,11 +48,20 @@ export default function Home({
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+// export const getStaticProps: GetStaticProps = async () => {
+//   const allPostsData = getSortedPostsData()
+//   return {
+//     props: {
+//       allPostsData
+//     }
+//   }
+// }
+
+export async function getServerSideProps(context) {
   const allPostsData = getSortedPostsData()
   return {
     props: {
       allPostsData
-    }
-  }
+    },
+  };
 }
