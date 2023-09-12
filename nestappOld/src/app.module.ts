@@ -5,6 +5,7 @@ import { CatsController } from './cats/cats.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { FooResolver } from './cats/providers/resolver';
+import { AuthorsModule } from './authors/authors.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { FooResolver } from './cats/providers/resolver';
       autoSchemaFile: true,
     }),
   ],
-  controllers: [AppController, CatsController],
+  controllers: [AppController, CatsController, AuthorsModule],
   providers: [AppService, FooResolver],
 })
 export class AppModule {}
