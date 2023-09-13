@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService, PrismaService } from './app.service';
+import { UserService } from './dataBase/user.service';
 // import { GraphQLModule } from '@nestjs/graphql';
 // import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 
@@ -12,6 +13,6 @@ import { AppService } from './app.service';
   //   }),
   // ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserService, PrismaService],
 })
 export class AppModule {}

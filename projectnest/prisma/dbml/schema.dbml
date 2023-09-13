@@ -1,0 +1,63 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  name String [not null]
+  email String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  locations Location [not null]
+}
+
+Table Location {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  lat Int [not null]
+  lon Int [not null]
+  users User [not null]
+  weather Weather [not null]
+
+  indexes {
+    (lat, lon) [unique]
+  }
+}
+
+Table Weather {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Time_stamps Time_stamps [not null]
+  Days Days [not null]
+  Hours Hours [not null]
+  locations Location [not null]
+  locations_id Int [unique, not null]
+}
+
+Table Days {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  daily Json [unique, not null]
+  weather Weather [not null]
+}
+
+Table Hours {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  hourly Json [unique, not null]
+  weather Weather [not null]
+}
+
+Table Time_stamps {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  current Json [unique, not null]
+  weather Weather [not null]
+}
+
+Ref: Weather.locations_id > Location.id [delete: Cascade]

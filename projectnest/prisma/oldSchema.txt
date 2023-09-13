@@ -1,0 +1,106 @@
+model Current_date_stamp {
+  dt          Int                 @id
+  sunrise1    Int
+  sunset      Int
+  temp        Int
+  feels_like  Int
+  pressure    Int
+  humidity    Int
+  clouds      Int
+  visibility  Int
+  wind_speed  Int
+  wind_deg    Int
+  wind_gust   Int
+  weather     Current_weather[]   
+  createdAt   DateTime            @default(now())
+  location    Location            @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  location_id Int
+}
+
+model Hourly {
+  dt          Int                 @id  @unique
+  temp        Int
+  feels_like  Int
+  pressure    Int
+  humidity    Int
+  clouds      Int
+  visibility  Int
+  wind_speed  Int
+  wind_deg    Int
+  wind_gust   Int
+  weather     Hourly_weather[]    
+  createdAt   DateTime            @default(now())
+  location    Location            @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  location_id Int
+}
+
+model Daily {
+  dt          Int                 @id  @unique
+  sunrise     Int
+  sunset      Int
+  moonrise    Int
+  moonset     Int
+  moon_phase  Int
+  summary     String
+  pressure    Int
+  humidity    Int
+  wind_speed  Int
+  wind_deg    Int
+  wind_gust   Int
+  clouds      Int
+  rain        Int
+  temp        Temp[]
+  feels_like  Feels_like[]        
+  weather     Daily_weather[]
+  location    Location            @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  location_id Int
+}
+
+model Temp {
+  id          Int                 @default(autoincrement())   @id
+  day         Int
+  min         Int
+  max         Int
+  night       Int
+  eve         Int
+  morn        Int
+  parent_dt   Int                 @unique
+  parent      Daily               @relation(fields: [parent_dt], references: [dt], onDelete: Cascade)
+}
+
+model Feels_like {
+  id          Int                 @default(autoincrement())  @id
+  day         Int
+  night       Int
+  eve         Int
+  morn        Int
+  parent_dt   Int                 @unique
+  parent      Daily               @relation(fields: [parent_dt], references: [dt], onDelete: Cascade)
+}
+
+model Current_weather {
+  id          Int                 @id
+  main        String
+  description String
+  icon        String
+  parent      Current_date_stamp  @relation(fields: [parent_dt], references: [dt], onDelete: Cascade)
+  parent_dt   Int                 
+}
+
+model Hourly_weather {
+  id          Int                 @id
+  main        String
+  description String
+  icon        String
+  parent      Hourly              @relation(fields: [parent_dt], references: [dt], onDelete: Cascade)
+  parent_dt   Int                 @unique
+}
+
+model Daily_weather {
+  id          Int                 @id
+  main        String
+  description String
+  icon        String
+  parent      Daily               @relation(fields: [parent_dt], references: [dt], onDelete: Cascade)
+  parent_dt   Int                 @unique
+}

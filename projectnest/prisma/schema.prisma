@@ -5,15 +5,76 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id      Int       @default(autoincrement())   @id
-  name    String
-  email   String    @unique
-  role    String    @default('')
-  weather String[]  @default([])
+  id            Int                 @default(autoincrement())   @id
+  name          String
+  email         String              @unique
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  locations     Location[]          
+}
+
+model Location {
+  id            Int                 @default(autoincrement())   @id
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  lat           Int       
+  lon           Int
+  users         User[]
+  weather       Weather[]           
+
+  @@unique(fields: [lat, lon], name: "ll")
+}
+
+model Weather {
+  id            Int                 @default(autoincrement())   @id
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  Time_stamps   Time_stamps[]
+  Days          Days[]
+  Hours         Hours[]
+
+  locations     Location            @relation(fields: [locations_id], references: [id], onDelete: Cascade)
+  locations_id  Int                 @unique
+}
+
+model Days {
+  id            Int                 @default(autoincrement())   @id
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  daily         Json                @unique
+
+  weather       Weather[]
+}
+
+model Hours {
+  id            Int                 @default(autoincrement())   @id
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  hourly        Json                @unique
+
+  weather       Weather[]
+}
+
+model Time_stamps {
+  id            Int                 @default(autoincrement())   @id
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  current       Json                @unique
+
+  weather       Weather[]
 }
