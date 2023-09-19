@@ -21,12 +21,18 @@ let UserService = class UserService {
         return this.prisma.user.findMany({});
     }
     async createUser(params) {
-        const { name, email } = params;
+        const { name, email, password } = params;
         const data = {
-            name: name || '',
-            email: email || '',
+            name,
+            email,
+            password,
         };
         return this.prisma.user.create({ data });
+    }
+    async deleteUser(where) {
+        return this.prisma.user.delete({
+            where,
+        });
     }
 };
 exports.UserService = UserService;

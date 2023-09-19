@@ -24,12 +24,29 @@ export class UserService {
     });
   }
 
-  async createUser(params: { name?: string; email?: string }): Promise<User> {
-    const { name, email } = params;
+  async createUser(params: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<User> {
+    const { name, email, password } = params;
     const data: Prisma.UserCreateInput = {
-      name: name || '',
-      email: email || '',
+      name,
+      email,
+      password,
     };
     return this.prisma.user.create({ data });
+  }
+
+  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
+    return this.prisma.user.delete({
+      where,
+    });
+  }
+
+  async findOne(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.findUnique({
+      where,
+    });
   }
 }

@@ -11,7 +11,9 @@ export declare class UserService {
         orderBy?: Prisma.UserOrderByWithRelationInput;
     }): Promise<User[]>;
     createUser(params: {
-        name?: string;
-        email?: string;
+        name: string;
+        email: string;
+        password: string;
     }): Promise<User>;
+    deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User>;
 }

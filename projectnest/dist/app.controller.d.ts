@@ -9,13 +9,23 @@ export declare class AppController {
         id: number;
         name: string;
         email: string;
+        password: string;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    createUser(): Promise<{
+    createUser(name: string, email: string, password: string): Promise<{
         id: number;
         name: string;
         email: string;
+        password: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    deleteUser(email: string): Promise<{
+        id: number;
+        name: string;
+        email: string;
+        password: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
