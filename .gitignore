@@ -51,4 +51,4 @@ lerna-debug.log*
 
 # misc
 .DS_Store
-.env*
+# .env*    I use private repository, and dont want write the same at home...

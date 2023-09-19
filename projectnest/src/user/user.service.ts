@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from 'src/app.service';
 
 @Injectable()
@@ -31,9 +31,9 @@ export class UserService {
   }): Promise<User> {
     const { name, email, password } = params;
     const data: Prisma.UserCreateInput = {
-      name,
-      email,
-      password,
+      name: name || 'Tim',
+      email: email || 'timjobit@gmail.com',
+      password: password || '12345',
     };
     return this.prisma.user.create({ data });
   }

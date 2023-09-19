@@ -23,14 +23,19 @@ let UserService = class UserService {
     async createUser(params) {
         const { name, email, password } = params;
         const data = {
-            name,
-            email,
-            password,
+            name: name || 'Tim',
+            email: email || 'timjobit@gmail.com',
+            password: password || '12345',
         };
         return this.prisma.user.create({ data });
     }
     async deleteUser(where) {
         return this.prisma.user.delete({
+            where,
+        });
+    }
+    async findOne(where) {
+        return this.prisma.user.findUnique({
             where,
         });
     }

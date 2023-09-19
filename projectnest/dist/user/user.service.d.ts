@@ -16,4 +16,12 @@ export declare class UserService {
         password: string;
     }): Promise<User>;
     deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User>;
+    findOne(where: Prisma.UserWhereUniqueInput): Promise<{
+        id: number;
+        name: string;
+        email: string;
+        password: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
 }
