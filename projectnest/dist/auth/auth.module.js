@@ -13,6 +13,8 @@ const auth_service_1 = require("./auth.service");
 const user_module_1 = require("../user/user.module");
 const jwt_1 = require("@nestjs/jwt");
 const constants_1 = require("./constants");
+const auth_guard_1 = require("./auth.guard");
+const core_1 = require("@nestjs/core");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -26,7 +28,13 @@ exports.AuthModule = AuthModule = __decorate([
                 signOptions: { expiresIn: '300s' },
             }),
         ],
-        providers: [auth_service_1.AuthService],
+        providers: [
+            auth_service_1.AuthService,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: auth_guard_1.AuthGuard,
+            },
+        ],
         controllers: [auth_controller_1.AuthController],
         exports: [auth_service_1.AuthService],
     })
