@@ -7,6 +7,7 @@ export default function RequiredTextField({
     autoComplete,
     autoFocus,
     type,
+    error,
   }: { 
     id: string,
     label: string,
@@ -14,6 +15,7 @@ export default function RequiredTextField({
     autoComplete: string,
     autoFocus?: boolean,
     type?: string,
+    error?: boolean,
   }) {
 
   name ??= id;
@@ -28,6 +30,8 @@ export default function RequiredTextField({
       name={name}
       autoComplete={autoComplete}
       autoFocus={autoFocus}
+      error={error}
+      helperText= {error ? 'Incorrect entry. Failed validation.' : ''}
       type={type ? type : 'text'}
     />
   )

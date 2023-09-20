@@ -19,6 +19,7 @@ export default function LoginForm() {
         id="email"
         label="Email Address"
         autoComplete="email"
+        type="email"
         autoFocus
       />
       <RequiredTextField
