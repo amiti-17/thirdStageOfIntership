@@ -1,5 +1,5 @@
-import SignIn from "./SignIn";
+import Login from "./Login";
 
 export default function Home() {
-  return <SignIn />
+  return <Login />
 }
