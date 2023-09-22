@@ -17,8 +17,20 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  async signIn(@Body() signInDto: Record<string, any>) {
+    // const parsedBody = await JSON.parse(Object.keys(signInDto)[0]);
+    // res
+    //   .status(200)
+    //   .send(
+    //     JSON.stringify(
+    //       await this.authService.signIn(parsedBody.email, parsedBody.password),
+    //     ),
+    //   );
+    const returned = await this.authService.signIn(
+      signInDto.email,
+      signInDto.password,
+    );
+    return returned;
   }
 
   @UseGuards(AuthGuard)

@@ -20,8 +20,9 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    signIn(signInDto) {
-        return this.authService.signIn(signInDto.email, signInDto.password);
+    async signIn(signInDto) {
+        const returned = await this.authService.signIn(signInDto.email, signInDto.password);
+        return returned;
     }
     getProfile(req) {
         return req.user;
@@ -34,7 +35,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),

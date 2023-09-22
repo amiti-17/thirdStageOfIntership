@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 export default function RequiredTextField({ 
     id,
@@ -8,6 +8,7 @@ export default function RequiredTextField({
     autoFocus,
     type,
     error,
+    errorText
   }: { 
     id: string,
     label: string,
@@ -16,6 +17,7 @@ export default function RequiredTextField({
     autoFocus?: boolean,
     type?: string,
     error?: boolean,
+    errorText?: string,
   }) {
 
   name ??= id;
@@ -31,7 +33,7 @@ export default function RequiredTextField({
       autoComplete={autoComplete}
       autoFocus={autoFocus}
       error={error}
-      helperText= {error ? 'Incorrect entry. Failed validation.' : ''}
+      helperText= {error ? errorText ? errorText : 'Incorrect entry. Failed validation.' : ''}
       type={type ? type : 'text'}
     />
   )

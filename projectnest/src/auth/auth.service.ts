@@ -14,7 +14,6 @@ export class AuthService {
 
   async signIn(email: string, pass: string) {
     const user = await this.userController.findOne(email);
-
     if (user.password !== pass) throw new UnauthorizedException();
 
     const payload = {
@@ -22,8 +21,6 @@ export class AuthService {
       email: user.email,
       name: user.name,
     };
-    // TODO: Generate a JWT and return it here
-    // instead of the user object
 
     return {
       access_token: await this.jwtService.signAsync(payload),
