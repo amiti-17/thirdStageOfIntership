@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ExportUser } from 'src/user/models/export.user';
-import { UserController } from 'src/user/user.controller';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
+import { UsersController } from 'src/users/users.controller';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userController: UserController,
+    private userController: UsersController,
     private jwtService: JwtService,
   ) {}
 

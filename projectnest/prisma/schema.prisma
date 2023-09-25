@@ -14,30 +14,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
   id            Int                 @default(autoincrement())   @id
   name          String
   email         String              @unique
   password      String              
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
-  locations     Location[]          
+  locations     Locations[]          
 }
 
-model Location {
+model Locations {
   id            Int                 @default(autoincrement())   @id
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
   lat           Int       
   lon           Int
-  users         User[]
-  weather       Weather[]           
+  users         Users[]
+  weather       Weathers[]           
 
   @@unique(fields: [lat, lon], name: "ll")
 }
 
-model Weather {
+model Weathers {
   id            Int                 @default(autoincrement())   @id
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
@@ -46,7 +46,7 @@ model Weather {
   Days          Days[]
   Hours         Hours[]
 
-  locations     Location            @relation(fields: [locations_id], references: [id], onDelete: Cascade)
+  locations     Locations            @relation(fields: [locations_id], references: [id], onDelete: Cascade)
   locations_id  Int                 @unique
 }
 
@@ -57,7 +57,7 @@ model Days {
 
   daily         Json                @unique
 
-  weather       Weather[]
+  weather       Weathers[]
 }
 
 model Hours {
@@ -67,7 +67,7 @@ model Hours {
 
   hourly        Json                @unique
 
-  weather       Weather[]
+  weather       Weathers[]
 }
 
 model Time_stamps {
@@ -77,5 +77,5 @@ model Time_stamps {
 
   current       Json                @unique
 
-  weather       Weather[]
+  weather       Weathers[]
 }

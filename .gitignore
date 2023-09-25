@@ -1,7 +1,10 @@
 # compiled output
-dist
+/dist
 node_modules
 package-lock.json
+/.nest
+/projectnest/dist
+/projectnest/.nest
 
 # Logs
 logs

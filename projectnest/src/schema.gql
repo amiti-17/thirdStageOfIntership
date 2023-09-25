@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateLocationInput {
+  lat: Int!
+  lon: Int!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type Location {
+  id: Int!
+  lat: Int!
+  lon: Int!
+}
+
+type Mutation {
+  createLocation(createLocationInput: CreateLocationInput!): Location!
+  createUser(createUserInput: CreateUserInput!): User!
+  removeLocation(id: Int!): Location!
+  removeUser(id: Int!): User!
+  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  location(id: Int!): Location!
+  locations: [Location!]!
+  user(email: String!): User!
+  users: [User!]!
+}
+
+input UpdateLocationInput {
+  id: Int!
+  lat: Int
+  lon: Int
+}
+
+input UpdateUserInput {
+  email: String
+  id: Int!
+  name: String
+  password: String
+}
+
+type User {
+  email: String!
+  id: Int!
+  name: String!
+  password: String!
+}
