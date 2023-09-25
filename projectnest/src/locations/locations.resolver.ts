@@ -2,14 +2,17 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
 import { CreateLocationInput } from './dto/create-location.input';
-import { UpdateLocationInput } from './dto/update-location.input';
+import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+// import { UpdateLocationInput } from './dto/update-location.input';
 
 @Resolver(() => Location)
 export class LocationsResolver {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Mutation(() => Location)
-  createLocation(@Args('createLocationInput') createLocationInput: CreateLocationInput) {
+  createLocation(
+    @Args('createLocationInput') createLocationInput: CreateLocationInput,
+  ) {
     return this.locationsService.create(createLocationInput);
   }
 
@@ -18,15 +21,22 @@ export class LocationsResolver {
     return this.locationsService.findAll();
   }
 
-  @Query(() => Location, { name: 'location' })
+  @Query(() => Location, { name: 'locationById' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.locationsService.findOne(id);
   }
 
-  @Mutation(() => Location)
-  updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput) {
-    return this.locationsService.update(updateLocationInput.id, updateLocationInput);
+  @Query(() => Location, { name: 'locationByCoordinates' })
+  findOneByCoordinates(
+    @Args('coordinates') coordinates: FindOneByCoordinatesInput,
+  ) {
+    return this.locationsService.findOneByCoordinates(coordinates);
   }
+
+  // @Mutation(() => Location)
+  // updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput) {
+  //   return this.locationsService.update(updateLocationInput.id, updateLocationInput);
+  // }
 
   @Mutation(() => Location)
   removeLocation(@Args('id', { type: () => Int }) id: number) {

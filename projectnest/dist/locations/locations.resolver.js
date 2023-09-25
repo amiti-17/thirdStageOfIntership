@@ -17,7 +17,7 @@ const graphql_1 = require("@nestjs/graphql");
 const locations_service_1 = require("./locations.service");
 const location_entity_1 = require("./entities/location.entity");
 const create_location_input_1 = require("./dto/create-location.input");
-const update_location_input_1 = require("./dto/update-location.input");
+const find_one_by_coordinates_input_1 = require("./dto/find-one-by-coordinates.input");
 let LocationsResolver = class LocationsResolver {
     constructor(locationsService) {
         this.locationsService = locationsService;
@@ -31,8 +31,8 @@ let LocationsResolver = class LocationsResolver {
     findOne(id) {
         return this.locationsService.findOne(id);
     }
-    updateLocation(updateLocationInput) {
-        return this.locationsService.update(updateLocationInput.id, updateLocationInput);
+    findOneByCoordinates(coordinates) {
+        return this.locationsService.findOneByCoordinates(coordinates);
     }
     removeLocation(id) {
         return this.locationsService.remove(id);
@@ -53,19 +53,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], LocationsResolver.prototype, "findAll", null);
 __decorate([
-    (0, graphql_1.Query)(() => location_entity_1.Location, { name: 'location' }),
+    (0, graphql_1.Query)(() => location_entity_1.Location, { name: 'locationById' }),
     __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.Int })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], LocationsResolver.prototype, "findOne", null);
 __decorate([
-    (0, graphql_1.Mutation)(() => location_entity_1.Location),
-    __param(0, (0, graphql_1.Args)('updateLocationInput')),
+    (0, graphql_1.Query)(() => location_entity_1.Location, { name: 'locationByCoordinates' }),
+    __param(0, (0, graphql_1.Args)('coordinates')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_location_input_1.UpdateLocationInput]),
+    __metadata("design:paramtypes", [find_one_by_coordinates_input_1.FindOneByCoordinatesInput]),
     __metadata("design:returntype", void 0)
-], LocationsResolver.prototype, "updateLocation", null);
+], LocationsResolver.prototype, "findOneByCoordinates", null);
 __decorate([
     (0, graphql_1.Mutation)(() => location_entity_1.Location),
     __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.Int })),

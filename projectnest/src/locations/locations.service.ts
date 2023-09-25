@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/create-location.input';
-import { UpdateLocationInput } from './dto/update-location.input';
+// import { UpdateLocationInput } from './dto/update-location.input';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
 
 @Injectable()
 export class LocationsService {
-  create(createLocationInput: CreateLocationInput) {
-    return 'This action adds a new location';
+  constructor(private prisma: PrismaService) {}
+  async create(createLocationInput: CreateLocationInput) {
+    return await this.prisma.locations.create({
+      data: { ...createLocationInput },
+    });
   }
 
-  findAll() {
-    return `This action returns all locations`;
+  async findAll() {
+    return await this.prisma.locations.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} location`;
+  async findOne(id: number) {
+    return await this.prisma.locations.findUnique({ where: { id } });
   }
 
-  update(id: number, updateLocationInput: UpdateLocationInput) {
-    return `This action updates a #${id} location`;
+  async findOneByCoordinates(coordinates: FindOneByCoordinatesInput) {
+    return await this.prisma.locations.findUnique({
+      where: { ll: { ...coordinates } },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} location`;
+  // update(id: number, updateLocationInput: UpdateLocationInput) {
+  //   return this.prisma.locations.update({
+  //     where: { id },
+  //     data: { ...updateLocationInput },
+  //   });
+  // }
+
+  async remove(id: number) {
+    return await this.prisma.locations.delete({ where: { id } });
   }
 }
