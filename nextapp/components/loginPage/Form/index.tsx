@@ -11,8 +11,6 @@ import { getCryptPassword } from "../../../src/functions/getCryptPassword";
 import { useLazyQuery } from "@apollo/client";
 import { auth } from "../../../Apollo/auth";
 import CustomError from "../../../src/CustomError";
-// import { useQuery } from "@apollo/client";
-// import { auth } from "../../../Apollo/auth";
 
 export default function LoginForm() {
 
@@ -84,7 +82,7 @@ export default function LoginForm() {
         variables: {authLoginInput: getValidatedFormData},
       });
       console.log(error?.message, customError.unauthorized)
-      if (error.message === customError.unauthorized && error.graphQLErrors.find(el => el.message === customError.unauthorized)) {
+      if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
         throw new CustomError(CustomError.unauthorizedMsg);
       }
 

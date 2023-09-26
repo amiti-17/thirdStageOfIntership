@@ -2,10 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  token: String!
-}
-
 input AuthLoginInput {
   email: String!
   password: String!
@@ -33,21 +29,33 @@ type Location {
   lon: Int!
 }
 
+type LoginResponse {
+  access_token: String!
+  user: SafeUser!
+}
+
 type Mutation {
   createLocation(createLocationInput: CreateLocationInput!): Location!
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInput!): SafeUser!
   removeLocation(id: Int!): Location!
-  removeUser(id: Int!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): SafeUser!
+  updateUser(updateUserInput: UpdateUserInput!): SafeUser!
 }
 
 type Query {
   locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
-  login(authLoginInput: AuthLoginInput!): Auth!
-  user(email: String!): User!
-  users: [User!]!
+  login(authLoginInput: AuthLoginInput!): LoginResponse!
+  user(email: String!): SafeUser!
+  userUnsafe(email: String!): User!
+  users: [SafeUser!]!
+}
+
+type SafeUser {
+  email: String!
+  id: Int!
+  name: String!
 }
 
 input UpdateUserInput {

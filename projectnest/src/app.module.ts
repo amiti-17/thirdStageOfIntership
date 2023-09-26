@@ -13,6 +13,8 @@ import { UsersModule } from './users/users.module';
 import { PrismaService } from './prisma/prisma.service';
 import { LocationsModule } from './locations/locations.module';
 import { AuthModule } from './auth/auth.module';
+// import { AuthGuard } from './auth/auth.guard';
+// import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AuthModule } from './auth/auth.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      context: ({ req }) => ({ req }),
+      // cors: {origin: true, credential: true},
     }),
     UsersModule,
     LocationsModule,
