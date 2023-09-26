@@ -1,13 +1,15 @@
 export default class CustomError extends Error {
 
-  static unauthorized: string;
+  unauthorized: string;
+  static unauthorizedMsg: string;
   static unrecognizedFetchError: string;
 
   constructor(public message: string) {
     super(message);
     Object.setPrototypeOf(this, CustomError.prototype);
     this.name = "CustomError";
-    CustomError.unauthorized = "Unauthorized error, you provide incorrect email or password";
+    this.unauthorized = "Unauthorized";
+    CustomError.unauthorizedMsg = "Unauthorized error, you provide incorrect email or password";
     CustomError.unrecognizedFetchError = "Unknown error, which occurred in fetch";
   }
 

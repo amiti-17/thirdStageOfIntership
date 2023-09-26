@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Auth {
+  token: String!
+}
+
+input AuthLoginInput {
+  email: String!
+  password: String!
+}
+
 input CreateLocationInput {
   lat: Int!
   lon: Int!
@@ -36,6 +45,7 @@ type Query {
   locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
+  login(authLoginInput: AuthLoginInput!): Auth!
   user(email: String!): User!
   users: [User!]!
 }

@@ -1,9 +1,14 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
+
+  // @Get('test')
+  // async test() {
+  //   return 'plain text';
+  // }
 
   @Get('findAll')
   async getAllUsers() {

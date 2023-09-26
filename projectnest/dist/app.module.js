@@ -14,6 +14,7 @@ const path_1 = require("path");
 const users_module_1 = require("./users/users.module");
 const prisma_service_1 = require("./prisma/prisma.service");
 const locations_module_1 = require("./locations/locations.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,6 +28,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             users_module_1.UsersModule,
             locations_module_1.LocationsModule,
+            auth_module_1.AuthModule,
         ],
         providers: [prisma_service_1.PrismaService],
     })

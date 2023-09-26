@@ -8,7 +8,8 @@ export default function Copyright(props: {sx: {mt: number, mb: number}}) {
   const [ currentUrl, setCurrentUrl ] = React.useState<string>('');
 
   React.useEffect(function() {
-    const currentUrl = window.location.href.match(/(.*?)(?=\/?$)/);
+    const currentUrlRaw = window.location.href + '/';
+    const currentUrl = currentUrlRaw.match(/(.*?\/\/.*?)\/.*/);
     const formattedCurrentUrl = Array.from(currentUrl || ['(this site)'])[1];
     setCurrentUrl(formattedCurrentUrl);
   }, []);

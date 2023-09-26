@@ -68,7 +68,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "findOne", null);
 exports.UsersController = UsersController = __decorate([
-    (0, common_1.Controller)('user'),
+    (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

@@ -12,13 +12,13 @@ export async function fetchPost(url: string, data: any) {
       body,
     });
     if (response.status === 401) {
-      throw new CustomError(CustomError.unauthorized);
+      throw new CustomError(CustomError.unauthorizedMsg);
     }
     const parsedJson = await response.json();
     return parsedJson;
   } catch (error) {
     if (error.name === CustomError.name) {
-      throw new CustomError(CustomError.unauthorized);
+      throw new CustomError(CustomError.unauthorizedMsg);
     }
     throw new CustomError(CustomError.unrecognizedFetchError);
   }

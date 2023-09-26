@@ -20,6 +20,7 @@ let AuthService = class AuthService {
     }
     async signIn(email, pass) {
         const user = await this.userController.findOne(email);
+        console.log('current user: ', user);
         if (user.password !== pass)
             throw new common_1.UnauthorizedException();
         const payload = {
@@ -28,7 +29,7 @@ let AuthService = class AuthService {
             name: user.name,
         };
         return {
-            access_token: await this.jwtService.signAsync(payload),
+            token: await this.jwtService.signAsync(payload),
         };
     }
 };

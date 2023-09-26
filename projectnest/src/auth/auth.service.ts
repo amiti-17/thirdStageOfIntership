@@ -3,6 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import { UsersController } from 'src/users/users.controller';
+import { Auth } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -11,8 +12,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, pass: string) {
+  async signIn(email: string, pass: string): Promise<Auth> {
     const user = await this.userController.findOne(email);
+    console.log('current user: ', user);
     if (user.password !== pass) throw new UnauthorizedException();
 
     const payload = {
@@ -22,7 +24,7 @@ export class AuthService {
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      token: await this.jwtService.signAsync(payload),
     };
   }
 }

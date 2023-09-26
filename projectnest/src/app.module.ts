@@ -12,6 +12,7 @@ import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { PrismaService } from './prisma/prisma.service';
 import { LocationsModule } from './locations/locations.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LocationsModule } from './locations/locations.module';
     }),
     UsersModule,
     LocationsModule,
+    AuthModule,
   ],
   providers: [PrismaService],
   // controllers: [AppController],

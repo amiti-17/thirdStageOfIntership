@@ -6,16 +6,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkipAuth = exports.IS_PUBLIC_KEY = exports.AuthModule = void 0;
+exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const jwt_1 = require("@nestjs/jwt");
 const constants_1 = require("./constants");
-const auth_guard_1 = require("./auth.guard");
-const core_1 = require("@nestjs/core");
-const common_2 = require("@nestjs/common");
 const users_module_1 = require("../users/users.module");
+const auth_resolver_1 = require("./auth.resolver");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -30,17 +27,9 @@ exports.AuthModule = AuthModule = __decorate([
             }),
         ],
         providers: [
+            auth_resolver_1.AuthResolver,
             auth_service_1.AuthService,
-            {
-                provide: core_1.APP_GUARD,
-                useClass: auth_guard_1.AuthGuard,
-            },
         ],
-        controllers: [auth_controller_1.AuthController],
-        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
-exports.IS_PUBLIC_KEY = 'isPublic';
-const SkipAuth = () => (0, common_2.SetMetadata)(exports.IS_PUBLIC_KEY, true);
-exports.SkipAuth = SkipAuth;
 //# sourceMappingURL=auth.module.js.map

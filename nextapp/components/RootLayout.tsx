@@ -1,6 +1,8 @@
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import React from 'react';
 import { UserAccessTokenContext, UserAccessTokenContextType, defaultUserAccessToken } from '../src/Contexts/userAccessTokenContext';
+import { ApolloProvider } from '@apollo/client';
+import client from '../Apollo';
 
 export default function RootLayout({ children } : { children: React.ReactNode }): JSX.Element {
 
@@ -14,9 +16,12 @@ export default function RootLayout({ children } : { children: React.ReactNode })
   return (
     //ToThink: Is UserProvider should be here???
     <UserAccessTokenContext.Provider value={userAccessTokenContextValue}>
-      <UserProvider>
-        {children}
-      </UserProvider>
+      <ApolloProvider client={client}>
+        <UserProvider>
+          {children}
+        </UserProvider>
+      </ApolloProvider>
+      
     </UserAccessTokenContext.Provider>
     
   );
