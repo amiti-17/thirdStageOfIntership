@@ -6,6 +6,8 @@ import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './local.strategy';
+// import { JwtAuthGuard } from './jwt-auth.guard';
 // import { APP_GUARD } from '@nestjs/core';
 // import { AuthGuard } from './auth.guard';
 
@@ -15,7 +17,7 @@ import { PassportModule } from '@nestjs/passport';
     UsersModule,
     JwtModule.register({
       global: true,
-      secret: authConstants.secret,
+      secret: authConstants.secret, //TODO: after figured out how does env work, move...
       signOptions: { expiresIn: authConstants.expiresTime },
     }),
   ],
@@ -23,6 +25,8 @@ import { PassportModule } from '@nestjs/passport';
     AuthResolver,
     AuthService,
     JwtStrategy,
+    LocalStrategy,
+    // JwtAuthGuard,
     // {
     //   provide: APP_GUARD,
     //   useClass: AuthGuard,

@@ -7,6 +7,8 @@ import { UpdateUserInput } from './dto/update-user.input';
 // import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SafeUser } from './entities/safe-user.entity';
 import { User } from './entities/user.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => SafeUser)
 // @UseGuards(JwtAuthGuard)
@@ -17,32 +19,39 @@ export class UsersResolver {
   ) {}
 
   @Mutation(() => SafeUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return await this.usersService.create(createUserInput);
   }
 
   @Query(() => [SafeUser], { name: 'users' })
-  findAll() {
-    return this.usersController.getAllUsers();
+  @UseGuards(JwtAuthGuard)
+  async findAll() {
+    // console.log(context.req.user);
+    return await this.usersController.getAllUsers();
   }
 
   @Query(() => SafeUser, { name: 'user' })
-  findOne(@Args('email') email: string) {
-    return this.usersService.findOne(email);
+  async findOne(@Args('email') email: string) {
+    return await this.usersService.findOne(email);
+  }
+
+  @Query(() => SafeUser, { name: 'findById' })
+  async findById(@Args('id') id: number) {
+    return await this.usersService.findById(id);
   }
 
   @Query(() => User, { name: 'userUnsafe' })
-  findOneUnsafe(@Args('email') email: string) {
-    return this.usersService.findOneUnsafe(email);
+  async findOneUnsafe(@Args('email') email: string) {
+    return await this.usersService.findOneUnsafe(email);
   }
 
   @Mutation(() => SafeUser)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    return await this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
   @Mutation(() => SafeUser)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+  async removeUser(@Args('id', { type: () => Int }) id: number) {
+    return await this.usersService.remove(id);
   }
 }

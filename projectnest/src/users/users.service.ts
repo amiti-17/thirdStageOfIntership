@@ -33,6 +33,13 @@ export class UsersService {
     return data;
   }
 
+  async findById(id: number): Promise<SafeUser> {
+    const { password, ...safeUser } = await this.prisma.users.findUnique({
+      where: { id },
+    });
+    return safeUser;
+  }
+
   async findOneUnsafe(email: string): Promise<User> {
     return await this.prisma.users.findUnique({ where: { email } });
   }

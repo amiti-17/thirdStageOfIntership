@@ -8,16 +8,14 @@ export const users = {
         email
         name
         password
-        
       }
     }
   `,
   listAll: gql`
     {
       users{
-        id 
-        email 
-        password 
+        id
+        email
         name
       }
     }
@@ -26,7 +24,6 @@ export const users = {
     {
       user(email: $input) {
         id
-        password
         name
         email
       }
@@ -46,8 +43,7 @@ export const listAll = gql`
   {
     users{
       id 
-      email 
-      password 
+      email
       name
     }
   }
@@ -57,7 +53,6 @@ export const getByEmail = gql`
   {
     user(email: $input) {
       id
-      password
       name
       email
     }

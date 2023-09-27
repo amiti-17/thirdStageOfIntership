@@ -10,27 +10,27 @@ export class LocationsResolver {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Mutation(() => Location)
-  createLocation(
+  async createLocation(
     @Args('createLocationInput') createLocationInput: CreateLocationInput,
   ) {
-    return this.locationsService.create(createLocationInput);
+    return await this.locationsService.create(createLocationInput);
   }
 
   @Query(() => [Location], { name: 'locations' })
-  findAll() {
-    return this.locationsService.findAll();
+  async findAll() {
+    return await this.locationsService.findAll();
   }
 
   @Query(() => Location, { name: 'locationById' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.locationsService.findOne(id);
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    return await this.locationsService.findOne(id);
   }
 
   @Query(() => Location, { name: 'locationByCoordinates' })
-  findOneByCoordinates(
+  async findOneByCoordinates(
     @Args('coordinates') coordinates: FindOneByCoordinatesInput,
   ) {
-    return this.locationsService.findOneByCoordinates(coordinates);
+    return await this.locationsService.findOneByCoordinates(coordinates);
   }
 
   // @Mutation(() => Location)
@@ -39,7 +39,7 @@ export class LocationsResolver {
   // }
 
   @Mutation(() => Location)
-  removeLocation(@Args('id', { type: () => Int }) id: number) {
-    return this.locationsService.remove(id);
+  async removeLocation(@Args('id', { type: () => Int }) id: number) {
+    return await this.locationsService.remove(id);
   }
 }

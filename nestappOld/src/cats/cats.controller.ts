@@ -4,7 +4,7 @@ import { Controller, Get } from '@nestjs/common';
 export class CatsController {
   @Get()
   findAll(): string {
-    console.log();
+    // console.log();
     return 'This action returns all cats';
   }
 }

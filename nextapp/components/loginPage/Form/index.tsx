@@ -8,24 +8,11 @@ import { z } from 'zod';
 import { LoginType } from "../../../src/config/system/types/login";
 import { UserAccessTokenContext } from "../../../src/Contexts/userAccessTokenContext";
 import { getCryptPassword } from "../../../src/functions/getCryptPassword";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { auth } from "../../../Apollo/auth";
 import CustomError from "../../../src/CustomError";
 
 export default function LoginForm() {
-
-  // async function useLogin(loginData: LoginType) {
-  //   const response = await useQuery(auth.login, {
-  //     variables: loginData,
-  //     pollInterval: 5000,
-  //   })
-  
-  //   if (response.error) {
-  //     console.log("useLogin error: ", response.error)
-  //   }
-  
-  //   return response;
-  // }
 
   type errorValidation = {
     status: boolean, 
@@ -40,29 +27,21 @@ export default function LoginForm() {
   const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
   const [ emailValidationError, setEmailValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
   const [ passwordValidationError, setPasswordValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
-  const [getToken, {error, loading, data}] = useLazyQuery(auth.login);
+  const [getTokenMutation, {error, loading, data}] = useMutation(auth.login);
   const router = useRouter();
   const customError = new CustomError('');
-
-  // if (error) return `Error! ${error}`;
-  // if (loading) return `Loading ...`;
-  
 
   useEffect(() => {
     if (data) {
       console.log(data.login);
-      if (data?.login?.token) {
-        setUserAccessToken(data.login.token);
+      if (data?.login?.access_token) {
+        setUserAccessToken(data.login.access_token);
         router.replace('/weather'); 
       } else {
         throw new CustomError('Access token is false.');
       }
     }
   }, [loading, data])
-
-  // if (error) {
-  //   console.log("useLogin error: ", error);
-  // }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     // it is here, because I don`t wanna save sensitive data...
@@ -77,9 +56,9 @@ export default function LoginForm() {
     try {
       const getValidatedFormData: LoginType = validateInputValue(myFormData);
       getValidatedFormData.password = getCryptPassword(getValidatedFormData.password);
-      console.log("sha hash: ", getValidatedFormData.password);
-      getToken({
-        variables: {authLoginInput: getValidatedFormData},
+      console.log("sha hash: ", getValidatedFormData.password, getValidatedFormData);
+      getTokenMutation({
+        variables: { input: getValidatedFormData },
       });
       console.log(error?.message, customError.unauthorized)
       if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {

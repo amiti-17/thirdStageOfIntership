@@ -31,22 +31,23 @@ type Location {
 
 type LoginResponse {
   access_token: String!
-  user: SafeUser!
 }
 
 type Mutation {
   createLocation(createLocationInput: CreateLocationInput!): Location!
   createUser(createUserInput: CreateUserInput!): SafeUser!
+  login(authLoginInput: AuthLoginInput!): LoginResponse!
   removeLocation(id: Int!): Location!
   removeUser(id: Int!): SafeUser!
+  signup(createUserInput: CreateUserInput!): SafeUser!
   updateUser(updateUserInput: UpdateUserInput!): SafeUser!
 }
 
 type Query {
+  findById(id: Float!): SafeUser!
   locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
-  login(authLoginInput: AuthLoginInput!): LoginResponse!
   user(email: String!): SafeUser!
   userUnsafe(email: String!): User!
   users: [SafeUser!]!

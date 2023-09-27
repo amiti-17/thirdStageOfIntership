@@ -5,11 +5,12 @@ import { users } from "../../Apollo/users";
 
 export default function Login() {
   const {data, error, loading} = useQuery(users.listAll);
-  console.log(error)
-  console.log(data?.users);
-  // React.useEffect(() => {
-    
-  // }, [])
+  
+  
+  React.useEffect(() => {
+    console.log(error);
+    console.log(data?.users);
+  }, [error, data])
   return (
     <WeatherLayout>
       you login successfully

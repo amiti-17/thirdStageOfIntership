@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('here');
+    // console.log('here');
     // it`s for skipAuth, deprecated
     // const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
     //   context.getHandler(),
@@ -26,6 +26,7 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+    // console.log('token: ', token);
     if (!token) throw new UnauthorizedException();
     try {
       const payload = await this.jwtService.verifyAsync(token, {
