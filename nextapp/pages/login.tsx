@@ -1,8 +1,8 @@
 import  React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import LoginLayout from '../components/loginPage/LoginLayout';
-import LoginForm from '../components/loginPage/Form';
+import LoginLayout from '../src/components/loginPage/LoginLayout';
+import LoginForm from '../src/components/loginPage/Form';
 import { useQuery } from '@apollo/client';
 import { locations } from '../Apollo/locations';
 

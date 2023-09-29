@@ -1,5 +1,5 @@
 import React from "react";
-import { WeatherLayout } from "../../components/Weather/WeatherLayout";
+import { WeatherLayout } from "../../src/components/Weather/WeatherLayout";
 import { useQuery } from "@apollo/client";
 import { users } from "../../Apollo/users";
 

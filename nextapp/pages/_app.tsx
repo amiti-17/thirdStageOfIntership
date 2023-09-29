@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import RootLayout from '../components/RootLayout';
+import RootLayout from '../src/components/RootLayout';
 import Head from 'next/head';
 import createEmotionCache from '../src/createEmotionCache';
 import { CacheProvider, EmotionCache } from '@emotion/react';
