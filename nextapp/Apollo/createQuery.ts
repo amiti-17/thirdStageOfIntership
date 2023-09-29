@@ -1,0 +1,1 @@
+// I wanted to create some general interface for all communicate to server.

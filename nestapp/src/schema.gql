@@ -30,13 +30,14 @@ type Location {
 }
 
 type LoginResponse {
-  access_token: String!
+  status: Boolean!
 }
 
 type Mutation {
   createLocation(createLocationInput: CreateLocationInput!): Location!
   createUser(createUserInput: CreateUserInput!): SafeUser!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
+  refreshToken: RefreshTokenResponse!
   removeLocation(id: Int!): Location!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
@@ -48,9 +49,14 @@ type Query {
   locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
+  ping: Boolean!
   user(email: String!): SafeUser!
   userUnsafe(email: String!): User!
   users: [SafeUser!]!
+}
+
+type RefreshTokenResponse {
+  access_token: String!
 }
 
 type SafeUser {

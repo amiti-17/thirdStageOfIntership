@@ -4,8 +4,17 @@ export const auth = {
   login: gql`
     mutation Login($input: AuthLoginInput!) {
       login(authLoginInput: $input) {
-        access_token
+        status
       }
     }
   `,
+  refreshToken: gql`
+    mutation GetNewAccessToken{
+      refreshToken {
+        access_token
+        __typename
+      }
+    }
+  `
 }
+

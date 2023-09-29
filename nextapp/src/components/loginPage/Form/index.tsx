@@ -6,9 +6,8 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { z } from 'zod';
 import { LoginType } from "../../../config/system/types/login";
-import { UserAccessTokenContext } from "../../../Contexts/userAccessTokenContext";
 import { getCryptPassword } from "../../../functions/getCryptPassword";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { ApolloError, useLazyQuery, useMutation } from "@apollo/client";
 import { auth } from "../../../../Apollo/auth";
 import CustomError from "../../../CustomError";
 
@@ -23,23 +22,21 @@ export default function LoginForm() {
     message: '',
   }
 
-  const { userAccessToken, setUserAccessToken } = React.useContext(UserAccessTokenContext);
   const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
   const [ emailValidationError, setEmailValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
   const [ passwordValidationError, setPasswordValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
   const [getTokenMutation, {error, loading, data}] = useMutation(auth.login);
-  const router = useRouter();
   const customError = new CustomError('');
+  const router = useRouter();
 
   useEffect(() => {
     if (data) {
       console.log(data.login);
-      if (data?.login?.access_token) {
-        setUserAccessToken(data.login.access_token);
-        router.replace('/weather'); 
-      } else {
-        throw new CustomError('Access token is false.');
-      }
+      // if (data?.login?.access_token) {
+      //   router.replace('/weather'); 
+      // } else {
+      //   throw new CustomError('Access token is false.');
+      // }
     }
   }, [loading, data])
 
@@ -57,10 +54,25 @@ export default function LoginForm() {
       const getValidatedFormData: LoginType = validateInputValue(myFormData);
       getValidatedFormData.password = getCryptPassword(getValidatedFormData.password);
       console.log("sha hash: ", getValidatedFormData.password, getValidatedFormData);
+      
       getTokenMutation({
         variables: { input: getValidatedFormData },
-      });
-      console.log(error?.message, customError.unauthorized)
+      }).then(() => {
+        router.replace('/weather');
+      }).catch(e => {
+        if (e instanceof ApolloError) {
+          // console.log(error, 'sdf')
+          Object.keys(e).forEach(key => console.log(e[key]))
+          if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
+          // console.log('here?')
+            console.warn(CustomError.unauthorizedMsg);
+          }
+          // Object.keys(e).forEach(key => {
+          //   console.log(key, error[key])
+          // })
+        }
+      })
+
       if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
         throw new CustomError(CustomError.unauthorizedMsg);
       }
@@ -91,8 +103,8 @@ export default function LoginForm() {
         //ToDo: make some error box, where display this error...
         console.warn(error.message);
       } else {
-        // console.log("cached in loginForm", error.message, error.name, error);
-        // console.warn(Object.keys(error));
+        console.log("got in loginForm", error.message, error.name, error);
+        console.error(Object.keys(error));
         throw error;
       }
     } finally {

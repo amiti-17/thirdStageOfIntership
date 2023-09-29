@@ -24,6 +24,14 @@ model Users {
   locations     Locations[]          
 }
 
+model RefreshToken {
+  id            Int                 @default(autoincrement())   @id
+  refresh_token String              
+  userId        Int                 @unique
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
 model Locations {
   id            Int                 @default(autoincrement())   @id
   createdAt     DateTime            @default(now())

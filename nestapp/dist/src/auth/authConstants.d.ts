@@ -1,5 +1,7 @@
 export declare const authConstants: {
-    secret: string;
+    access_secret: string;
+    refresh_secret: string;
     expiresTime: string;
     cookie_secret: string;
+    domain: string;
 };

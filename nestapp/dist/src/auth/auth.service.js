@@ -11,12 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
+const prisma_service_1 = require("../prisma/prisma.service");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(usersServices, jwtService) {
-        this.usersServices = usersServices;
+    constructor(jwtService, prisma, usersServices) {
         this.jwtService = jwtService;
+        this.prisma = prisma;
+        this.usersServices = usersServices;
     }
     async validateUser(email, password) {
         const user = await this.usersServices.findOneUnsafe(email);
@@ -28,11 +30,7 @@ let AuthService = class AuthService {
     }
     async login(user) {
         return {
-            access_token: await this.jwtService.signAsync({
-                sub: user.id,
-                email: user.email,
-                name: user.name,
-            }),
+            status: true,
         };
     }
     async signup(createUserInput) {
@@ -43,11 +41,15 @@ let AuthService = class AuthService {
             ...createUserInput,
         });
     }
+    async refreshToken(context) {
+        return { access_token: '' };
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService,
-        jwt_1.JwtService])
+    __metadata("design:paramtypes", [jwt_1.JwtService,
+        prisma_service_1.PrismaService,
+        users_service_1.UsersService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

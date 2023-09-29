@@ -8,7 +8,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { SafeUser } from './entities/safe-user.entity';
 import { User } from './entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => SafeUser)
 // @UseGuards(JwtAuthGuard)

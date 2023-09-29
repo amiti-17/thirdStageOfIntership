@@ -1,14 +1,29 @@
 import React from "react";
 import { WeatherLayout } from "../../src/components/Weather/WeatherLayout";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { users } from "../../Apollo/users";
+import CustomError from "../../src/CustomError";
+import { RefreshTokenContext } from "../../src/Contexts/refreshTokenContext";
+import { useRouter } from "next/router";
+import { handleErrorInQueries } from "../../src/functions/fetch/handleErrorsInQueries";
+
+const customError = new CustomError('');
 
 export default function Login() {
-  const {data, error, loading} = useQuery(users.listAll);
-  
+  const [getData, {data, error, loading}] = useLazyQuery(users.listAll);
+  const { shouldUpdateRefreshToken, setShouldUpdateRefreshToken } = React.useContext(RefreshTokenContext);
+  const router = useRouter();
   
   React.useEffect(() => {
-    console.log(error);
+    getData();
+  }, []);
+
+  
+
+  React.useEffect(() => {
+    handleErrorInQueries(getData, data, error, router,shouldUpdateRefreshToken, setShouldUpdateRefreshToken);
+  
+    // console.log(Object.keys(error).forEach(key => console.log(error[key])));
     console.log(data?.users);
   }, [error, data])
   return (

@@ -13,9 +13,11 @@ const users_module_1 = require("../users/users.module");
 const authConstants_1 = require("./authConstants");
 const auth_resolver_1 = require("./auth.resolver");
 const auth_service_1 = require("./auth.service");
-const jwt_strategy_1 = require("./jwt.strategy");
+const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const passport_1 = require("@nestjs/passport");
-const local_strategy_1 = require("./local.strategy");
+const local_strategy_1 = require("./strategies/local.strategy");
+const prisma_service_1 = require("../prisma/prisma.service");
+const jwt_refresh_token_strategy_1 = require("./strategies/jwt-refresh-token.strategy");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -26,7 +28,7 @@ exports.AuthModule = AuthModule = __decorate([
             users_module_1.UsersModule,
             jwt_1.JwtModule.register({
                 global: true,
-                secret: authConstants_1.authConstants.secret,
+                secret: authConstants_1.authConstants.access_secret,
                 signOptions: { expiresIn: authConstants_1.authConstants.expiresTime },
             }),
         ],
@@ -34,7 +36,9 @@ exports.AuthModule = AuthModule = __decorate([
             auth_resolver_1.AuthResolver,
             auth_service_1.AuthService,
             jwt_strategy_1.JwtStrategy,
+            jwt_refresh_token_strategy_1.JwtRefreshTokenStrategy,
             local_strategy_1.LocalStrategy,
+            prisma_service_1.PrismaService,
         ],
     })
 ], AuthModule);

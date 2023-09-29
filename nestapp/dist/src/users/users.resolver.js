@@ -21,7 +21,7 @@ const update_user_input_1 = require("./dto/update-user.input");
 const safe_user_entity_1 = require("./entities/safe-user.entity");
 const user_entity_1 = require("./entities/user.entity");
 const common_1 = require("@nestjs/common");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let UsersResolver = class UsersResolver {
     constructor(usersService, usersController) {
         this.usersService = usersService;

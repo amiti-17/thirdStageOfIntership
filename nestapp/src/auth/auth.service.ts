@@ -1,22 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { PrismaClient } from '@prisma/client';
-import { UsersController } from 'src/users/users.controller';
-import { Auth } from './entities/auth.entity';
 import { UsersService } from 'src/users/users.service';
 import { SafeUser } from 'src/users/entities/safe-user.entity';
-import { LoginResponse } from './dto/login-response';
-import { AuthLoginInput } from './dto/auth-login.input';
 import { User } from 'src/users/entities/user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
+import { RefreshTokenResponse } from './dto/refreshToken-response';
+import { CreateRefreshTokenInput } from './dto/create-refreshToken.input';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersServices: UsersService,
     private jwtService: JwtService,
+    private prisma: PrismaService,
+    private usersServices: UsersService,
   ) {}
+
+  // async createRefreshToken(createRefreshTokenInput: CreateRefreshTokenInput) {
+  //   return await this.prisma.refreshToken.create({
+  //     data: {
+  //       userId: createRefreshTokenInput.userId,
+  //       refresh_token: createRefreshTokenInput.refresh_token,
+  //     },
+  //   });
+  // }
+
+  // async getRefreshToken(userId: number) {
+  //   // eslint-disable-next-line prettier/prettier
+  //   return await this.prisma.refreshToken.findUnique({ where: { userId: userId } });
+  // }
+
+  // async deleteRefreshToken(userId: number) {
+  //   return await this.prisma.refreshToken.delete({ where: { userId: userId } });
+  // }
 
   // async signIn(email: string, pass: string): Promise<LoginResponse> {
   //   const user = await this.validate(email, pass);
@@ -57,16 +74,12 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async login(user: User) {
+  async login(user: SafeUser) {
     // const user = await this.usersServices.findOneUnsafe(authLoginInput.email);
     // const { password, ...safeUser } = user;
     // console.log('user: ', user);
     return {
-      access_token: await this.jwtService.signAsync({
-        sub: user.id,
-        email: user.email,
-        name: user.name,
-      }),
+      status: true,
     };
   }
 
@@ -78,5 +91,10 @@ export class AuthService {
     return await this.usersServices.create({
       ...createUserInput,
     });
+  }
+
+  async refreshToken(context): Promise<RefreshTokenResponse> {
+    // console.log('context refresh Token service', context);
+    return { access_token: '' };
   }
 }

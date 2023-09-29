@@ -4,9 +4,11 @@ import { UsersModule } from 'src/users/users.module';
 import { authConstants } from './authConstants';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
 // import { JwtAuthGuard } from './jwt-auth.guard';
 // import { APP_GUARD } from '@nestjs/core';
 // import { AuthGuard } from './auth.guard';
@@ -17,7 +19,7 @@ import { LocalStrategy } from './local.strategy';
     UsersModule,
     JwtModule.register({
       global: true,
-      secret: authConstants.secret, //TODO: after figured out how does env work, move...
+      secret: authConstants.access_secret, //TODO: after figured out how does env work, move...
       signOptions: { expiresIn: authConstants.expiresTime },
     }),
   ],
@@ -25,7 +27,10 @@ import { LocalStrategy } from './local.strategy';
     AuthResolver,
     AuthService,
     JwtStrategy,
+    JwtRefreshTokenStrategy,
     LocalStrategy,
+    PrismaService,
+
     // JwtAuthGuard,
     // {
     //   provide: APP_GUARD,
