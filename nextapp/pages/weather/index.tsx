@@ -6,6 +6,8 @@ import CustomError from "../../src/CustomError";
 import { RefreshTokenContext } from "../../src/Contexts/refreshTokenContext";
 import { useRouter } from "next/router";
 import { handleErrorInQueries } from "../../src/functions/fetch/handleErrorsInQueries";
+import { Header } from "../../src/components/Weather/Header";
+import { Footer } from "../../src/components/Weather/Footer";
 
 const customError = new CustomError('');
 
@@ -28,8 +30,9 @@ export default function Login() {
   }, [error, data])
   return (
     <WeatherLayout>
-      you login successfully
-
+      <Header />
+        you login successfully
+      <Footer />
     </WeatherLayout>
   );
 }

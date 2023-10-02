@@ -22,7 +22,6 @@ let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
     getRequest(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const request = ctx.getContext().req;
-        console.log(request.cookies, 'from jwt-auth.guards');
         return request;
     }
 };

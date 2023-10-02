@@ -5,6 +5,7 @@ import LoginLayout from '../src/components/loginPage/LoginLayout';
 import LoginForm from '../src/components/loginPage/Form';
 import { useQuery } from '@apollo/client';
 import { locations } from '../Apollo/locations';
+import { sha256 } from 'js-sha256';
 
 export default function Login() {
   
@@ -20,7 +21,7 @@ export default function Login() {
         <CssBaseline />
         <LoginLayout>
           <LoginForm />
-          {/* {sha256('1234Qwer')} */}
+          {sha256('1234Qwer')}
         </LoginLayout>
       </Container>
   );

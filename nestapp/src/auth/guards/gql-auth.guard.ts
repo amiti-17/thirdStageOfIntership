@@ -74,7 +74,6 @@ export class GqlAuthGuard extends AuthGuard('local') {
       },
     );
 
-    // req.res?.setCookie
     req.res?.cookie('access_token', access_token, HTTP_ONLY_COOKIE_ACCESS);
     req.res?.cookie('refresh_token', refresh_token, HTTP_ONLY_COOKIE_REFRESH);
 
