@@ -38,7 +38,6 @@ let GqlAuthGuard = class GqlAuthGuard extends (0, passport_1.AuthGuard)('local')
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const request = ctx.getContext();
         request.body = ctx.getArgs().authLoginInput;
-        console.log('gql auth guard cookies', request.cookies);
         return request;
     }
     handleRequest(err, user, info, context) {
@@ -56,6 +55,8 @@ let GqlAuthGuard = class GqlAuthGuard extends (0, passport_1.AuthGuard)('local')
         });
         const refresh_token = this.jwtService.sign({
             email: user.email,
+            sub: user.id,
+            name: user.name,
         }, {
             secret: authConstants_1.authConstants.refresh_secret,
             expiresIn: `${Number(jwtExpiresSecond) * 10}s`,

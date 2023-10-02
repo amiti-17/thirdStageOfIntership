@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
@@ -38,6 +38,18 @@ export class UsersResolver {
   @Query(() => SafeUser, { name: 'findById' })
   async findById(@Args('id') id: number) {
     return await this.usersService.findById(id);
+  }
+
+  @Query(() => SafeUser, { name: 'getCurrentUser' })
+  @UseGuards(JwtAuthGuard)
+  async getCurrentUser(@Context() context) {
+    console.log('getCurrentUser context:', context.req.user);
+    // Object.keys(context.req).forEach(key => console.log(key))
+    const { sub: id, ...safeUser } = context.req.user;
+    return {
+      ...safeUser,
+      id,
+    };
   }
 
   @Query(() => User, { name: 'userUnsafe' })

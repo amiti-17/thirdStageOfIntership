@@ -12,6 +12,7 @@ export declare class UsersResolver {
     findAll(): Promise<SafeUser[]>;
     findOne(email: string): Promise<SafeUser>;
     findById(id: number): Promise<SafeUser>;
+    getCurrentUser(context: any): Promise<any>;
     findOneUnsafe(email: string): Promise<User>;
     updateUser(updateUserInput: UpdateUserInput): Promise<SafeUser>;
     removeUser(id: number): Promise<SafeUser>;

@@ -37,6 +37,22 @@ export const users = {
       }
     }
   `,
+  getCurrentUser: gql`
+    query getCurrentUser {
+      getCurrentUser {
+        name
+        email
+        id
+      }
+    }`
+  ,
+}
+
+export type SafeUserType = {
+  __typename: 'SafeUser',
+  name: string,
+  email: string,
+  id: number,
 }
 
 export const listAll = gql`

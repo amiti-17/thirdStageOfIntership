@@ -10,6 +10,7 @@ export declare class UsersService {
     findAll(): Promise<SafeUser[]>;
     findOne(email: string): Promise<SafeUser>;
     findById(id: number): Promise<SafeUser>;
+    getCurrentUser(context: any): Promise<SafeUser>;
     findOneUnsafe(email: string): Promise<User>;
     update(id: number, updateUserInput: UpdateUserInput): Promise<SafeUser>;
     remove(id: number): Promise<SafeUser>;

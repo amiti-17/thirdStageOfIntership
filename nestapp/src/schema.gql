@@ -46,6 +46,7 @@ type Mutation {
 
 type Query {
   findById(id: Float!): SafeUser!
+  getCurrentUser: SafeUser!
   locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!

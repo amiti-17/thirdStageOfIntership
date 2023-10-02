@@ -47,3 +47,10 @@ export const locations = {
     }
   `
 }
+
+export type LocationType = {
+  name,
+  lat,
+  lon,
+  id
+}

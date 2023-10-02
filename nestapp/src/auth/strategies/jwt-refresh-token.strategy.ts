@@ -32,7 +32,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
 
   async validate(payload: any) {
     console.log('jwtRefresh strategy payload: ', payload);
-    return { email: payload.email };
+    return { email: payload.email, name: payload.name, id: payload.sub };
     // console.log('here', payload);
     // const { email } = payload;
     // const user: SafeUser = await this.usersService.findOne(email);

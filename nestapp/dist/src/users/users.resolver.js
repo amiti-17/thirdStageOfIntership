@@ -39,6 +39,14 @@ let UsersResolver = class UsersResolver {
     async findById(id) {
         return await this.usersService.findById(id);
     }
+    async getCurrentUser(context) {
+        console.log('getCurrentUser context:', context.req.user);
+        const { sub: id, ...safeUser } = context.req.user;
+        return {
+            ...safeUser,
+            id,
+        };
+    }
     async findOneUnsafe(email) {
         return await this.usersService.findOneUnsafe(email);
     }
@@ -78,6 +86,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "findById", null);
+__decorate([
+    (0, graphql_1.Query)(() => safe_user_entity_1.SafeUser, { name: 'getCurrentUser' }),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, graphql_1.Context)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersResolver.prototype, "getCurrentUser", null);
 __decorate([
     (0, graphql_1.Query)(() => user_entity_1.User, { name: 'userUnsafe' }),
     __param(0, (0, graphql_1.Args)('email')),

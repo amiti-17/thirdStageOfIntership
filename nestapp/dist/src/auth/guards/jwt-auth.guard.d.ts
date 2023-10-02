@@ -5,5 +5,6 @@ export declare class JwtAuthGuard extends JwtAuthGuard_base {
     private jwtService;
     constructor(jwtService: JwtService);
     getRequest(context: ExecutionContext): any;
+    canActivate(context: ExecutionContext): Promise<boolean>;
 }
 export {};

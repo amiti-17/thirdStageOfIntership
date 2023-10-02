@@ -25,7 +25,7 @@ class JwtRefreshTokenStrategy extends (0, passport_1.PassportStrategy)(passport_
     }
     async validate(payload) {
         console.log('jwtRefresh strategy payload: ', payload);
-        return { email: payload.email };
+        return { email: payload.email, name: payload.name, id: payload.sub };
     }
 }
 exports.JwtRefreshTokenStrategy = JwtRefreshTokenStrategy;

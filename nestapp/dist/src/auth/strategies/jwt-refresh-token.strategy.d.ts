@@ -7,6 +7,8 @@ export declare class JwtRefreshTokenStrategy extends JwtRefreshTokenStrategy_bas
     private static extractJWTRefreshFromCookie;
     validate(payload: any): Promise<{
         email: any;
+        name: any;
+        id: any;
     }>;
 }
 export {};

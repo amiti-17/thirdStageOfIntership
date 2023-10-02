@@ -36,7 +36,7 @@ export class GqlAuthGuard extends AuthGuard('local') {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext();
     request.body = ctx.getArgs().authLoginInput;
-    console.log('gql auth guard cookies', request.cookies);
+    // console.log('gql auth guard cookies', request);
     return request;
   }
 
@@ -67,6 +67,8 @@ export class GqlAuthGuard extends AuthGuard('local') {
     const refresh_token = this.jwtService.sign(
       {
         email: user.email,
+        sub: user.id,
+        name: user.name,
       },
       {
         secret: authConstants.refresh_secret,

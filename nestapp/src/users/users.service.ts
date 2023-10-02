@@ -40,6 +40,10 @@ export class UsersService {
     return safeUser;
   }
 
+  async getCurrentUser(context: any): Promise<SafeUser> {
+    return await context.req.user;
+  }
+
   async findOneUnsafe(email: string): Promise<User> {
     return await this.prisma.users.findUnique({ where: { email } });
   }

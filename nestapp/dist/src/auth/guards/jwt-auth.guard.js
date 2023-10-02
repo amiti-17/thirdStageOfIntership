@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
+const authConstants_1 = require("../authConstants");
 let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
     constructor(jwtService) {
         super();
@@ -22,7 +23,23 @@ let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
     getRequest(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const request = ctx.getContext().req;
+        console.log(request, 'from jwt-auth.guards');
         return request;
+    }
+    async canActivate(context) {
+        const ctx = graphql_1.GqlExecutionContext.create(context);
+        const request = ctx.getContext().req;
+        try {
+            const payload = await this.jwtService.verifyAsync(request.cookies['access_token'], {
+                secret: authConstants_1.authConstants.access_secret,
+                ignoreExpiration: false,
+            });
+            request['user'] = payload;
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException();
+        }
+        return true;
     }
 };
 exports.JwtAuthGuard = JwtAuthGuard;

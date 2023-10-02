@@ -42,6 +42,9 @@ let UsersService = class UsersService {
         });
         return safeUser;
     }
+    async getCurrentUser(context) {
+        return await context.req.user;
+    }
     async findOneUnsafe(email) {
         return await this.prisma.users.findUnique({ where: { email } });
     }
