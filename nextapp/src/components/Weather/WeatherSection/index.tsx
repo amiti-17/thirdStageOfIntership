@@ -1,10 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../../Contexts/currentUserContext";
 import { Box } from "@mui/system";
 import { Search } from "./components/Search";
 import { WeatherCards } from "./components/WeatherCards";
 import { PlacesContext } from "../../../Contexts/placesContext";
 import { LocationType } from "../../../../Apollo/locations";
+import { RefreshTokenContext } from "../../../Contexts/refreshTokenContext";
+import React from 'react';
+import CustomError from "../../../CustomError";
+import { useRouter } from "next/router";
+import { useMutation } from "@apollo/client";
+import { auth } from "../../../../Apollo/auth";
 
 export function WeatherSection() {
   const { email } = useContext(CurrentUserContext);
@@ -18,7 +24,5 @@ export function WeatherSection() {
         {email}
       </Box>
     </PlacesContext.Provider>
-    
-    
   )
 }

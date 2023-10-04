@@ -12,6 +12,7 @@ nestapp/dist
 nestapp/.nest
 nextapp/.next
 /nextapp/.next
+./nextapp/.next
 
 # Logs
 logs

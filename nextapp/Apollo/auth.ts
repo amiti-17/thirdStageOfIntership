@@ -11,10 +11,14 @@ export const auth = {
   refreshToken: gql`
     mutation GetNewAccessToken{
       refreshToken {
-        access_token
+        status
         __typename
       }
     }
   `
 }
 
+export type refreshTokenReturnType = {
+  status: boolean,
+  __typename: string,
+}

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { urls } from "../../../../../config/system/urls";
 import { LocationFetchedFromSearchString } from "../../../../../config/system/types/locations";
+import { regexpObj } from "../../../../../config/system/regex";
 
 export function Search() {
   const cities = [
@@ -13,10 +14,10 @@ export function Search() {
   const { places, setPlaces } = useContext(PlacesContext);
   const [ inputValue, setInputValue ] = useState<string>('');
   const [ options, setOptions ] = useState<LocationFetchedFromSearchString[]>([]);
-  const [ value, setValue ] = useState<string[] | null>(options.slice(0, 2).map(el => [el.name, el.state, el.country].join(', ')));
+  const [ value, setValue ] = useState<LocationFetchedFromSearchString[] | null>(options.slice(0, 2));
 
   useEffect(() => {
-    fetchCoordinatesAndSetOptions(cities);
+    console.log(value)
   }, [value]);
 
   // function getLocationByName(name: string): LocationFetchedFromSearchString {
@@ -42,11 +43,11 @@ export function Search() {
     setOptions(options); //TODO: rewrite for parsing into fetched data
   }
 
-  // async function getCoordinates(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {
-  //   let limit = 5;
-  //   const myPlace = await fetch(urls.OW_URL_GEO + `appid=${urls.OW_API_KEY}&q=${nameOfPlace}&limit=${limit}`);
-  //   return await myPlace.json();
-  // }
+  async function getCoordinates(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {
+    let limit = 5;
+    const myPlace = await fetch(urls.OW_URL_GEO + `appid=${urls.OW_API_KEY}&q=${nameOfPlace}&limit=${limit}`);
+    return await myPlace.json();
+  }
 
   async function fetchCoordinatesAndSetOptions(nameOfPlace) {
     // const mySupposesPlaces = await getCoordinates(nameOfPlace);
@@ -58,7 +59,11 @@ export function Search() {
       {name: 'Königsallee', lat: 49.93645405, lon: 11.601889705219069, country: 'DE'},
     ]
     setOptionsWrapper(mySupposesPlaces)
-    // console.log(nameOfPlace, mySupposesPlaces);
+    console.log(nameOfPlace, mySupposesPlaces);
+  }
+
+  function getOptionName(option) {
+    return [option.name, option?.state, option?.country].filter(el => el).join(', ');
   }
 
   return (
@@ -71,9 +76,9 @@ export function Search() {
         sx={{ width: 300 }}
         options={options}
         autoHighlight
-        getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
+        getOptionLabel={(option) => typeof option === 'string' ? option : getOptionName(option)}
         renderOption={(props, option) => (
-          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+          <Box component="li" {...props}>
             {option.name} {option?.state} {option?.country}
           </Box>
         )}
@@ -87,14 +92,27 @@ export function Search() {
           />
         )}
         inputValue={inputValue}
-        onInputChange={(event, value, reason) => {
-          // setInputValue(value);
-          // if (value && reason === 'input') {
-          //   fetchCoordinatesAndSetOptions(value);
-          // } else {
-          //   setOptionsWrapper(cities);
-          // }
-          console.log(event, value, reason)
+        onInputChange={(event, currentValue, reason) => {
+          setInputValue(currentValue);
+          if (value && reason === 'input') {
+            fetchCoordinatesAndSetOptions(currentValue);
+          } else {
+            setOptionsWrapper(cities);
+          }
+          const currentTargetId = event.currentTarget.id.slice(-1).match(regexpObj.regex.digit);
+          if (currentTargetId) {
+            // console.log(event.currentTarget?.id[event.currentTarget?.id.length - 1]);
+            const currentObj = options[currentTargetId[0]];
+            // console.log("general event", event.currentTarget);
+            setValue(value => {
+              //QUESTION: Why here we don`t have access to event.currentTarget?
+              // console.log("setValue event", event.currentTarget);
+              const newValue = value.slice();
+              newValue.push(currentObj);
+              return newValue;
+            })
+          }
+          // console.log(event, value, reason)
         }}
       />
       {/* <Autocomplete

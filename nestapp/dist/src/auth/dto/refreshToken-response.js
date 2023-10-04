@@ -16,8 +16,8 @@ let RefreshTokenResponse = class RefreshTokenResponse {
 exports.RefreshTokenResponse = RefreshTokenResponse;
 __decorate([
     (0, graphql_1.Field)(),
-    __metadata("design:type", String)
-], RefreshTokenResponse.prototype, "access_token", void 0);
+    __metadata("design:type", Boolean)
+], RefreshTokenResponse.prototype, "status", void 0);
 exports.RefreshTokenResponse = RefreshTokenResponse = __decorate([
     (0, graphql_1.ObjectType)()
 ], RefreshTokenResponse);

@@ -95,6 +95,6 @@ export class AuthService {
 
   async refreshToken(context): Promise<RefreshTokenResponse> {
     // console.log('context refresh Token service', context);
-    return { access_token: '' };
+    return { status: true };
   }
 }

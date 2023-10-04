@@ -57,7 +57,7 @@ type Query {
 }
 
 type RefreshTokenResponse {
-  access_token: String!
+  status: Boolean!
 }
 
 type SafeUser {

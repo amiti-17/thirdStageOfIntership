@@ -42,7 +42,7 @@ let AuthService = class AuthService {
         });
     }
     async refreshToken(context) {
-        return { access_token: '' };
+        return { status: true };
     }
 };
 exports.AuthService = AuthService;
