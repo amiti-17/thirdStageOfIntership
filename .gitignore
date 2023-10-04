@@ -6,6 +6,12 @@ package-lock.json
 /.next
 /projectnest/dist
 /projectnest/.nest
+dist
+projectnest/dist
+nestapp/dist
+nestapp/.nest
+nextapp/.next
+/nextapp/.next
 
 # Logs
 logs
