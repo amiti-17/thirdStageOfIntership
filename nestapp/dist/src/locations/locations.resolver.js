@@ -18,6 +18,8 @@ const locations_service_1 = require("./locations.service");
 const location_entity_1 = require("./entities/location.entity");
 const create_location_input_1 = require("./dto/create-location.input");
 const find_one_by_coordinates_input_1 = require("./dto/find-one-by-coordinates.input");
+const common_1 = require("@nestjs/common");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let LocationsResolver = class LocationsResolver {
     constructor(locationsService) {
         this.locationsService = locationsService;
@@ -31,8 +33,14 @@ let LocationsResolver = class LocationsResolver {
     async findOne(id) {
         return await this.locationsService.findOne(id);
     }
-    async findOneByCoordinates(coordinates) {
-        return await this.locationsService.findOneByCoordinates(coordinates);
+    async findOneByCoordinates(coordinates, context) {
+        return {
+            id: 0,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            lat: coordinates.lat,
+            lon: coordinates.lon,
+        };
     }
     async removeLocation(id) {
         return await this.locationsService.remove(id);
@@ -61,9 +69,11 @@ __decorate([
 ], LocationsResolver.prototype, "findOne", null);
 __decorate([
     (0, graphql_1.Query)(() => location_entity_1.Location, { name: 'locationByCoordinates' }),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, graphql_1.Args)('coordinates')),
+    __param(1, (0, graphql_1.Context)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [find_one_by_coordinates_input_1.FindOneByCoordinatesInput]),
+    __metadata("design:paramtypes", [find_one_by_coordinates_input_1.FindOneByCoordinatesInput, Object]),
     __metadata("design:returntype", Promise)
 ], LocationsResolver.prototype, "findOneByCoordinates", null);
 __decorate([

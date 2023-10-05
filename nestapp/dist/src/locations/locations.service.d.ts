@@ -1,9 +1,11 @@
 import { CreateLocationInput } from './dto/create-location.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+import { HttpService } from '@nestjs/axios';
 export declare class LocationsService {
     private prisma;
-    constructor(prisma: PrismaService);
+    private httpService;
+    constructor(prisma: PrismaService, httpService: HttpService);
     create(createLocationInput: CreateLocationInput): Promise<{
         id: number;
         createdAt: Date;

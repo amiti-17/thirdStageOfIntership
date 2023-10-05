@@ -3,6 +3,7 @@ import CustomError from "../../CustomError";
 import {
   ApolloError, 
   LazyQueryExecFunction, 
+  LazyQueryHookExecOptions, 
   MutationFunction, 
   OperationVariables
 } from "@apollo/client";
@@ -15,17 +16,15 @@ export async function requestDataWithHandleUnauthorized(
   refreshToken: MutationFunction,
   refreshTokenError: ApolloError,
   router: NextRouter,
+  options?: LazyQueryHookExecOptions,
 ) {
   try {
-    await currentRequest().catch(e => console.warn(e));
-    setTimeout(() => {
-console.warn('firstError: ', currentUserError);
-    }, 1000)
+    console.log('options: ', options)
+    await options ? currentRequest(options) : currentRequest();
     
     if (currentUserError?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
       throw new CustomError(customError.unauthorized);
     }
-    
   } catch (error) {
     console.warn('firstError: ', error);
     if (
@@ -35,7 +34,7 @@ console.warn('firstError: ', currentUserError);
       if (await handleUnauthorized(refreshToken, router)) {
         try {
           console.warn('update refresh token...')
-          await currentRequest();
+          await options ? currentRequest(options) : currentRequest();
         } catch (error) {
           console.warn('secondError: ', error);
         }
@@ -50,7 +49,7 @@ console.warn('firstError: ', currentUserError);
   // }
 }
 
-async function handleUnauthorized(
+export async function handleUnauthorized(
   refreshToken: MutationFunction,
   router: NextRouter,
 ): Promise<true> {

@@ -17,14 +17,12 @@ class JwtRefreshTokenStrategy extends (0, passport_1.PassportStrategy)(passport_
         this.usersService = usersService;
     }
     static extractJWTRefreshFromCookie(req) {
-        console.log('jwtRefresh strategy cookies: ', req.cookies);
         if (req.cookies && req.cookies.refresh_token) {
             return req.cookies.refresh_token;
         }
         return null;
     }
     async validate(payload) {
-        console.log('jwtRefresh strategy payload: ', payload);
         return { email: payload.email, name: payload.name, id: payload.sub };
     }
 }

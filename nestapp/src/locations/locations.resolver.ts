@@ -1,8 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
 import { CreateLocationInput } from './dto/create-location.input';
 import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 // import { UpdateLocationInput } from './dto/update-location.input';
 
 @Resolver(() => Location)
@@ -27,10 +29,19 @@ export class LocationsResolver {
   }
 
   @Query(() => Location, { name: 'locationByCoordinates' })
+  @UseGuards(JwtAuthGuard)
   async findOneByCoordinates(
     @Args('coordinates') coordinates: FindOneByCoordinatesInput,
+    @Context() context,
   ) {
-    return await this.locationsService.findOneByCoordinates(coordinates);
+    // console.log(context.req?.user);
+    return {
+      id: 0,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      lat: coordinates.lat,
+      lon: coordinates.lon,
+    }; // await this.locationsService.findOneByCoordinates(coordinates);
   }
 
   // @Mutation(() => Location)

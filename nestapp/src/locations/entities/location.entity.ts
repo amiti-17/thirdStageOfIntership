@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 // import { User } from 'src/users/entities/user.entity';
 
 @ObjectType()
@@ -6,10 +6,10 @@ export class Location {
   @Field(() => Int)
   id: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   lat: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   lon: number;
 
   // @Field()

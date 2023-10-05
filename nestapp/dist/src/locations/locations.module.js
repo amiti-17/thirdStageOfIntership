@@ -11,11 +11,13 @@ const common_1 = require("@nestjs/common");
 const locations_service_1 = require("./locations.service");
 const locations_resolver_1 = require("./locations.resolver");
 const prisma_service_1 = require("../prisma/prisma.service");
+const axios_1 = require("@nestjs/axios");
 let LocationsModule = class LocationsModule {
 };
 exports.LocationsModule = LocationsModule;
 exports.LocationsModule = LocationsModule = __decorate([
     (0, common_1.Module)({
+        imports: [axios_1.HttpModule],
         providers: [locations_resolver_1.LocationsResolver, locations_service_1.LocationsService, prisma_service_1.PrismaService],
     })
 ], LocationsModule);

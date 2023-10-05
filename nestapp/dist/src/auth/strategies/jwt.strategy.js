@@ -17,7 +17,6 @@ class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strate
         this.usersService = usersService;
     }
     static extractJWTFromCookie(req) {
-        console.log('jwt strategy cookies: ', req);
         if (req.cookies && req.cookies.access_token) {
             return req.cookies.access_token;
         }

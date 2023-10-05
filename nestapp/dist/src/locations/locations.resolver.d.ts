@@ -25,10 +25,10 @@ export declare class LocationsResolver {
         lat: number;
         lon: number;
     }>;
-    findOneByCoordinates(coordinates: FindOneByCoordinatesInput): Promise<{
+    findOneByCoordinates(coordinates: FindOneByCoordinatesInput, context: any): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
+        createdAt: number;
+        updatedAt: number;
         lat: number;
         lon: number;
     }>;

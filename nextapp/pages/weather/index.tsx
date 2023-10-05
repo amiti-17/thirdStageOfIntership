@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { WeatherLayout } from "../../src/components/Weather/WeatherLayout";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { SafeUserType, users } from "../../Apollo/users";
 import CustomError from "../../src/CustomError";
-import { RefreshTokenContext } from "../../src/Contexts/refreshTokenContext";
 import { useRouter } from "next/router";
-import { getQueryAndHandleError } from "../../src/functions/fetch/getQueryAndHandleError";
 import { Header } from "../../src/components/Weather/Header";
 import CircularIndeterminate from "../../src/components/CircularIndeterminate";
 import { WeatherSection } from "../../src/components/Weather/WeatherSection";

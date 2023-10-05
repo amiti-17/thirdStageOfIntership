@@ -18,7 +18,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
     // request.body = ctx.getArgs().authUserInput;
-    console.log(request, 'from jwt-auth.guards');
+    // console.log(request, 'from jwt-auth.guards');
     return request;
   }
 

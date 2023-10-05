@@ -19,11 +19,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Location.prototype, "id", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => graphql_1.Int),
+    (0, graphql_1.Field)(() => graphql_1.Float),
     __metadata("design:type", Number)
 ], Location.prototype, "lat", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => graphql_1.Int),
+    (0, graphql_1.Field)(() => graphql_1.Float),
     __metadata("design:type", Number)
 ], Location.prototype, "lon", void 0);
 exports.Location = Location = __decorate([

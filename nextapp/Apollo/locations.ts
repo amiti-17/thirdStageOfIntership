@@ -49,8 +49,8 @@ export const locations = {
 }
 
 export type LocationType = {
-  name,
-  lat,
-  lon,
-  id
+  name: string,
+  lat: number,
+  lon: number,
+  id: number,
 }

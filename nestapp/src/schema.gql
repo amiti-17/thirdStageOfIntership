@@ -19,14 +19,14 @@ input CreateUserInput {
 }
 
 input FindOneByCoordinatesInput {
-  lat: Int!
-  lon: Int!
+  lat: Float!
+  lon: Float!
 }
 
 type Location {
   id: Int!
-  lat: Int!
-  lon: Int!
+  lat: Float!
+  lon: Float!
 }
 
 type LoginResponse {

@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocationsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const axios_1 = require("@nestjs/axios");
 let LocationsService = class LocationsService {
-    constructor(prisma) {
+    constructor(prisma, httpService) {
         this.prisma = prisma;
+        this.httpService = httpService;
     }
     async create(createLocationInput) {
         return await this.prisma.locations.create({
@@ -39,6 +41,7 @@ let LocationsService = class LocationsService {
 exports.LocationsService = LocationsService;
 exports.LocationsService = LocationsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        axios_1.HttpService])
 ], LocationsService);
 //# sourceMappingURL=locations.service.js.map

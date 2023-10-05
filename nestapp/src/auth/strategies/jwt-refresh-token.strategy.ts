@@ -22,7 +22,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
   }
 
   private static extractJWTRefreshFromCookie(req: Request): string | null {
-    console.log('jwtRefresh strategy cookies: ', req.cookies);
+    // console.log('jwtRefresh strategy cookies: ', req.cookies);
     if (req.cookies && req.cookies.refresh_token) {
       return req.cookies.refresh_token;
     }
@@ -31,7 +31,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
   }
 
   async validate(payload: any) {
-    console.log('jwtRefresh strategy payload: ', payload);
+    // console.log('jwtRefresh strategy payload: ', payload);
     return { email: payload.email, name: payload.name, id: payload.sub };
     // console.log('here', payload);
     // const { email } = payload;

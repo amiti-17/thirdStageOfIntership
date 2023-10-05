@@ -16,11 +16,11 @@ let FindOneByCoordinatesInput = class FindOneByCoordinatesInput extends create_l
 };
 exports.FindOneByCoordinatesInput = FindOneByCoordinatesInput;
 __decorate([
-    (0, graphql_1.Field)(() => graphql_1.Int),
+    (0, graphql_1.Field)(() => graphql_1.Float),
     __metadata("design:type", Number)
 ], FindOneByCoordinatesInput.prototype, "lat", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => graphql_1.Int),
+    (0, graphql_1.Field)(() => graphql_1.Float),
     __metadata("design:type", Number)
 ], FindOneByCoordinatesInput.prototype, "lon", void 0);
 exports.FindOneByCoordinatesInput = FindOneByCoordinatesInput = __decorate([
