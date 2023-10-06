@@ -3,8 +3,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import LoginLayout from '../src/components/loginPage/LoginLayout';
 import LoginForm from '../src/components/loginPage/Form';
-import { useQuery } from '@apollo/client';
-import { locations } from '../Apollo/locations';
 import { sha256 } from 'js-sha256';
 
 export default function Login() {

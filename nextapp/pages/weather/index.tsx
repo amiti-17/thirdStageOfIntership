@@ -9,38 +9,59 @@ import CircularIndeterminate from "../../src/components/CircularIndeterminate";
 import { WeatherSection } from "../../src/components/Weather/WeatherSection";
 import { CurrentUserContext } from "../../src/Contexts/currentUserContext";
 import { auth } from "../../Apollo/auth";
-import { requestDataWithHandleUnauthorized } from "../../src/functions/fetch/requestDataWithHandleUnauthorized";
+import { handleUnauthorized, handleUnauthorizedQuery } from "../../src/functions/fetch/requestDataWithHandleUnauthorized";
+import { RefreshTokenContext } from "../../src/Contexts/refreshTokenContext";
+import { CurrentQueryContext, LazyQueryObjType } from "../../src/Contexts/currentQueryContext";
 
 const customError = new CustomError('');
 
 export default function Login() {
-  // const [ shouldUpdateRefreshToken, setShouldUpdateRefreshToken ] = React.useState(false);
+  
+  const [ shouldUpdateRefreshToken, setShouldUpdateRefreshToken ] = React.useState(false);
   const [ 
     getCurrentUser, 
-    { data: currentUserData, error: currentUserError, loading: currentUserLoading } 
-  ] = useLazyQuery(users.getCurrentUser);
-  const [ 
-    refreshToken, 
-    { error: refreshTokenError, loading: refreshTokenLoading, data: refreshTokenData } 
-  ] = useMutation(auth.refreshToken);
+    { data: currentUserData, error: currentUserError, loading: currentUserLoading, refetch } 
+  ] = useLazyQuery(users.getCurrentUser); //, {fetchPolicy: "network-only"}
+  const [ refreshToken ] = useMutation(auth.refreshToken);
   const [ currentUser, setCurrentUser ] = React.useState<SafeUserType>();
+  const [ currentQuery, setCurrentQuery ] = React.useState<LazyQueryObjType>();
   const router = useRouter();
 
   useEffect(() => {
-    setCurrentUser(currentUserData?.getCurrentUser)
-  }, [currentUserData])
+    if (!currentUserData && !currentUserLoading) {
+      setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
+    }
+  }, [])
 
   useEffect(() => {
-    requestDataWithHandleUnauthorized(
-      getCurrentUser,
-      currentUserError,
-      refreshToken,
-      refreshTokenError,
-      router
-    );
-    console.log({currentUserData});
-    console.log({currentUserError});
-  }, [currentUserError]);
+    if (currentQuery) {
+      console.log('received new current query: ', currentQuery);
+      handleUnauthorizedQuery(refreshToken, router, currentQuery.query, currentQuery.refetch, currentQuery.error, currentQuery.option);
+      setCurrentQuery(null);
+    }
+  }, [currentQuery]);
+
+  useEffect(() => {
+    if (currentUserData) {
+      setCurrentUser(currentUserData?.getCurrentUser)
+    }
+  }, [currentUserData]);
+
+  // useEffect(() => {
+  //   setCurrentUser(currentUserData?.getCurrentUser)
+  // }, [currentUserData]);
+
+  // useEffect(() => {
+  //   requestDataWithHandleUnauthorized(
+  //     getCurrentUser,
+  //     currentUserError,
+  //     refreshToken,
+  //     refreshTokenError,
+  //     router
+  //   );
+  //   console.log({currentUserData});
+  //   console.log({currentUserError});
+  // }, [currentUserError]);
 
   // React.useEffect(() => {
   //   getQueryAndHandleError(getCurrentUser, currentUserData, currentUserError, router, shouldUpdateRefreshToken, setShouldUpdateRefreshToken);
@@ -72,16 +93,18 @@ export default function Login() {
 
   return (
     <WeatherLayout>
-      {/* <RefreshTokenContext.Provider value={{ shouldUpdateRefreshToken, setShouldUpdateRefreshToken }}> */}
-        {
-          currentUserLoading || currentUserError || !currentUser ? 
-            <CircularIndeterminate /> : 
-            <CurrentUserContext.Provider value={currentUser}>
-              <Header />
-              <WeatherSection />
-            </CurrentUserContext.Provider>
-        }
-      {/* </RefreshTokenContext.Provider> */}
+      <RefreshTokenContext.Provider value={{ shouldUpdateRefreshToken, setShouldUpdateRefreshToken }}>
+        <CurrentQueryContext.Provider value={{ currentQuery, setCurrentQuery}}>
+          {
+            currentUserLoading || currentUserError || !currentUser ? 
+              <CircularIndeterminate /> : 
+              <CurrentUserContext.Provider value={currentUser}>
+                <Header />
+                <WeatherSection />
+              </CurrentUserContext.Provider>
+          }
+        </CurrentQueryContext.Provider>
+      </RefreshTokenContext.Provider>
     </WeatherLayout>
   );
 }
