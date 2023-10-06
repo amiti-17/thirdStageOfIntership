@@ -36,12 +36,17 @@ export class LocationsResolver {
     // @Context() context,
   ) {
     // console.log(context.req?.user);
+    console.log({
+      id: 0,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      ...coordinates,
+    });
     return {
       id: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      lat: coordinates.lat,
-      lon: coordinates.lon,
+      ...coordinates,
     }; // await this.locationsService.findOneByCoordinates(coordinates);
   }
 

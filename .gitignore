@@ -1,20 +1,15 @@
 # compiled output
-/dist
-node_modules
 package-lock.json
-/.nest
-/.next
-.nest
-.next
-/projectnest/dist
-/projectnest/.nest
-dist
-projectnest/dist
+nextapp/node_modules
+nestapp/node_modules
+nextapp/package-lock.json
+nestapp/package-lock.json
+nextapp/package-lock.json
+nestapp/package-lock.json
 nestapp/dist
+nextapp/dist
 nestapp/.nest
 nextapp/.next
-/nextapp/.next
-./nextapp/.next
 
 # Logs
 logs

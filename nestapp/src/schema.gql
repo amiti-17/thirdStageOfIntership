@@ -19,14 +19,20 @@ input CreateUserInput {
 }
 
 input FindOneByCoordinatesInput {
+  country: String
   lat: Float!
   lon: Float!
+  name: String!
+  state: String
 }
 
 type Location {
+  country: String
   id: Int!
   lat: Float!
   lon: Float!
+  name: String!
+  state: String
 }
 
 type LoginResponse {

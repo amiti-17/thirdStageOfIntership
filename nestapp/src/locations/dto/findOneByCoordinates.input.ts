@@ -8,4 +8,13 @@ export class FindOneByCoordinatesInput extends CreateLocationInput {
 
   @Field(() => Float)
   lon: number;
+
+  @Field()
+  name: string;
+
+  @Field({ nullable: true })
+  state?: string;
+
+  @Field({ nullable: true })
+  country?: string;
 }
