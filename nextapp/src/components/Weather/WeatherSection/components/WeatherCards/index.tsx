@@ -4,9 +4,6 @@ import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { getNameOfPlace } from "../../../../../functions/places/getNameOfPlace";
 import { LocationType, locations as apolloLocations } from "../../../../../../Apollo/locations";
 import { LazyQueryHookExecOptions, useLazyQuery, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { auth } from "../../../../../../Apollo/auth";
-import { handleUnauthorized } from "../../../../../functions/fetch/requestDataWithHandleUnauthorized";
 import CustomError from "../../../../../CustomError";
 import { CurrentQueryContext } from "../../../../../Contexts/currentQueryContext";
 
@@ -31,7 +28,6 @@ export function WeatherCards() {
     if (locationData) {
       setLocations(prev => [locationData.locationByCoordinates, ...prev]);
     }
-    
   }, [locationData])
 
   useEffect(() => {
@@ -46,12 +42,10 @@ export function WeatherCards() {
       places
         .filter(place => !locations.find(location => location.lat === place.lat && location.lon === place.lon))
         .forEach(place => {
+          const { local_names, ...myPlace } = place;
           options = {
             variables: {
-              coordinates: {
-                lat: place.lat, 
-                lon: place.lon,
-              }
+              coordinates: myPlace,
             }
           };
           setCurrentQuery({
@@ -68,7 +62,7 @@ export function WeatherCards() {
 
   useEffect(() => {
     if ( locationError ) {
-      console.log('location error: ', locationError);
+      console.warn('location error: ', locationError);
       // TODO: check for unauthorized...
     }
     

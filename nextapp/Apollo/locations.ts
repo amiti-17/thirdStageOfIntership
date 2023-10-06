@@ -16,6 +16,9 @@ export const locations = {
         id 
         lat
         lon
+        name
+        state
+        country
       }
     }
   `,
@@ -50,6 +53,8 @@ export const locations = {
 
 export type LocationType = {
   name: string,
+  country?: string,
+  state?: string,
   lat: number,
   lon: number,
   id: number,
