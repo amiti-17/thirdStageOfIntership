@@ -1,7 +1,8 @@
-import { CreateLocationInput } from './dto/create-location.input';
+import { CreateLocationInput } from './dto/createLocation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+import { FindOneByCoordinatesInput } from './dto/findOneByCoordinates.input';
 import { HttpService } from '@nestjs/axios';
+import { UpdateUserLocationInput } from './dto/updateUserLocation.input';
 export declare class LocationsService {
     private prisma;
     private httpService;
@@ -34,6 +35,7 @@ export declare class LocationsService {
         lat: number;
         lon: number;
     }>;
+    updateUserLocation(updateUserLocationInput: UpdateUserLocationInput): Promise<Location>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;

@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { CreateLocationInput } from './dto/create-location.input';
+import { CreateLocationInput } from './dto/createLocation.input';
 // import { UpdateLocationInput } from './dto/update-location.input';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+import { FindOneByCoordinatesInput } from './dto/findOneByCoordinates.input';
 import { HttpService } from '@nestjs/axios';
+import { UpdateUserLocationInput } from './dto/updateUserLocation.input';
 
 @Injectable()
 export class LocationsService {
@@ -29,6 +31,12 @@ export class LocationsService {
     return await this.prisma.locations.findUnique({
       where: { ll: { ...coordinates } },
     });
+  }
+
+  async updateUserLocation(
+    updateUserLocationInput: UpdateUserLocationInput,
+  ): Promise<Location> {
+    return {} as Location;
   }
 
   // update(id: number, updateLocationInput: UpdateLocationInput) {

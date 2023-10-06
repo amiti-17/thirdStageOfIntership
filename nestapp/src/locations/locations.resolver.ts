@@ -1,10 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
-import { CreateLocationInput } from './dto/create-location.input';
-import { FindOneByCoordinatesInput } from './dto/find-one-by-coordinates.input';
+import { CreateLocationInput } from './dto/createLocation.input';
+import { FindOneByCoordinatesInput } from './dto/findOneByCoordinates.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserLocationInput } from './dto/updateUserLocation.input';
 // import { UpdateLocationInput } from './dto/update-location.input';
 
 @Resolver(() => Location)
@@ -32,7 +33,7 @@ export class LocationsResolver {
   @UseGuards(JwtAuthGuard)
   async findOneByCoordinates(
     @Args('coordinates') coordinates: FindOneByCoordinatesInput,
-    @Context() context,
+    // @Context() context,
   ) {
     // console.log(context.req?.user);
     return {
@@ -42,6 +43,14 @@ export class LocationsResolver {
       lat: coordinates.lat,
       lon: coordinates.lon,
     }; // await this.locationsService.findOneByCoordinates(coordinates);
+  }
+
+  @Mutation(() => [Location])
+  async updateUserLocationInput(
+    @Args('updateUserLocationInput')
+    updateUserLocationInput: UpdateUserLocationInput,
+  ) {
+    return this.locationsService.updateUserLocation(updateUserLocationInput);
   }
 
   // @Mutation(() => Location)

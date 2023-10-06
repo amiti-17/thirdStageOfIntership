@@ -1,4 +1,4 @@
-import { CreateLocationInput } from './create-location.input';
+import { CreateLocationInput } from './createLocation.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()

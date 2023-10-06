@@ -16,10 +16,11 @@ exports.LocationsResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const locations_service_1 = require("./locations.service");
 const location_entity_1 = require("./entities/location.entity");
-const create_location_input_1 = require("./dto/create-location.input");
-const find_one_by_coordinates_input_1 = require("./dto/find-one-by-coordinates.input");
+const createLocation_input_1 = require("./dto/createLocation.input");
+const findOneByCoordinates_input_1 = require("./dto/findOneByCoordinates.input");
 const common_1 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const updateUserLocation_input_1 = require("./dto/updateUserLocation.input");
 let LocationsResolver = class LocationsResolver {
     constructor(locationsService) {
         this.locationsService = locationsService;
@@ -33,7 +34,7 @@ let LocationsResolver = class LocationsResolver {
     async findOne(id) {
         return await this.locationsService.findOne(id);
     }
-    async findOneByCoordinates(coordinates, context) {
+    async findOneByCoordinates(coordinates) {
         return {
             id: 0,
             createdAt: Date.now(),
@@ -41,6 +42,9 @@ let LocationsResolver = class LocationsResolver {
             lat: coordinates.lat,
             lon: coordinates.lon,
         };
+    }
+    async updateUserLocationInput(updateUserLocationInput) {
+        return this.locationsService.updateUserLocation(updateUserLocationInput);
     }
     async removeLocation(id) {
         return await this.locationsService.remove(id);
@@ -51,7 +55,7 @@ __decorate([
     (0, graphql_1.Mutation)(() => location_entity_1.Location),
     __param(0, (0, graphql_1.Args)('createLocationInput')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_location_input_1.CreateLocationInput]),
+    __metadata("design:paramtypes", [createLocation_input_1.CreateLocationInput]),
     __metadata("design:returntype", Promise)
 ], LocationsResolver.prototype, "createLocation", null);
 __decorate([
@@ -71,11 +75,17 @@ __decorate([
     (0, graphql_1.Query)(() => location_entity_1.Location, { name: 'locationByCoordinates' }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, graphql_1.Args)('coordinates')),
-    __param(1, (0, graphql_1.Context)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [find_one_by_coordinates_input_1.FindOneByCoordinatesInput, Object]),
+    __metadata("design:paramtypes", [findOneByCoordinates_input_1.FindOneByCoordinatesInput]),
     __metadata("design:returntype", Promise)
 ], LocationsResolver.prototype, "findOneByCoordinates", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => [location_entity_1.Location]),
+    __param(0, (0, graphql_1.Args)('updateUserLocationInput')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updateUserLocation_input_1.UpdateUserLocationInput]),
+    __metadata("design:returntype", Promise)
+], LocationsResolver.prototype, "updateUserLocationInput", null);
 __decorate([
     (0, graphql_1.Mutation)(() => location_entity_1.Location),
     __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.Int })),

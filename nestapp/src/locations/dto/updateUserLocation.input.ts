@@ -1,11 +1,13 @@
-import { CreateLocationInput } from './create-location.input';
 import { InputType, Field, Float } from '@nestjs/graphql';
 
 @InputType()
-export class FindOneByCoordinatesInput extends CreateLocationInput {
+export class UpdateUserLocationInput {
   @Field(() => Float)
   lat: number;
 
   @Field(() => Float)
   lon: number;
+
+  @Field()
+  name: string;
 }

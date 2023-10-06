@@ -42,6 +42,7 @@ type Mutation {
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
   updateUser(updateUserInput: UpdateUserInput!): SafeUser!
+  updateUserLocationInput(updateUserLocationInput: UpdateUserLocationInput!): [Location!]!
 }
 
 type Query {
@@ -71,6 +72,12 @@ input UpdateUserInput {
   id: Int!
   name: String
   password: String
+}
+
+input UpdateUserLocationInput {
+  lat: Float!
+  lon: Float!
+  name: String!
 }
 
 type User {

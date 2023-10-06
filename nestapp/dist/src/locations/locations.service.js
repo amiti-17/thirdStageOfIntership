@@ -34,6 +34,9 @@ let LocationsService = class LocationsService {
             where: { ll: { ...coordinates } },
         });
     }
+    async updateUserLocation(updateUserLocationInput) {
+        return {};
+    }
     async remove(id) {
         return await this.prisma.locations.delete({ where: { id } });
     }
