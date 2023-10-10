@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { WeatherLayout } from "../../src/components/Weather/WeatherLayout";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { SafeUserType, users } from "../../Apollo/users";
-import CustomError from "../../src/CustomError";
+import { SafeUserType, users } from "Apollo/users";
 import { useRouter } from "next/router";
-import { Header } from "../../src/components/Weather/Header";
-import CircularIndeterminate from "../../src/components/CircularIndeterminate";
-import { WeatherSection } from "../../src/components/Weather/WeatherSection";
-import { CurrentUserContext } from "../../src/Contexts/currentUserContext";
-import { auth } from "../../Apollo/auth";
-import { handleUnauthorized, handleUnauthorizedQuery } from "../../src/functions/fetch/requestDataWithHandleUnauthorized";
-import { RefreshTokenContext } from "../../src/Contexts/refreshTokenContext";
-import { CurrentQueryContext, LazyQueryObjType } from "../../src/Contexts/currentQueryContext";
+import CircularIndeterminate from "components/CircularIndeterminate";
+import { WeatherSection } from "components/Weather/WeatherSection";
+import { CurrentUserContext } from "Contexts/currentUserContext";
+import { handleUnauthorized, handleUnauthorizedQuery } from "functions/fetch/requestDataWithHandleUnauthorized";
+import { RefreshTokenContext } from "Contexts/refreshTokenContext";
+import { CurrentQueryContext, LazyQueryObjType } from "Contexts/currentQueryContext";
+import { WeatherLayout } from "components/Weather/WeatherLayout";
+import { Header } from "components/Weather/Header";
+import { auth } from "Apollo/auth";
+import CustomError from "CustomError";
 
 const customError = new CustomError('');
 

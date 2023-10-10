@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { LocationType } from "../../Apollo/locations";
+import { LocationType } from "../Apollo/locations";
 import { LocationFetchedFromSearchString } from "../config/system/types/locations";
 
 type PlacesContextType = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeUserType } from "../../Apollo/users";
+import { SafeUserType } from "../Apollo/users";
 
 // export type CurrentUserContextType = {
 //   currentUser: SafeUserType,

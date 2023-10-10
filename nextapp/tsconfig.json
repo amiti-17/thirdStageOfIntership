@@ -15,7 +15,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "src/",
+    "paths": {
+      "@/src/*": ["styles/*"],
+      "@/Apollo/*": ["src/Apollo/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

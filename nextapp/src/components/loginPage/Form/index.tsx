@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { LoginType } from "../../../config/system/types/login";
 import { getCryptPassword } from "../../../functions/getCryptPassword";
 import { ApolloError, useMutation } from "@apollo/client";
-import { auth } from "../../../../Apollo/auth";
+import { auth } from "../../../Apollo/auth";
 import CustomError from "../../../CustomError";
 
 export default function LoginForm() {

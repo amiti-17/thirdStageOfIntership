@@ -1,8 +1,8 @@
 import  React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import LoginLayout from '../src/components/loginPage/LoginLayout';
-import LoginForm from '../src/components/loginPage/Form';
+import LoginLayout from 'components/loginPage/LoginLayout';
+import LoginForm from 'components/loginPage/Form';
 import { sha256 } from 'js-sha256';
 
 export default function Login() {
@@ -11,7 +11,6 @@ export default function Login() {
   // console.log({loading}, {error}, data)
 
   // React.useEffect(() => {
-    
   // }, [])
 
   return (
@@ -19,6 +18,7 @@ export default function Login() {
         <CssBaseline />
         <LoginLayout>
           <LoginForm />
+    
           {sha256('1234Qwer')}
         </LoginLayout>
       </Container>

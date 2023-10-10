@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { getNameOfPlace } from "../../../../../functions/places/getNameOfPlace";
-import { LocationType, locations as apolloLocations } from "../../../../../../Apollo/locations";
+import { LocationType, locations as apolloLocations } from "../../../../../Apollo/locations";
 import { LazyQueryHookExecOptions, useLazyQuery, useMutation } from "@apollo/client";
 import CustomError from "../../../../../CustomError";
 import { CurrentQueryContext } from "../../../../../Contexts/currentQueryContext";

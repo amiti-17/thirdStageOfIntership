@@ -3,13 +3,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../../../Contexts/placesContext";
 import { LocationFetchedFromSearchString } from "../../../../../../../config/system/types/locations";
-import { urls } from "../../../../../../../config/system/urls";
+// import { urls } from "../../../../../../../config/system/urls";
 import { AlertSearchBarContext } from "../../../../../../../Contexts/alertSearchBarContext";
 import { getNameOfPlace } from "../../../../../../../functions/places/getNameOfPlace";
 
 export function SearchInput() {
-  const cities = [
-    { name: 'Kyiv', lat: 0, lon: 0 } //TODO: replace this example object with fetched list of places...
+  const cities: LocationFetchedFromSearchString[] = [
+    { name: 'Kyiv', lat: 0, lon: 0, local_names: {ua: 'Kyiv'} } //TODO: replace this example object with fetched list of places...
   ];
   
   const { setAlertText } = useContext(AlertSearchBarContext);
@@ -51,7 +51,7 @@ export function SearchInput() {
 
   async function getCoordinates(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {
     let limit = 5;
-    const myPlace = await fetch(urls.OW_URL_GEO + `appid=${urls.OW_API_KEY}&q=${nameOfPlace}&limit=${limit}`);
+    const myPlace = await fetch(process.env.NEXT_PUBLIC_OW_URL_GEO + `appid=${process.env.NEXT_PUBLIC_OW_API_KEY}&q=${nameOfPlace}&limit=${limit}`);
     return await myPlace.json();
   }
 

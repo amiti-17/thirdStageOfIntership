@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { publicConfig } from "../src/config/public";
+import { publicConfig } from "../config/public";
 
 const client = new ApolloClient({
   uri: publicConfig.BASE_URL + 'graphql',
