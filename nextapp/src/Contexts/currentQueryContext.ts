@@ -13,7 +13,7 @@ export type MutationObjType = {
   error: ApolloError,
 }
 export type LazyQueryObjType = {
-  query: LazyQueryExecFunction<any, any>,
+  query: LazyQueryExecFunction<any, any> | null,
   option?: LazyQueryHookExecOptions,
   error: ApolloError,
   refetch: (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<any>>,

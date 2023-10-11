@@ -69,27 +69,47 @@ export async function handleUnauthorized (
 export async function handleUnauthorizedQuery(
   refreshToken: MutationFunction, 
   router: NextRouter,
-  query: LazyQueryExecFunction<any, any>,
+  query: LazyQueryExecFunction<any, any> | null,
   refetch: (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<any>>,
   error: ApolloError,
   option: LazyQueryHookExecOptions = {}, 
 ) {
-  const data = await query(option);
-  console.log('current query executed: ', data, error);
-  if (error || data.error?.graphQLErrors) {
-    if (
-      error?.message === customError.unauthorized || 
-      error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized ||
-      data.error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
-    ) {
-      if (await handleUnauthorized(refreshToken, router)) {
-        try {
-          console.warn('update refresh token...');
-          await refetch();
-        } catch (error) {
-          console.warn('secondError: ', error);
+  if (query) {
+    const data = await query(option);
+    // console.log('current query executed: ', data, error);
+    if (error || data.error?.graphQLErrors) {
+      if (
+        error?.message === customError.unauthorized || 
+        error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized ||
+        data.error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
+      ) {
+        if (await handleUnauthorized(refreshToken, router)) {
+          try {
+            console.warn('update refresh token...');
+            await refetch(option.variables);
+          } catch (error) {
+            console.warn('secondError: ', error);
+          }
         }
       }
     }
+  } else {
+    try {
+      const data = await refetch(option.variables);
+    } catch (error) {
+      console.error('catch error in requestDataWithHandleUnauthorized.ts...', error);
+      if (error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
+        if (await handleUnauthorized(refreshToken, router)) {
+          try {
+            console.warn('update refresh token...');
+            await refetch(option.variables);
+          } catch (error) {
+            console.warn('secondError: ', error);
+          }
+        }
+      }
+    }
+    
   }
+  
 }
