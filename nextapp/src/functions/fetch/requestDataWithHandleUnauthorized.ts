@@ -75,6 +75,7 @@ export async function handleUnauthorizedQuery(
   option: LazyQueryHookExecOptions = {}, 
 ) {
   if (query) {
+    console.log('requestDataWithHandleUnauthorized data: ', option)
     const data = await query(option);
     // console.log('current query executed: ', data, error);
     if (error || data.error?.graphQLErrors) {
