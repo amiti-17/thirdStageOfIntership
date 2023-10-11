@@ -17,6 +17,10 @@ export function WeatherSection() {
 
   // }
 
+  useEffect(() => {
+    
+  }, [places])
+
   return (
     <PlacesContext.Provider value={{places, setPlaces}}>
       <Box component='section'>

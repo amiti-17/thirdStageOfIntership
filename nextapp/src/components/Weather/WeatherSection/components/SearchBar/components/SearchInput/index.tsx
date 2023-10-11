@@ -6,6 +6,8 @@ import { LocationFetchedFromSearchString } from "../../../../../../../config/sys
 // import { urls } from "../../../../../../../config/system/urls";
 import { AlertSearchBarContext } from "../../../../../../../Contexts/alertSearchBarContext";
 import { getNameOfPlace } from "../../../../../../../functions/places/getNameOfPlace";
+import { searchConfig } from "config/system/searchFetch";
+import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
 
 export function SearchInput() {
   const cities: LocationFetchedFromSearchString[] = [
@@ -49,14 +51,8 @@ export function SearchInput() {
     setOptions(cities);
   }
 
-  async function getCoordinates(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {
-    let limit = 5;
-    const myPlace = await fetch(process.env.NEXT_PUBLIC_OW_URL_GEO + `appid=${process.env.NEXT_PUBLIC_OW_API_KEY}&q=${nameOfPlace}&limit=${limit}`);
-    return await myPlace.json();
-  }
-
   async function fetchCoordinatesAndSetOptions(nameOfPlace) {
-    const mySupposesPlaces = await getCoordinates(nameOfPlace);
+    const mySupposesPlaces = await getLocationsAttr(nameOfPlace);
     // const mySupposesPlaces = [
     //   {name: 'Klagenfurt', lat: 46.623943, lon: 14.3075976, country: 'AT'},
     //   {name: 'Koło', lat: 52.2019866, lon: 18.6359912, country: 'PL'},

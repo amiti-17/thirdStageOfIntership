@@ -1,23 +1,22 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
-import { CreateLocationInput } from './dto/createLocation.input';
-import { FindOneByCoordinatesInput } from './dto/findOneByCoordinates.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UpdateUserLocationInput } from './dto/updateUserLocation.input';
+import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
+import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
 // import { UpdateLocationInput } from './dto/update-location.input';
 
 @Resolver(() => Location)
 export class LocationsResolver {
   constructor(private readonly locationsService: LocationsService) {}
 
-  @Mutation(() => Location)
-  async createLocation(
-    @Args('createLocationInput') createLocationInput: CreateLocationInput,
-  ) {
-    return await this.locationsService.create(createLocationInput);
-  }
+  // @Mutation(() => Location)
+  // async createLocation(
+  //   @Args('createLocationInput') createLocationInput: CreateLocationInput,
+  // ) {
+  //   return await this.locationsService.create(createLocationInput);
+  // }
 
   @Query(() => [Location], { name: 'locations' })
   async findAll() {
@@ -31,17 +30,11 @@ export class LocationsResolver {
 
   @Query(() => Location, { name: 'locationByCoordinates' })
   @UseGuards(JwtAuthGuard)
-  async findOneByCoordinates(
-    @Args('coordinates') coordinates: FindOneByCoordinatesInput,
+  async findOneByFetchedObj(
+    @Args('coordinates') coordinates: FindOneByFetchedObjInput,
     // @Context() context,
   ) {
     // console.log(context.req?.user);
-    console.log({
-      id: 0,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      ...coordinates,
-    });
     return {
       id: 0,
       createdAt: Date.now(),
@@ -51,11 +44,18 @@ export class LocationsResolver {
   }
 
   @Mutation(() => [Location])
-  async updateUserLocationInput(
-    @Args('updateUserLocationInput')
-    updateUserLocationInput: UpdateUserLocationInput,
-  ) {
-    return this.locationsService.updateUserLocation(updateUserLocationInput);
+  @UseGuards(JwtAuthGuard)
+  async updateUsersLocations(
+    @Args('updateUserLocationInput', { type: () => [UpdateUserLocationsInput] })
+    updateUserLocationInput: UpdateUserLocationsInput[],
+    @Context() context,
+  ): Promise<Location[]> {
+    const returned = await this.locationsService.updateUsersLocations(
+      updateUserLocationInput,
+      context,
+    );
+    console.log('returned: ', returned);
+    return returned;
   }
 
   // @Mutation(() => Location)

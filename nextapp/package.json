@@ -25,6 +25,7 @@
     "fs": "^0.0.1-security",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.12.6",
+    "graphql-ws": "^5.14.1",
     "gray-matter": "^4.0.3",
     "js-sha256": "^0.10.1",
     "next": "^13.5.4",

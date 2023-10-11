@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
-import { SafeUser } from 'src/users/entities/safe-user.entity';
-// import { User } from 'src/users/entities/user.entity';
+import { SafeUser } from './safe-user.entity';
 
 @ObjectType()
 export class Location {
@@ -23,6 +21,6 @@ export class Location {
   @Field({ nullable: true })
   country?: string;
 
-  @Field((type) => [SafeUser])
-  users?: SafeUser[];
+  @Field()
+  users: [SafeUser];
 }

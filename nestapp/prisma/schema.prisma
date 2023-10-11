@@ -31,6 +31,10 @@ model Locations {
 
   lat           Int       
   lon           Int
+  name          String
+  country       String?
+  state         String?
+
   users         Users[]
   weather       Weathers[]          
 

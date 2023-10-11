@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 // import { UseGuards } from '@nestjs/common';
 // import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SafeUser } from './entities/safe-user.entity';
@@ -57,10 +56,10 @@ export class UsersResolver {
     return await this.usersService.findOneUnsafe(email);
   }
 
-  @Mutation(() => SafeUser)
-  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return await this.usersService.update(updateUserInput.id, updateUserInput);
-  }
+  // @Mutation(() => SafeUser)
+  // async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  //   return await this.usersService.update(updateUserInput.id, updateUserInput);
+  // }
 
   @Mutation(() => SafeUser)
   async removeUser(@Args('id', { type: () => Int }) id: number) {

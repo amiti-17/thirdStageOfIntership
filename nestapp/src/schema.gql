@@ -7,18 +7,13 @@ input AuthLoginInput {
   password: String!
 }
 
-input CreateLocationInput {
-  lat: Int!
-  lon: Int!
-}
-
 input CreateUserInput {
   email: String!
   name: String!
   password: String!
 }
 
-input FindOneByCoordinatesInput {
+input FindOneByFetchedObjInput {
   country: String
   lat: Float!
   lon: Float!
@@ -33,6 +28,7 @@ type Location {
   lon: Float!
   name: String!
   state: String
+  users: [SafeUser!]!
 }
 
 type LoginResponse {
@@ -40,21 +36,19 @@ type LoginResponse {
 }
 
 type Mutation {
-  createLocation(createLocationInput: CreateLocationInput!): Location!
   createUser(createUserInput: CreateUserInput!): SafeUser!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
   refreshToken: RefreshTokenResponse!
   removeLocation(id: Int!): Location!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
-  updateUser(updateUserInput: UpdateUserInput!): SafeUser!
-  updateUserLocationInput(updateUserLocationInput: UpdateUserLocationInput!): [Location!]!
+  updateUsersLocations(updateUserLocationInput: [UpdateUserLocationsInput!]!): [Location!]!
 }
 
 type Query {
   findById(id: Float!): SafeUser!
   getCurrentUser: SafeUser!
-  locationByCoordinates(coordinates: FindOneByCoordinatesInput!): Location!
+  locationByCoordinates(coordinates: FindOneByFetchedObjInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
   ping: Boolean!
@@ -70,25 +64,22 @@ type RefreshTokenResponse {
 type SafeUser {
   email: String!
   id: Int!
+  locations: [Location]!
   name: String!
 }
 
-input UpdateUserInput {
-  email: String
-  id: Int!
-  name: String
-  password: String
-}
-
-input UpdateUserLocationInput {
+input UpdateUserLocationsInput {
+  country: String
   lat: Float!
   lon: Float!
   name: String!
+  state: String
 }
 
 type User {
   email: String!
   id: Int!
+  locations: [Location]!
   name: String!
   password: String!
 }

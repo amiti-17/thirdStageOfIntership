@@ -1,7 +1,7 @@
 import { InputType, Field, Float } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateUserLocationInput {
+export class UpdateUserLocationsInput {
   @Field(() => Float)
   lat: number;
 
@@ -10,4 +10,10 @@ export class UpdateUserLocationInput {
 
   @Field()
   name: string;
+
+  @Field({ nullable: true })
+  country?: string;
+
+  @Field({ nullable: true })
+  state?: string;
 }

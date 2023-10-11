@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { getNameOfPlace } from "../../../../../functions/places/getNameOfPlace";
 import { LocationType, locations as apolloLocations } from "Apollo/locations";
-import { LazyQueryHookExecOptions, useLazyQuery, useMutation } from "@apollo/client";
-import CustomError from "../../../../../CustomError";
+import { LazyQueryHookExecOptions, useLazyQuery } from "@apollo/client";
 import { CurrentQueryContext } from "../../../../../Contexts/currentQueryContext";
 
 export function WeatherCards() {
@@ -18,7 +17,6 @@ export function WeatherCards() {
   const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { places } = useContext(PlacesContext);
   const { setCurrentQuery } = useContext(CurrentQueryContext);
-  const customError = new CustomError('');
   let options: LazyQueryHookExecOptions;
 
   useEffect(() => {
