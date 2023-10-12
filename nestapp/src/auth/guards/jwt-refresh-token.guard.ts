@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { authConstants } from '../authConstants';
 import { CookieOptions } from 'express';
-import { regExp } from 'config/system/regExp';
+import { regExp } from 'src/config/system/regExp';
 
 const jwtExpiresSecond = authConstants.expiresTime.match(regExp.int)[0];
 

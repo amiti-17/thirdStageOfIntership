@@ -9,6 +9,9 @@ import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { UsersService } from 'src/users/users.service';
 import { Location } from './entities/location.entity';
 import { CoordinatesInput } from './dto/coordinates.input';
+import { selectLocation } from './selectLocation';
+import { fetchWeatherByCoordinates } from 'src/functions/fetch/fetchWeatherByCoordinates';
+import { Coordinates } from 'src/config/types/coordinates';
 
 @Injectable()
 export class LocationsService {
@@ -18,10 +21,13 @@ export class LocationsService {
   ) {} // private httpService: HttpService,
 
   async create(createLocationInput: CreateLocationInput, usersId: number) {
-    const ifCurrentExists = await this.findOneByCoordinates({
+    const coordinates: Coordinates = {
       lat: createLocationInput.lat,
       lon: createLocationInput.lon,
-    });
+    };
+    const ifCurrentExists = await this.findOneByCoordinates(coordinates);
+    // console.log('weather: ', await fetchWeatherByCoordinates(coordinates));
+    const currentWeather = await fetchWeatherByCoordinates(coordinates);
     return ifCurrentExists
       ? ifCurrentExists
       : await this.prisma.locations.create({
@@ -32,16 +38,26 @@ export class LocationsService {
                 id: usersId,
               },
             },
+            // weather: {
+            //   create: {
+            //     current: {
+            //       create: {
+            //         dt: currentWeather.current.dt,
+            //         current: JSON.stringify(currentWeather.current),
+            //       },
+            //     },
+            //     days: {
+            //       create: currentWeather.daily.slice(0, 3).map((el) => {
+            //         return {
+            //           dt: el.dt,
+            //           daily: JSON.stringify(el),
+            //         };
+            //       }),
+            //     },
+            //   },
+            // },
           },
-          select: {
-            name: true,
-            state: true,
-            country: true,
-            lat: true,
-            lon: true,
-            id: true,
-            users: true,
-          },
+          select: selectLocation,
         });
   }
 
@@ -52,30 +68,14 @@ export class LocationsService {
   async findOne(id: number) {
     return await this.prisma.locations.findUnique({
       where: { id },
-      select: {
-        name: true,
-        state: true,
-        country: true,
-        lat: true,
-        lon: true,
-        id: true,
-        users: true,
-      },
+      select: selectLocation,
     });
   }
 
   async findOneByCoordinates(coordinates: CoordinatesInput): Promise<Location> {
     return await this.prisma.locations.findUnique({
       where: { ll: { ...coordinates } },
-      select: {
-        name: true,
-        state: true,
-        country: true,
-        lat: true,
-        lon: true,
-        id: true,
-        users: true,
-      },
+      select: selectLocation,
     });
   }
 

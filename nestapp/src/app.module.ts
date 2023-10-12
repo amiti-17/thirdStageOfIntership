@@ -15,7 +15,10 @@ import { LocationsModule } from './locations/locations.module';
 import { AuthModule } from './auth/auth.module';
 // import { AuthGuard } from './auth/auth.guard';
 // import { JwtService } from '@nestjs/jwt';
+// import GraphQLJSON from 'graphql-type-json';
 import { WeathersModule } from './weathers/weathers.module';
+import { CurrentWModule } from './currentW/currentW.module';
+import { DaysWModule } from './daysW/daysW.module';
 
 @Module({
   imports: [
@@ -23,12 +26,15 @@ import { WeathersModule } from './weathers/weathers.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      // resolvers: { JSON: GraphQLJSON },
       // cors: { origin: true, credential: true },
     }),
     UsersModule,
     LocationsModule,
     AuthModule,
     WeathersModule,
+    CurrentWModule,
+    DaysWModule,
   ],
   providers: [PrismaService],
   // controllers: [AppController],

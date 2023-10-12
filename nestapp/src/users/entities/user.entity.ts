@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Location } from 'src/locations/entities/location.entity';
-// import { Location } from 'src/locations/entities/location.entity';
 
 @ObjectType()
 export class User {
@@ -17,6 +15,6 @@ export class User {
   @Field()
   password: string;
 
-  @Field((type) => [Location], { nullable: 'items' })
+  @Field(() => [Location], { nullable: 'items' })
   locations?: Location[];
 }
