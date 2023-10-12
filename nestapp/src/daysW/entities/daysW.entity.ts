@@ -14,6 +14,6 @@ export class DaysW {
   @Field(() => GraphQLJSON)
   daily: object;
 
-  @Field(() => [Weather], { nullable: 'items' })
-  weather?: Weather[];
+  @Field(() => Weather, { nullable: true })
+  weather?: Weather;
 }

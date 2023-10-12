@@ -24,7 +24,7 @@ type DaysW {
   daily: JSON!
   dt: Int!
   id: Int!
-  weather: [Weather]!
+  weather: Weather
 }
 
 input FindOneByFetchedObjInput {

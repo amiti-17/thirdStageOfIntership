@@ -12,12 +12,14 @@ import { CoordinatesInput } from './dto/coordinates.input';
 import { selectLocation } from './selectLocation';
 import { fetchWeatherByCoordinates } from 'src/functions/fetch/fetchWeatherByCoordinates';
 import { Coordinates } from 'src/config/types/coordinates';
+import { WeathersService } from 'src/weathers/weathers.service';
 
 @Injectable()
 export class LocationsService {
   constructor(
     private prisma: PrismaService,
     private usersService: UsersService,
+    private weathersService: WeathersService,
   ) {} // private httpService: HttpService,
 
   async create(createLocationInput: CreateLocationInput, usersId: number) {
@@ -27,8 +29,7 @@ export class LocationsService {
     };
     const ifCurrentExists = await this.findOneByCoordinates(coordinates);
     // console.log('weather: ', await fetchWeatherByCoordinates(coordinates));
-    const currentWeather = await fetchWeatherByCoordinates(coordinates);
-    return ifCurrentExists
+    const currentLocation = ifCurrentExists
       ? ifCurrentExists
       : await this.prisma.locations.create({
           data: {
@@ -59,6 +60,7 @@ export class LocationsService {
           },
           select: selectLocation,
         });
+    this.weathersService.create(coordinates);
   }
 
   async findAll() {
@@ -141,9 +143,10 @@ export class LocationsService {
   //   });
   // }
 
-  async remove(id: number): Promise<Location> {
-    if ((await this.findOne(id)).users.length > 1) return;
-    return await this.prisma.locations.delete({ where: { id } });
+  async remove(locationId: number): Promise<Location> {
+    if ((await this.findOne(locationId)).users.length > 1) return;
+    // this.weathersService
+    return await this.prisma.locations.delete({ where: { id: locationId } });
   }
 
   async removeByCoordinates(coordinates: CoordinatesInput): Promise<Location> {

@@ -47,7 +47,7 @@ model Weathers {
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
-  current       Current?            @relation(fields: [currentDt], references: [dt])
+  current       Current?            @relation(fields: [currentDt], references: [dt], onDelete: Cascade)
   currentDt     Int?                @unique
   days          Days[]
   // Hours         Hours[]
@@ -72,10 +72,11 @@ model Days {
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
-  dt            Int                 @unique
+  dt            Int                 
   daily         Json                @unique
 
-  weather       Weathers[]
+  weather       Weathers?           @relation(fields: [weatherId], references: [id], onDelete: Cascade)
+  weatherId     Int?
 }
 
 // model Hours {

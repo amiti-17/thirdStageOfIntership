@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DaysWService } from './daysW.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
-  providers: [DaysWService],
+  providers: [PrismaService, DaysWService],
+  exports: [DaysWService],
 })
 export class DaysWModule {}
