@@ -50,12 +50,10 @@ export class LocationsResolver {
     updateUserLocationInput: UpdateUserLocationsInput[],
     @Context() context,
   ): Promise<Location[]> {
-    const returned = await this.locationsService.updateUsersLocations(
+    return await this.locationsService.updateUsersLocations(
       updateUserLocationInput,
       context,
     );
-    console.log('returned: ', returned);
-    return returned;
   }
 
   // @Mutation(() => Location)

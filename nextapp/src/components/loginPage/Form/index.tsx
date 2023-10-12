@@ -61,7 +61,10 @@ export default function LoginForm() {
         router.replace('/weather');
       }).catch(e => {
         if (e instanceof ApolloError) {
-          // console.log(error, 'sdf')
+          Object.keys(e).forEach(el => {
+            console.log(el, ": ", e[el])
+          })
+          console.log('sdf', );
           Object.keys(e).forEach(key => console.log(e[key]))
           if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
           // console.log('here?')

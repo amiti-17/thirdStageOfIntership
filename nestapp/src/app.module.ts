@@ -15,6 +15,7 @@ import { LocationsModule } from './locations/locations.module';
 import { AuthModule } from './auth/auth.module';
 // import { AuthGuard } from './auth/auth.guard';
 // import { JwtService } from '@nestjs/jwt';
+import { WeathersModule } from './weathers/weathers.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     LocationsModule,
     AuthModule,
+    WeathersModule,
   ],
   providers: [PrismaService],
   // controllers: [AppController],

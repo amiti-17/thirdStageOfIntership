@@ -24,7 +24,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 // )
 
 const client = new ApolloClient({
-  // link: splitLink,
+  // link: httpLink,
   uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL,
   cache: new InMemoryCache(),
   credentials: "include",

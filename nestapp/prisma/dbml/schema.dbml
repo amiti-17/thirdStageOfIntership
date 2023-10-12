@@ -23,6 +23,7 @@ Table Locations {
   state String
   users Users [not null]
   weather Weathers [not null]
+  weatherId Int [increment, not null]
 
   indexes {
     (lat, lon) [unique]
@@ -33,43 +34,30 @@ Table Weathers {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  Time_stamps Time_stamps [not null]
-  Days Days [not null]
-  Hours Hours [not null]
+  current Current [not null]
+  currentDt Int [not null]
+  days Days [not null]
   locations Locations [not null]
-  locations_id Int [unique, not null]
 }
 
 Table Days {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  dt Int [unique, not null]
   daily Json [unique, not null]
   weather Weathers [not null]
 }
 
-Table Hours {
+Table Current {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  hourly Json [unique, not null]
-  weather Weathers [not null]
-}
-
-Table Time_stamps {
-  id Int [pk, increment]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
+  dt Int [unique, not null]
   current Json [unique, not null]
   weather Weathers [not null]
 }
 
-Table RefreshToken {
-  id Int [pk, increment]
-  refresh_token String [not null]
-  userId Int [unique, not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
+Ref: Locations.weatherId > Weathers.id
 
-Ref: Weathers.locations_id > Locations.id [delete: Cascade]
+Ref: Weathers.currentDt > Current.dt

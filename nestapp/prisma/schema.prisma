@@ -36,7 +36,8 @@ model Locations {
   state         String?
 
   users         Users[]
-  weather       Weathers[]          
+  weather       Weathers            @relation(fields: [weatherId], references: [id]) //, onDelete: Cascade
+  weatherId     Int                 @default(autoincrement())
 
   @@unique(fields: [lat, lon], name: "ll")
 }
@@ -46,12 +47,12 @@ model Weathers {
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
-  Time_stamps   Time_stamps[]
-  Days          Days[]
-  Hours         Hours[]
+  current       Current             @relation(fields: [currentDt], references: [dt])
+  currentDt     Int                 
+  days          Days[]
+  // Hours         Hours[]
 
-  locations     Locations            @relation(fields: [locations_id], references: [id], onDelete: Cascade)
-  locations_id  Int                 @unique
+  locations     Locations[]           
 }
 
 model Days {
@@ -59,35 +60,37 @@ model Days {
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
+  dt            Int                 @unique
   daily         Json                @unique
 
   weather       Weathers[]
 }
 
-model Hours {
+model Current {
   id            Int                 @default(autoincrement())   @id
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
 
-  hourly        Json                @unique
-
-  weather       Weathers[]
-}
-
-model Time_stamps {
-  id            Int                 @default(autoincrement())   @id
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-
+  dt            Int                 @unique
   current       Json                @unique
 
   weather       Weathers[]
 }
 
-model RefreshToken { //Deprecated
-  id            Int                 @default(autoincrement())   @id
-  refresh_token String              
-  userId        Int                 @unique
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-}
+// model Hours {
+//   id            Int                 @default(autoincrement())   @id
+//   createdAt     DateTime            @default(now())
+//   updatedAt     DateTime            @updatedAt
+
+//   hourly        Json                @unique
+
+//   weather       Weathers[]
+// }
+
+// model RefreshToken { //Deprecated
+//   id            Int                 @default(autoincrement())   @id
+//   refresh_token String              
+//   userId        Int                 @unique
+//   createdAt     DateTime            @default(now())
+//   updatedAt     DateTime            @updatedAt
+// }
