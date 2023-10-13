@@ -106,9 +106,9 @@ type User {
 }
 
 type Weather {
-  current: CurrentW!
-  currentDt: Float!
-  days: [DaysW]!
+  current: CurrentW
+  currentId: Int!
+  days: [DaysW!]
   id: Int!
   locations: [Location]!
 }

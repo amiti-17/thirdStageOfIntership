@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/createLocation.input';
-// import { UpdateLocationInput } from './dto/update-location.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
-// import { HttpService } from '@nestjs/axios';
 import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { UsersService } from 'src/users/users.service';
 import { Location } from './entities/location.entity';
 import { CoordinatesInput } from './dto/coordinates.input';
 import { selectLocation } from './selectLocation';
-import { fetchWeatherByCoordinates } from 'src/functions/fetch/fetchWeatherByCoordinates';
 import { Coordinates } from 'src/config/types/coordinates';
 import { WeathersService } from 'src/weathers/weathers.service';
 
@@ -27,10 +24,10 @@ export class LocationsService {
       lat: createLocationInput.lat,
       lon: createLocationInput.lon,
     };
-    const ifCurrentExists = await this.findOneByCoordinates(coordinates);
+    const currentExists = await this.findOneByCoordinates(coordinates);
     // console.log('weather: ', await fetchWeatherByCoordinates(coordinates));
-    const currentLocation = ifCurrentExists
-      ? ifCurrentExists
+    const currentLocation = currentExists // TODO: can it be currentLocation ??= await...
+      ? currentExists
       : await this.prisma.locations.create({
           data: {
             ...createLocationInput,
@@ -60,7 +57,8 @@ export class LocationsService {
           },
           select: selectLocation,
         });
-    this.weathersService.create(coordinates);
+    const weather = await this.weathersService.create(coordinates);
+    return await this.findOne(currentLocation.id);
   }
 
   async findAll() {
@@ -93,7 +91,7 @@ export class LocationsService {
   }
 
   async updateUsersLocations(
-    updateUserLocations: UpdateUserLocationsInput[],
+    fetchedUserLocations: UpdateUserLocationsInput[],
     context,
   ): Promise<Location[]> {
     const currentUser = await this.usersService.findById(
@@ -102,9 +100,9 @@ export class LocationsService {
 
     // if (!currentUser.locations.length) { //Is it could make execution faster?
     //   // const returned = [];
-    //   for (let i = 0; i < updateUserLocations.length; i++) {
+    //   for (let i = 0; i < fetchedUserLocations.length; i++) {
     //     const currentLocation = await this.create(
-    //       updateUserLocations[i],
+    //       fetchedUserLocations[i],
     //       context?.req?.user.sub,
     //     );
     //     console.log('current location: ', currentLocation);
@@ -113,7 +111,7 @@ export class LocationsService {
     // }
 
     const shouldBeDeleted = currentUser.locations.filter((location) => {
-      return !updateUserLocations.find(
+      return !fetchedUserLocations.find(
         (el) => el.lat === location.lat && el.lon === location.lon,
       );
     });
@@ -121,19 +119,50 @@ export class LocationsService {
       await this.remove(shouldBeDeleted[i].id);
     }
 
-    for (let i = 0; i < updateUserLocations.length; i++) {
-      const currentLoc = updateUserLocations[i];
-      if (
-        !currentUser.locations.find(
-          (location) =>
-            location.lat === currentLoc.lat && location.lon === currentLoc.lon,
-        )
-      ) {
-        await this.create(updateUserLocations[i], context?.req?.user.sub);
+    for (let i = 0; i < fetchedUserLocations.length; i++) {
+      const currentLoc = fetchedUserLocations[i];
+      const currentUserLocal = currentUser.locations.find(
+        (location) =>
+          location.lat === currentLoc.lat && location.lon === currentLoc.lon,
+      );
+      // console.log('currentUserLocal: ', currentUserLocal, currentLoc, currentUserLocal, currentUser);
+      if (currentUserLocal) {
+        const coordinates = {
+          lat: fetchedUserLocations[i].lat,
+          lon: fetchedUserLocations[i].lon,
+        };
+        // console.log(
+        //   'locationsService, updateUsersLocations, input for weathersService.update: ',
+        //   currentUserLocal,
+        //   coordinates,
+        // );
+        await this.weathersService.update(
+          currentUserLocal.weatherId,
+          coordinates,
+        );
+      } else {
+        await this.create(fetchedUserLocations[i], context?.req?.user.sub);
       }
     }
 
-    return await this.usersService.getAllLocations(context?.req?.user.sub);
+    const usersLocations = (
+      await this.usersService.findById(context?.req?.user.sub)
+    ).locations;
+    for (let i = 0; i < usersLocations.length; i++) {
+      // usersLocations[i].weather.current = await this.prisma.current.findUnique({ where: {id: usersLocations[i].weather.currentId}, select: { id: true, dt: true, current: true}})
+      // usersLocations[i].weather.days = await this.prisma.days.findMany( { where: {OR: {}}})
+      usersLocations[i].weather = await this.weathersService.findOne(
+        usersLocations[i].weatherId,
+      );
+    }
+    // console.log('locationService, updateUsersLocations: ', usersLocations);
+    // const returned = [];
+    // for (let i = 0; i < returnedValue.length; i++) {
+    //   const currentLocation = returnedValue[i];
+    //   currentLocation.weather = await this.lo
+    //   returned.push(currentValue);
+    // }
+    return usersLocations;
   }
 
   // update(id: number, updateLocationInput: UpdateLocationInput) {
@@ -143,15 +172,21 @@ export class LocationsService {
   //   });
   // }
 
-  async remove(locationId: number): Promise<Location> {
-    if ((await this.findOne(locationId)).users.length > 1) return;
-    // this.weathersService
-    return await this.prisma.locations.delete({ where: { id: locationId } });
+  async remove(id: number): Promise<Location> {
+    const location = await this.findOne(id);
+    if (location.users.length > 1) return;
+    const removedWeather = await this.weathersService.remove(
+      location.weatherId,
+    );
+    return await this.prisma.locations.delete({ where: { id } });
   }
 
   async removeByCoordinates(coordinates: CoordinatesInput): Promise<Location> {
-    if ((await this.findOneByCoordinates(coordinates)).users.length > 1) return;
+    const location = await this.findOneByCoordinates(coordinates);
+    if (location.users.length > 1) return;
+    const removedWeather = await this.weathersService.remove(
+      location.weatherId,
+    );
     return await this.prisma.locations.delete({ where: { ll: coordinates } });
   }
 }
-// invoice, vipiska z carty, vipiska paypal in PDF, link on the product on sites or skreenshot form personal cabinet, passport both sidex

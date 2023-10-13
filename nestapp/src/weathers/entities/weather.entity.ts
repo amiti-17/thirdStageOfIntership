@@ -8,13 +8,13 @@ export class Weather {
   @Field(() => Int)
   id: number;
 
-  @Field()
-  current: CurrentW;
+  @Field(() => CurrentW, { nullable: true })
+  current?: CurrentW;
 
-  @Field()
-  currentDt: number;
+  @Field(() => Int)
+  currentId: number;
 
-  @Field(() => [DaysW], { nullable: 'items' })
+  @Field(() => [DaysW], { nullable: true })
   days?: DaysW[];
 
   @Field(() => [Location], { nullable: 'items' })
