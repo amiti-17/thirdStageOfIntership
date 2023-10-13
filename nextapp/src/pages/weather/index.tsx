@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { WeatherSection } from "components/Weather/WeatherSection";
 import { CurrentUserContext } from "Contexts/currentUserContext";
-import { handleUnauthorized, handleUnauthorizedQuery } from "functions/fetch/requestDataWithHandleUnauthorized";
+import { handleUnauthorized, handleUnauthorizedMutation, handleUnauthorizedQuery } from "functions/fetch/requestDataWithHandleUnauthorized";
 import { RefreshTokenContext } from "Contexts/refreshTokenContext";
-import { CurrentQueryContext, LazyQueryObjType } from "Contexts/currentQueryContext";
+import { CurrentQueryContext, LazyQueryObjType, MutationObjType } from "Contexts/currentQueryContext";
 import { WeatherLayout } from "components/Weather/WeatherLayout";
 import { Header } from "components/Weather/Header";
 import { auth } from "Apollo/auth";
@@ -25,27 +25,48 @@ export default function Login() {
   const [ refreshToken ] = useMutation(auth.refreshToken);
   const [ currentUser, setCurrentUser ] = React.useState<SafeUserType>();
   const [ currentQuery, setCurrentQuery ] = React.useState<LazyQueryObjType>();
+  const [ currentMutation, setCurrentMutation ] = React.useState<MutationObjType>();
   const router = useRouter();
 
   useEffect(() => {
     if (!currentUserData && !currentUserLoading) {
       setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
     }
-  }, [])
-
-  useEffect(() => {
-    if (currentQuery) {
-      console.log('received new current query: ', currentQuery);
-      handleUnauthorizedQuery(refreshToken, router, currentQuery.query, currentQuery.refetch, currentQuery.error, currentQuery.option);
-      setCurrentQuery(null);
-    }
-  }, [currentQuery]);
+  }, []);
 
   useEffect(() => {
     if (currentUserData) {
       setCurrentUser(currentUserData?.getCurrentUser)
     }
   }, [currentUserData]);
+
+  useEffect(() => {
+    if (currentQuery) {
+      console.log('received new current query: ', currentQuery);
+      handleUnauthorizedQuery(
+        refreshToken,
+        router,
+        currentQuery.query,
+        currentQuery.refetch,
+        currentQuery.error,
+        currentQuery.option
+      );
+      setCurrentQuery(null);
+    }
+  }, [currentQuery]);
+
+  useEffect(() => {
+    if (currentMutation) {
+      console.log('received new current mutation: ', currentMutation);
+      handleUnauthorizedMutation(
+        refreshToken, router,
+        currentMutation.mutation,
+        currentMutation.error,
+        currentMutation.option,
+      )
+      setCurrentMutation(null);
+    }
+  })
 
   // useEffect(() => {
   //   setCurrentUser(currentUserData?.getCurrentUser)
@@ -94,7 +115,10 @@ export default function Login() {
   return (
     <WeatherLayout>
       <RefreshTokenContext.Provider value={{ shouldUpdateRefreshToken, setShouldUpdateRefreshToken }}>
-        <CurrentQueryContext.Provider value={{ currentQuery, setCurrentQuery}}>
+        <CurrentQueryContext.Provider value={{ 
+          currentQuery, setCurrentQuery,
+          currentMutation, setCurrentMutation,
+        }}>
           {
             currentUserLoading || currentUserError || !currentUser ? 
               <CircularIndeterminate /> : 

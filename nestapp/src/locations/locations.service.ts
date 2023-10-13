@@ -90,6 +90,14 @@ export class LocationsService {
     });
   }
 
+  async getListOfPlaces(quantity: number = 5): Promise<Location[]> {
+    const amountOfLocations = await this.prisma.locations.count();
+    console.log('quantity: ', quantity);
+    return amountOfLocations > quantity
+      ? await this.prisma.locations.findMany({ take: 5 })
+      : await this.prisma.locations.findMany({});
+  }
+
   async updateUsersLocations(
     fetchedUserLocations: UpdateUserLocationsInput[],
     context,

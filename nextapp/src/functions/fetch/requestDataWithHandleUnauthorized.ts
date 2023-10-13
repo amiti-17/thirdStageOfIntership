@@ -34,7 +34,7 @@ export async function requestDataWithHandleUnauthorized(
     ) {
       if (await handleUnauthorized(refreshToken, router)) {
         try {
-          console.warn('update refresh token...')
+          console.warn('update access token...')
           await options ? currentRequest(options) : currentRequest();
         } catch (error) {
           console.warn('secondError: ', error);
@@ -110,7 +110,36 @@ export async function handleUnauthorizedQuery(
         }
       }
     }
-    
   }
-  
+}
+
+export async function handleUnauthorizedMutation(refreshToken: MutationFunction, 
+  router: NextRouter,
+  mutation: MutationFunction,
+  error: ApolloError,
+  option: OperationVariables = {},
+  ) {
+    if (mutation) {
+      try {
+        const data = await mutation(option);
+      } catch (e) {
+        if (e) {
+        // console.warn('error: ', error);
+        if (
+          e?.message === customError.unauthorized || 
+          e?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
+          // data.error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
+        ) {
+          if (await handleUnauthorized(refreshToken, router)) {
+            try {
+              console.warn('update refresh token...');
+              await mutation(option);
+            } catch (error) {
+              console.warn('secondError: ', error);
+            }
+          }
+        }
+      }
+      }
+    }
 }

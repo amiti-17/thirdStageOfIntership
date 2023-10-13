@@ -99,7 +99,7 @@ export class WeathersService {
     const deletedDays = await this.daysWService.removeMany(weather.id); //TODO: Ask how make it better (unused variables...)
     const deleteCurrentW = await this.prisma.current.delete({
       where: { id: weather.currentId },
-    });
+    }); //TODO: Is it good, if its the only place, where I use just prisma.current...
     return await this.prisma.weathers.delete({ where: { id: weather.id } });
   }
 }

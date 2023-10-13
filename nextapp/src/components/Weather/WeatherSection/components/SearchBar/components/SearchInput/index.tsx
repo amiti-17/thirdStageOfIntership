@@ -8,8 +8,16 @@ import { AlertSearchBarContext } from "../../../../../../../Contexts/alertSearch
 import { getNameOfPlace } from "../../../../../../../functions/places/getNameOfPlace";
 import { searchConfig } from "config/system/searchFetch";
 import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
+import { useQuery } from "@apollo/client";
+import { locations } from "Apollo/locations";
 
 export function SearchInput() {
+
+  const { data: myPlacesData, error, loading } = useQuery(
+    locations.getPlaces, 
+    { variables: { input: Number(process.env.NEXT_PUBLIC_QUANTITY_FOR_OPTIONS) } }
+  );
+
   const cities: LocationFetchedFromSearchString[] = [
     { name: 'Kyiv', lat: 0, lon: 0, local_names: {ua: 'Kyiv'} } //TODO: replace this example object with fetched list of places...
   ];
@@ -24,6 +32,11 @@ export function SearchInput() {
   const setDefaultOptions = setDefaultOptionsExtended.bind(null, setOptions);
   const findAndSetCurrentObj = findAndSetCurrentObjExtended.bind(null, options);
 
+  useEffect(() => {
+    if (myPlacesData) {
+      setOptions(myPlacesData.getListOfPlaces);
+    }
+  }, [myPlacesData]);
   // function getLocationByName(name: string): LocationFetchedFromSearchString {
   //   const splicedName = name.split(', ');
   //   if (splicedName.length === 3) {
@@ -48,7 +61,7 @@ export function SearchInput() {
   }
 
   function setDefaultOptionsExtended(setOptions: Dispatch<SetStateAction<LocationFetchedFromSearchString[]>>) {
-    setOptions(cities);
+    setOptions(places ? places : (myPlacesData.getListOfPlaces ?? cities));
   }
 
   async function fetchCoordinatesAndSetOptions(nameOfPlace) {

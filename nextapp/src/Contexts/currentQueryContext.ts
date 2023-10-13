@@ -8,7 +8,7 @@ export type QueryObjType = {
   error: ApolloError
 }
 export type MutationObjType = {
-  query: MutationFunction,
+  mutation: MutationFunction,
   option?: MutationBaseOptions,
   error: ApolloError,
 }
@@ -24,11 +24,15 @@ export type CurrentQueryType = QueryObjType | MutationObjType | LazyQueryObjType
 export type CurrentQueryContextType = {
   currentQuery: LazyQueryObjType,
   setCurrentQuery: React.Dispatch<React.SetStateAction<LazyQueryObjType>>,
+  currentMutation: MutationObjType,
+  setCurrentMutation: React.Dispatch<React.SetStateAction<MutationObjType>>,
 }
 
 export const defaultCurrentQueryContext: CurrentQueryContextType = {
   currentQuery: {} as LazyQueryObjType,
   setCurrentQuery: () => {},
+  currentMutation: {} as MutationObjType,
+  setCurrentMutation: () => {},
 }
 
 export const CurrentQueryContext = React.createContext<CurrentQueryContextType>({} as CurrentQueryContextType);

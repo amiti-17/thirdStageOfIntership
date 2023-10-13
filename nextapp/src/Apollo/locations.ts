@@ -22,6 +22,38 @@ export const locations = {
       }
     }
   `,
+  getPlaces: gql`
+    query getPlaces($input: Int!) {
+      getListOfPlaces(quantity: $input) {
+        id
+        name
+        state
+        country
+      }
+    }
+  `,
+  updateUsersInfoAndGetWeather: gql`
+    mutation updateLocations($input: [UpdateUserLocationsInput!]!) {
+      updateUsersLocations(updateUserLocationInput: $input) {
+        id
+        lat
+        lon
+        name
+        state
+        country
+        weather {
+          current {
+            dt
+            current
+          }
+          days {
+            dt
+            daily
+          }
+        }
+      }
+    }
+  `,
   createLocation: gql`
     mutation CreateLocation($coordinates: CreateLocationInput!) {
       createLocation(createLocationInput: $coordinates) {
@@ -49,6 +81,7 @@ export const locations = {
       }
     }
   `
+  
 }
 
 export type LocationType = {

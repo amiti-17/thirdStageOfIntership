@@ -24,6 +24,7 @@ export class LocationsResolver {
   }
 
   @Query(() => Location, { name: 'locationById' })
+  @UseGuards(JwtAuthGuard)
   async findOne(@Args('id', { type: () => Int }) id: number) {
     return await this.locationsService.findOne(id);
   }
@@ -41,6 +42,14 @@ export class LocationsResolver {
       updatedAt: Date.now(),
       ...coordinates,
     }; // await this.locationsService.findOneByCoordinates(coordinates);
+  }
+
+  @Query(() => [Location])
+  @UseGuards(JwtAuthGuard)
+  async getListOfPlaces(
+    @Args('quantity', { type: () => Int }) quantity: number,
+  ): Promise<Location[]> {
+    return await this.locationsService.getListOfPlaces(quantity);
   }
 
   @Mutation(() => [Location])
