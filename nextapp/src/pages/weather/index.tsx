@@ -33,8 +33,9 @@ export default function Login() {
       setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
     }
   }, []);
-
+//TODO: getCurrentUser.locations - set as initial state...
   useEffect(() => {
+    console.log(currentUserData?.getCurrentUser)
     if (currentUserData) {
       setCurrentUser(currentUserData?.getCurrentUser)
     }
@@ -42,7 +43,7 @@ export default function Login() {
 
   useEffect(() => {
     if (currentQuery) {
-      console.log('received new current query: ', currentQuery);
+      // console.log('received new current query: ', currentQuery);
       handleUnauthorizedQuery(
         refreshToken,
         router,
@@ -57,7 +58,7 @@ export default function Login() {
 
   useEffect(() => {
     if (currentMutation) {
-      console.log('received new current mutation: ', currentMutation);
+      // console.log('received new current mutation: ', currentMutation);
       handleUnauthorizedMutation(
         refreshToken, router,
         currentMutation.mutation,
@@ -68,59 +69,15 @@ export default function Login() {
     }
   })
 
-  // useEffect(() => {
-  //   setCurrentUser(currentUserData?.getCurrentUser)
-  // }, [currentUserData]);
-
-  // useEffect(() => {
-  //   requestDataWithHandleUnauthorized(
-  //     getCurrentUser,
-  //     currentUserError,
-  //     refreshToken,
-  //     refreshTokenError,
-  //     router
-  //   );
-  //   console.log({currentUserData});
-  //   console.log({currentUserError});
-  // }, [currentUserError]);
-
-  // React.useEffect(() => {
-  //   getQueryAndHandleError(getCurrentUser, currentUserData, currentUserError, router, shouldUpdateRefreshToken, setShouldUpdateRefreshToken);
-  //   // console.log(data?.getCurrentUser);
-  //   if (currentUserData?.getCurrentUser) {
-  //     setCurrentUser(currentUserData?.getCurrentUser);
-  //     console.log({currentUserLoading});
-  //     console.log({currentUserError});
-  //     console.log(currentUserData);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!refreshTokenLoading) {
-  //     console.log("refresh token: ", shouldUpdateRefreshToken);
-  //     console.log("refresh token error: ", error);
-  //     console.log("refresh token loading: ", refreshTokenLoading);
-  //     console.log("refresh token data: ", refreshTokenData);
-  //     refreshToken().catch(e => {
-  //       console.log("something unclear", e);
-  //       if (error && error.graphQLErrors.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
-  //         console.log(error);
-  //         router.replace('/'); //TODO: make some alert, that credential was expired.
-  //       }
-  //     });
-  //     // router.replace('/weather');
-  //   }
-  // }, [setShouldUpdateRefreshToken, error]);
-
   return (
     <WeatherLayout>
       <RefreshTokenContext.Provider value={{ shouldUpdateRefreshToken, setShouldUpdateRefreshToken }}>
-        <CurrentQueryContext.Provider value={{ 
+        <CurrentQueryContext.Provider value={{
           currentQuery, setCurrentQuery,
           currentMutation, setCurrentMutation,
         }}>
           {
-            currentUserLoading || currentUserError || !currentUser ? 
+            currentUserLoading || currentUserError || !currentUser ?
               <CircularIndeterminate /> : 
               <CurrentUserContext.Provider value={currentUser}>
                 <Header />

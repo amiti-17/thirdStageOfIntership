@@ -43,9 +43,17 @@ export const users = {
         name
         email
         id
+        locations {
+          id
+          lat
+          lon
+          name
+          state
+          country
+        }
       }
-    }`
-  ,
+    }
+  `,
 }
 
 export type SafeUserType = {

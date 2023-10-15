@@ -1,12 +1,10 @@
-import { Alert, Box, Collapse, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../../../Contexts/placesContext";
 import { LocationFetchedFromSearchString } from "../../../../../../../config/system/types/locations";
-// import { urls } from "../../../../../../../config/system/urls";
 import { AlertSearchBarContext } from "../../../../../../../Contexts/alertSearchBarContext";
 import { getNameOfPlace } from "../../../../../../../functions/places/getNameOfPlace";
-import { searchConfig } from "config/system/searchFetch";
 import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
 import { useQuery } from "@apollo/client";
 import { locations } from "Apollo/locations";
@@ -32,11 +30,16 @@ export function SearchInput() {
   const setDefaultOptions = setDefaultOptionsExtended.bind(null, setOptions);
   const findAndSetCurrentObj = findAndSetCurrentObjExtended.bind(null, options);
 
+  // useEffect(() => {
+  //   setPlaces() // getUsersPlaces
+  // }, []);
+
   useEffect(() => {
     if (myPlacesData) {
       setOptions(myPlacesData.getListOfPlaces);
     }
   }, [myPlacesData]);
+
   // function getLocationByName(name: string): LocationFetchedFromSearchString {
   //   const splicedName = name.split(', ');
   //   if (splicedName.length === 3) {

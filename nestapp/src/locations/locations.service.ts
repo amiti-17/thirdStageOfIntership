@@ -98,6 +98,13 @@ export class LocationsService {
       : await this.prisma.locations.findMany({});
   }
 
+  // async getUsersPlaces(context): Promise<Location[]> {
+  //   const currentUser = await this.usersService.findById(
+  //     context?.req?.user.sub,
+  //   );
+  //   return currentUser;
+  // }
+
   async updateUsersLocations(
     fetchedUserLocations: UpdateUserLocationsInput[],
     context,

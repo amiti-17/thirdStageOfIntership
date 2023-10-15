@@ -13,13 +13,7 @@ export function WeatherSection() {
   const { email } = useContext(CurrentUserContext);
   const [ places, setPlaces ] = useState<LocationFetchedFromSearchString[]>([]); // TODO: rewrite it to fetched array with locations of current user...
 
-  // async function updateUsersPlaces(newPlaces) {
 
-  // }
-
-  useEffect(() => {
-    
-  }, [places])
 
   return (
     <PlacesContext.Provider value={{places, setPlaces}}>

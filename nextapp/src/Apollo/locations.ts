@@ -29,6 +29,8 @@ export const locations = {
         name
         state
         country
+        lat
+        lon
       }
     }
   `,
@@ -91,4 +93,20 @@ export type LocationType = {
   lat: number,
   lon: number,
   id: number,
+  weather: Weather,
+}
+
+export type Weather = {
+  current: Current,
+  days: Day[],
+}
+
+export type Current = {
+  dt: number,
+  current: string, // meaning json
+}
+
+export type Day = {
+  dt: number,
+  daily: string, // meaning json
 }

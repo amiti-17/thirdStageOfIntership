@@ -44,11 +44,8 @@ export class UsersResolver {
   async getCurrentUser(@Context() context) {
     console.log('getCurrentUser context:', context.req.user);
     // Object.keys(context.req).forEach(key => console.log(key))
-    const { sub: id, ...safeUser } = context.req.user;
-    return {
-      ...safeUser,
-      id,
-    };
+    const currentUser = await this.findById(context.req.user.sub);
+    return currentUser;
   }
 
   @Query(() => User, { name: 'userUnsafe' })

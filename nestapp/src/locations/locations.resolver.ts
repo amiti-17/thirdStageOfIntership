@@ -52,6 +52,12 @@ export class LocationsResolver {
     return await this.locationsService.getListOfPlaces(quantity);
   }
 
+  // @Query(() => [Location])
+  // @UseGuards(JwtAuthGuard)
+  // async getUsersPlaces(@Context() context): Promise<Location[]> {
+  //   return await this.locationsService.getUsersPlaces(context);
+  // }
+
   @Mutation(() => [Location])
   @UseGuards(JwtAuthGuard)
   async updateUsersLocations(
