@@ -12,7 +12,7 @@ import { locations } from "Apollo/locations";
 export function SearchInput() {
 
   const { data: myPlacesData, error, loading } = useQuery(
-    locations.getPlaces, 
+    locations.getOptions, 
     { variables: { input: Number(process.env.NEXT_PUBLIC_QUANTITY_FOR_OPTIONS) } }
   );
 

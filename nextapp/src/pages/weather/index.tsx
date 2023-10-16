@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { SafeUserType, users } from "Apollo/users";
 import { useRouter } from "next/router";
@@ -12,11 +12,14 @@ import { WeatherLayout } from "components/Weather/WeatherLayout";
 import { Header } from "components/Weather/Header";
 import { auth } from "Apollo/auth";
 import CustomError from "CustomError";
+import { LocationFetchedFromSearchString } from "config/system/types/locations";
+import { PlacesContext } from "Contexts/placesContext";
 
 const customError = new CustomError('');
 
 export default function Login() {
   
+  const [ places, setPlaces ] = useState<LocationFetchedFromSearchString[]>([]);
   const [ shouldUpdateRefreshToken, setShouldUpdateRefreshToken ] = React.useState(false);
   const [ 
     getCurrentUser, 
@@ -35,9 +38,10 @@ export default function Login() {
   }, []);
 //TODO: getCurrentUser.locations - set as initial state...
   useEffect(() => {
-    console.log(currentUserData?.getCurrentUser)
+    // console.log(currentUserData?.getCurrentUser)
     if (currentUserData) {
-      setCurrentUser(currentUserData?.getCurrentUser)
+      setCurrentUser(currentUserData?.getCurrentUser);
+      setPlaces(currentUserData?.getCurrentUser.locations);
     }
   }, [currentUserData]);
 
@@ -58,7 +62,7 @@ export default function Login() {
 
   useEffect(() => {
     if (currentMutation) {
-      // console.log('received new current mutation: ', currentMutation);
+      console.log('received new current mutation: ', currentMutation);
       handleUnauthorizedMutation(
         refreshToken, router,
         currentMutation.mutation,
@@ -67,7 +71,7 @@ export default function Login() {
       )
       setCurrentMutation(null);
     }
-  })
+  }, [currentMutation]);
 
   return (
     <WeatherLayout>
@@ -76,14 +80,17 @@ export default function Login() {
           currentQuery, setCurrentQuery,
           currentMutation, setCurrentMutation,
         }}>
-          {
-            currentUserLoading || currentUserError || !currentUser ?
-              <CircularIndeterminate /> : 
-              <CurrentUserContext.Provider value={currentUser}>
-                <Header />
-                <WeatherSection />
-              </CurrentUserContext.Provider>
-          }
+          <PlacesContext.Provider value={{places, setPlaces}}>
+            {
+              currentUserLoading || currentUserError || !currentUser ?
+                <CircularIndeterminate /> : 
+                <CurrentUserContext.Provider value={currentUser}>
+                  <Header />
+                  <WeatherSection />
+                </CurrentUserContext.Provider>
+            }
+          </PlacesContext.Provider>
+          
         </CurrentQueryContext.Provider>
       </RefreshTokenContext.Provider>
     </WeatherLayout>

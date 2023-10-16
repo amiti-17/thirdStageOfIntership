@@ -25,6 +25,10 @@ export function WeatherCards() {
   );
 
   useEffect(() => {
+    console.log('locationError : ', locationError);
+  }, [locationError]);
+
+  useEffect(() => {
     console.log('locations: ', locations);
   }, [locations]);
 
@@ -33,18 +37,27 @@ export function WeatherCards() {
     const myPlaces = places.map(place => {
       const { local_names, ...others } = place;
       return others;
-    })
-    if (places[0]) {
+    });
+    console.log('renews myPlaces: ', myPlaces)
+    // if (myPlaces[0]) {
       setCurrentMutation({
         mutation: getLocation,
         option: {
           variables: {
-            input: myPlaces,
+            input: myPlaces.map(el => {
+              return {
+                name: el.name,
+                state: el.state,
+                country: el.country,
+                lat: el.lat,
+                lon: el.lon,
+              }
+            }),
           },
         },
         error: locationError,
       });
-    }
+    // }
   }, [places]);
 
   return (
@@ -56,6 +69,7 @@ export function WeatherCards() {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: '30px',
       }}
     >
       {places && locations.map(location => <WeatherCard location={location} />)}

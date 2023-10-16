@@ -22,7 +22,7 @@ export const locations = {
       }
     }
   `,
-  getPlaces: gql`
+  getOptions: gql`
     query getPlaces($input: Int!) {
       getListOfPlaces(quantity: $input) {
         id
