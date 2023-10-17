@@ -23,16 +23,28 @@ export function FutureDay({ daily }: { daily: string }) {
         }}
         onClick={handleChange}
       >
-        <Box 
-          component='img' 
-          src={getUrlForIcon(weather.weather[0].icon)} 
-          width='40px' 
-          loading="lazy"
-          sx={{
-            bgcolor: grey[300],
-            borderRadius: '50%'
-          }}
-        />
+        <Stack direction='row' gap='5px'>
+          <Box 
+            component='img' 
+            src={getUrlForIcon(weather.weather[0].icon)} 
+            width='40px' 
+            loading='lazy'
+            sx={{
+              bgcolor: grey[300],
+              borderRadius: '50%'
+            }}
+          />
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'flex-start'
+          }}>
+            <Box sx={{fontSize: '25px'}} component='span'>
+              {Math.round(weather.temp.eve)}
+            </Box>
+            °C
+          </Box>
+        </Stack>
+        
         <Box>{weather.weather[0].main}</Box>
         <Box>{currentTime.getDate()}:{currentTime.getMonth()}:{currentTime.getFullYear()}</Box>
         <Collapse in={checked}>
