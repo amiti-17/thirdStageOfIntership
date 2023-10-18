@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
+import { Alert, Box, Collapse } from "@mui/material";
 import RequiredTextField from "./components/RequiredTextField";
 import SubmitOutlinedButton from "./components/SubmitOutlinedButton";
 import { validateInputValue } from "../../../functions/validations/loginInput";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from 'zod';
 import { LoginType } from "../../../config/system/types/login";
@@ -22,26 +22,28 @@ export default function LoginForm() {
     message: '',
   }
 
-  const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
-  const [ emailValidationError, setEmailValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
-  const [ passwordValidationError, setPasswordValidationError ] = React.useState<errorValidation>(defaultErrorValidation);
-  const [getTokenMutation, {error, loading, data}] = useMutation(auth.login);
+  const [ isLoading, setIsLoading ] = useState<boolean>(false);
+  const [ emailValidationError, setEmailValidationError ] = useState<errorValidation>(defaultErrorValidation);
+  const [ passwordValidationError, setPasswordValidationError ] = useState<errorValidation>(defaultErrorValidation);
+  const [ getTokenMutation, {error, loading, data}] = useMutation(auth.login);
+  const [ checkedErr, setCheckedErr ] = useState(false);
+  const [ timeOutErr, setTimeOutErr ] = useState<NodeJS.Timeout>();
+  const [ errorMsg, setErrorMsg ] = useState<string>('');
   const customError = new CustomError('');
   const router = useRouter();
 
   useEffect(() => {
-    if (data) {
-      console.log(data.login);
-      // if (data?.login?.access_token) {
-      //   router.replace('/weather'); 
-      // } else {
-      //   throw new CustomError('Access token is false.');
-      // }
+    clearTimeout(timeOutErr);
+    if (errorMsg) {
+      setCheckedErr(true);
+      const timer = setTimeout(()=> {
+        setCheckedErr(false);
+      }, 3000);
+      setTimeOutErr(timer);
     }
-  }, [loading, data])
+  }, [errorMsg])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    // it is here, because I don`t wanna save sensitive data...
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
@@ -67,22 +69,14 @@ export default function LoginForm() {
           console.log('sdf', );
           Object.keys(e).forEach(key => console.log(e[key]))
           if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
-          // console.log('here?')
-            console.warn(CustomError.unauthorizedMsg);
+            setErrorMsg(CustomError.unauthorizedMsg)
           }
-          // Object.keys(e).forEach(key => {
-          //   console.log(key, error[key])
-          // })
         }
       })
 
       if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
         throw new CustomError(CustomError.unauthorizedMsg);
       }
-
-      // Object.keys(error).forEach(key => {
-      //   console.log(key, error[key])
-      // })
       
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -103,10 +97,9 @@ export default function LoginForm() {
           setPasswordValidationError(defaultErrorValidation);
         }
       } else if (error instanceof CustomError) {
-        //ToDo: make some error box, where display this error...
+        setErrorMsg(error.message)
         console.warn(error.message);
       } else {
-        console.log("got in loginForm", error.message, error.name, error);
         console.error(Object.keys(error));
         throw error;
       }
@@ -138,6 +131,11 @@ export default function LoginForm() {
       />
 
       <SubmitOutlinedButton sx={{mt: 3, mb: 2}} isLoading={isLoading} />
+
+      <Collapse in={Boolean(checkedErr)} addEndListener={() => setErrorMsg('')}>
+        <Alert severity="error">{errorMsg}</Alert>
+      </Collapse>
+      
     </Box>
   )
 }

@@ -5,11 +5,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  // @Get('test')
-  // async test() {
-  //   return 'plain text';
-  // }
-
   @Get('findAll')
   async getAllUsers() {
     return await this.userService.findAll();
@@ -17,7 +12,6 @@ export class UsersController {
 
   @Get('create')
   async createUser(
-    // @Query() query: { name: string; email: string; password: string },
     @Query('name') name: string,
     @Query('email') email: string,
     @Query('password') password: string,

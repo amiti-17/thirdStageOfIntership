@@ -1,4 +1,3 @@
-import { ApolloError } from "@apollo/client";
 import React from "react";
 
 export type RefreshTokenContextType = {

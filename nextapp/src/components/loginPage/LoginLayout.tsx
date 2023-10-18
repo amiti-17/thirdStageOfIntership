@@ -5,7 +5,6 @@ import Footer from '../Footer';
 
 export default function LoginLayout({ children } : { children: React.ReactNode }): JSX.Element {
   return (
-    //ToThink: what if this component move to layout?
     <Box
       sx={{
         marginTop: 8,
@@ -16,7 +15,6 @@ export default function LoginLayout({ children } : { children: React.ReactNode }
     >
       <LoginHeader />
       {children}
-      <Footer />
     </Box>
   );
 }

@@ -42,12 +42,6 @@ export async function requestDataWithHandleUnauthorized(
       }
     } else throw error;
   }
-
-  // try {
-  //   await currentRequest();
-  // } catch (error) {
-  //   console.warn('secondError: ', error);
-  // }
 }
 
 export async function handleUnauthorized (
@@ -77,7 +71,6 @@ export async function handleUnauthorizedQuery(
   if (query) {
     console.log('requestDataWithHandleUnauthorized data: ', option)
     const data = await query(option);
-    // console.log('current query executed: ', data, error);
     if (error || data.error?.graphQLErrors) {
       if (
         error?.message === customError.unauthorized || 
@@ -124,22 +117,20 @@ export async function handleUnauthorizedMutation(refreshToken: MutationFunction,
         const data = await mutation(option);
       } catch (e) {
         if (e) {
-        // console.warn('error: ', error);
-        if (
-          e?.message === customError.unauthorized || 
-          e?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
-          // data.error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
-        ) {
-          if (await handleUnauthorized(refreshToken, router)) {
-            try {
-              console.warn('update refresh token...');
-              await mutation(option);
-            } catch (error) {
-              console.warn('secondError: ', error);
+          if (
+            e?.message === customError.unauthorized || 
+            e?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
+          ) {
+            if (await handleUnauthorized(refreshToken, router)) {
+              try {
+                console.warn('update refresh token...');
+                await mutation(option);
+              } catch (error) {
+                console.warn('secondError: ', error);
+              }
             }
           }
         }
-      }
       }
     }
 }

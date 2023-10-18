@@ -2,7 +2,6 @@ import { Stack } from "@mui/material"
 import { FutureDay } from "./components/FutureDay"
 
 export function FooterWeatherCard({ daily }: { daily: { dt: number, daily: string }[] }) {
-  // console.log(daily)
   return (
     <Stack
       direction='row'

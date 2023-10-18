@@ -14,8 +14,6 @@ export function FutureDay({ daily }: { daily: string }) {
     setChecked((prev) => !prev);
   };
 
-  console.log(weather);
-
   return (
     <Tooltip title={weather.summary} followCursor>
       <Stack direction='column' gap='5px' alignItems='center'
@@ -60,7 +58,5 @@ export function FutureDay({ daily }: { daily: string }) {
         </Collapse>
       </Stack>
     </Tooltip>
-    
   )
-  
 }

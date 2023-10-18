@@ -1,4 +1,3 @@
-import { searchConfig } from "config/system/searchFetch";
 import { LocationFetchedFromSearchString } from "config/system/types/locations";
 
 export async function getLocationsAttr(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {

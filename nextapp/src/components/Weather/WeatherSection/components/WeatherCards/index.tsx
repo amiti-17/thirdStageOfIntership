@@ -5,6 +5,7 @@ import { LocationType, locations as apolloLocations } from "Apollo/locations";
 import { useMutation } from "@apollo/client";
 import { CurrentQueryContext } from "../../../../../Contexts/currentQueryContext";
 import { WeatherCard } from "./components/weatherCard";
+import CircularIndeterminate from "components/CircularIndeterminate";
 
 export function WeatherCards() {
 
@@ -14,50 +15,37 @@ export function WeatherCards() {
   const [ 
     getLocation, 
     { error: locationError, loading: locationLoading, data: locationData }
-  ] = useMutation( // TODO: think about rewrite into queries...
+  ] = useMutation( // TODO: think about rewrite into smaller queries by principe CRUD...
     apolloLocations.updateUsersInfoAndGetWeather, 
     { 
       onCompleted(data) {
-        console.log('completedData', data);
         setLocations(data.updateUsersLocations);
       },
     }
   );
 
   useEffect(() => {
-    console.log('locationError : ', locationError);
-  }, [locationError]);
-
-  useEffect(() => {
-    console.log('locations: ', locations);
-  }, [locations]);
-
-  useEffect(() => {
-    console.log('renew places: ', places);
     const myPlaces = places.map(place => {
       const { local_names, ...others } = place;
       return others;
     });
-    console.log('renews myPlaces: ', myPlaces)
-    // if (myPlaces[0]) {
-      setCurrentMutation({
-        mutation: getLocation,
-        option: {
-          variables: {
-            input: myPlaces.map(el => {
-              return {
-                name: el.name,
-                state: el.state,
-                country: el.country,
-                lat: el.lat,
-                lon: el.lon,
-              }
-            }),
-          },
+    setCurrentMutation({
+      mutation: getLocation,
+      option: {
+        variables: {
+          input: myPlaces.map(el => {
+            return {
+              name: el.name,
+              state: el.state,
+              country: el.country,
+              lat: el.lat,
+              lon: el.lon,
+            }
+          }),
         },
-        error: locationError,
-      });
-    // }
+      },
+      error: locationError,
+    });
   }, [places]);
 
   return (
@@ -72,7 +60,11 @@ export function WeatherCards() {
         gap: '30px',
       }}
     >
-      {places && locations.map(location => <WeatherCard key={location.id} location={location} />)}
+      {
+        locationLoading ?
+          <CircularIndeterminate /> :
+          locations.map(location => <WeatherCard key={location.id} location={location} />)
+      }
     </Box>
   )
 }

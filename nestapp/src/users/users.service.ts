@@ -88,17 +88,6 @@ export class UsersService {
     return locations;
   }
 
-  // async update(
-  //   id: number,
-  //   updateUserInput: UpdateUserInput,
-  // ): Promise<SafeUser> {
-  //   const { password, ...user } = await this.prisma.users.update({
-  //     where: { id },
-  //     data: { locations: updateUserInput as any }, // TODO: figureout how it should work!!!
-  //   });
-  //   return user;
-  // }
-
   async remove(id: number): Promise<SafeUser> {
     return await this.prisma.users.delete({
       where: { id },

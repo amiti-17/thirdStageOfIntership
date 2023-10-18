@@ -2,15 +2,12 @@ import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
-// import { UseGuards } from '@nestjs/common';
-// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SafeUser } from './entities/safe-user.entity';
 import { User } from './entities/user.entity';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => SafeUser)
-// @UseGuards(JwtAuthGuard)
 export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
@@ -25,7 +22,6 @@ export class UsersResolver {
   @Query(() => [SafeUser], { name: 'users' })
   @UseGuards(JwtAuthGuard)
   async findAll() {
-    // console.log(context.req.user);
     return await this.usersController.getAllUsers();
   }
 
@@ -43,7 +39,6 @@ export class UsersResolver {
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Context() context) {
     console.log('getCurrentUser context:', context.req.user);
-    // Object.keys(context.req).forEach(key => console.log(key))
     const currentUser = await this.findById(context.req.user.sub);
     return currentUser;
   }
@@ -52,11 +47,6 @@ export class UsersResolver {
   async findOneUnsafe(@Args('email') email: string) {
     return await this.usersService.findOneUnsafe(email);
   }
-
-  // @Mutation(() => SafeUser)
-  // async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-  //   return await this.usersService.update(updateUserInput.id, updateUserInput);
-  // }
 
   @Mutation(() => SafeUser)
   async removeUser(@Args('id', { type: () => Int }) id: number) {

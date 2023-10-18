@@ -7,16 +7,7 @@ import { MainWeatherCard } from "./components/MainWeatherCard";
 
 
 export function WeatherCard({ location }: {location: LocationType}) {
-  // useEffect(() => {
-  //   (async () => {
-  //     const currentIconBlob = await getWeatherIcon(JSON.parse(location.weather.current.current).weather[0].icon)
-  //     const currentIcon = URL.createObjectURL(currentIconBlob);
-  //     console.log("here: ", currentIcon);
-  //     setIcon(currentIcon);
-  //   })()
-  // }, []);
-
-  // console.log()
+  
   return (
     <Stack direction='column' gap='0px'>
       <HeaderWeatherCard 

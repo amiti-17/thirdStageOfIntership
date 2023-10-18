@@ -1,4 +1,4 @@
-import { Alert, Box, Collapse, TextField } from "@mui/material";
+import { Alert, Box, Collapse } from "@mui/material";
 import { useEffect, useState } from "react";
 import { AlertSearchBarContext } from "../../../../../Contexts/alertSearchBarContext";
 import { SearchInput } from "./components/SearchInput";

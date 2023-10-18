@@ -13,14 +13,7 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
         direction='row'
         gap='15px'
       >
-        
-        <Stack
-          direction='row'
-          sx={{
-            // display: 'flex',
-          }}
-        >
-          
+        <Stack direction='row'>
           <Box
             component='span'
             sx={{
@@ -29,6 +22,7 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
           >
             {Math.round(current.temp)}
           </Box>
+          
           <Box
             component='span'
             sx={{
@@ -38,6 +32,7 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
             °C
           </Box>
         </Stack>
+
         <Stack
           direction='column'
         >
@@ -49,6 +44,4 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
       </Stack>
     </Stack>
   )
-
-  
 }

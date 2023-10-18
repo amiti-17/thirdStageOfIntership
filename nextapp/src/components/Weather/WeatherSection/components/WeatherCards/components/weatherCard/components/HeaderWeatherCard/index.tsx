@@ -7,7 +7,6 @@ import { getTime } from "functions/timeAndDate/getTime";
 
 export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, currentDt: number, icon: string }) {
   const currentTime = new Date(currentDt * 1000);
-  // console.log(currentDt);
   return (
     <Stack 
       direction='row' 

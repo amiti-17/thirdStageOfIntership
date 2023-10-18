@@ -6,10 +6,8 @@ import { WeatherCards } from "./components/WeatherCards";
 import React from 'react';
 
 export function WeatherSection() {
-  // const currentUser = useContext(CurrentUserContext)
+  
   const { email } = useContext(CurrentUserContext);
-
-
 
   return (
       <Box component='section'>

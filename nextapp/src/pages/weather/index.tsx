@@ -5,17 +5,14 @@ import { useRouter } from "next/router";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { WeatherSection } from "components/Weather/WeatherSection";
 import { CurrentUserContext } from "Contexts/currentUserContext";
-import { handleUnauthorized, handleUnauthorizedMutation, handleUnauthorizedQuery } from "functions/fetch/requestDataWithHandleUnauthorized";
+import { handleUnauthorizedMutation, handleUnauthorizedQuery } from "functions/fetch/requestDataWithHandleUnauthorized";
 import { RefreshTokenContext } from "Contexts/refreshTokenContext";
 import { CurrentQueryContext, LazyQueryObjType, MutationObjType } from "Contexts/currentQueryContext";
 import { WeatherLayout } from "components/Weather/WeatherLayout";
 import { Header } from "components/Weather/Header";
 import { auth } from "Apollo/auth";
-import CustomError from "CustomError";
 import { LocationFetchedFromSearchString } from "config/system/types/locations";
 import { PlacesContext } from "Contexts/placesContext";
-
-const customError = new CustomError('');
 
 export default function Login() {
   
@@ -36,9 +33,8 @@ export default function Login() {
       setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
     }
   }, []);
-//TODO: getCurrentUser.locations - set as initial state...
+  
   useEffect(() => {
-    // console.log(currentUserData?.getCurrentUser)
     if (currentUserData) {
       setCurrentUser(currentUserData?.getCurrentUser);
       setPlaces(currentUserData?.getCurrentUser.locations);
@@ -47,7 +43,6 @@ export default function Login() {
 
   useEffect(() => {
     if (currentQuery) {
-      // console.log('received new current query: ', currentQuery);
       handleUnauthorizedQuery(
         refreshToken,
         router,
