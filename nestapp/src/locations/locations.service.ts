@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/createLocation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -17,7 +16,7 @@ export class LocationsService {
     private prisma: PrismaService,
     private usersService: UsersService,
     private weathersService: WeathersService,
-  ) {} // private httpService: HttpService,
+  ) {}
 
   async create(createLocationInput: CreateLocationInput, usersId: number) {
     const coordinates: Coordinates = {
@@ -25,8 +24,7 @@ export class LocationsService {
       lon: createLocationInput.lon,
     };
     const currentExists = await this.findOneByCoordinates(coordinates);
-    // console.log('weather: ', await fetchWeatherByCoordinates(coordinates));
-    const currentLocation = currentExists // TODO: can it be currentLocation ??= await...
+    const currentLocation = currentExists
       ? currentExists
       : await this.prisma.locations.create({
           data: {
@@ -36,7 +34,7 @@ export class LocationsService {
                 id: usersId,
               },
             },
-            // weather: {
+            // weather: { // Ask: is it good way, or my current is better?
             //   create: {
             //     current: {
             //       create: {
@@ -57,7 +55,7 @@ export class LocationsService {
           },
           select: selectLocation,
         });
-    const weather = await this.weathersService.create(coordinates);
+    await this.weathersService.create(coordinates); // Ask is it good? return into space, but action has to be done
     return await this.findOne(currentLocation.id);
   }
 
@@ -98,13 +96,6 @@ export class LocationsService {
       : await this.prisma.locations.findMany({});
   }
 
-  // async getUsersPlaces(context): Promise<Location[]> {
-  //   const currentUser = await this.usersService.findById(
-  //     context?.req?.user.sub,
-  //   );
-  //   return currentUser;
-  // }
-
   async updateUsersLocations(
     fetchedUserLocations: UpdateUserLocationsInput[],
     context,
@@ -112,18 +103,6 @@ export class LocationsService {
     const currentUser = await this.usersService.findById(
       context?.req?.user.sub,
     );
-
-    // if (!currentUser.locations.length) { //Is it could make execution faster?
-    //   // const returned = [];
-    //   for (let i = 0; i < fetchedUserLocations.length; i++) {
-    //     const currentLocation = await this.create(
-    //       fetchedUserLocations[i],
-    //       context?.req?.user.sub,
-    //     );
-    //     console.log('current location: ', currentLocation);
-    //   }
-    //   return await this.usersService.getAllLocations(context?.req?.user.sub);
-    // }
 
     const shouldBeDeleted = currentUser.locations.filter((location) => {
       return !fetchedUserLocations.find(
@@ -140,17 +119,11 @@ export class LocationsService {
         (location) =>
           location.lat === currentLoc.lat && location.lon === currentLoc.lon,
       );
-      // console.log('currentUserLocal: ', currentUserLocal, currentLoc, currentUserLocal, currentUser);
       if (currentUserLocal) {
         const coordinates = {
           lat: fetchedUserLocations[i].lat,
           lon: fetchedUserLocations[i].lon,
         };
-        // console.log(
-        //   'locationsService, updateUsersLocations, input for weathersService.update: ',
-        //   currentUserLocal,
-        //   coordinates,
-        // );
         await this.weathersService.update(
           currentUserLocal.weatherId,
           coordinates,
@@ -164,44 +137,24 @@ export class LocationsService {
       await this.usersService.findById(context?.req?.user.sub)
     ).locations;
     for (let i = 0; i < usersLocations.length; i++) {
-      // usersLocations[i].weather.current = await this.prisma.current.findUnique({ where: {id: usersLocations[i].weather.currentId}, select: { id: true, dt: true, current: true}})
-      // usersLocations[i].weather.days = await this.prisma.days.findMany( { where: {OR: {}}})
       usersLocations[i].weather = await this.weathersService.findOne(
         usersLocations[i].weatherId,
       );
     }
-    // console.log('locationService, updateUsersLocations: ', usersLocations);
-    // const returned = [];
-    // for (let i = 0; i < returnedValue.length; i++) {
-    //   const currentLocation = returnedValue[i];
-    //   currentLocation.weather = await this.lo
-    //   returned.push(currentValue);
-    // }
     return usersLocations;
   }
-
-  // update(id: number, updateLocationInput: UpdateLocationInput) {
-  //   return this.prisma.locations.update({
-  //     where: { id },
-  //     data: { ...updateLocationInput },
-  //   });
-  // }
 
   async remove(id: number): Promise<Location> {
     const location = await this.findOne(id);
     if (location.users.length > 1) return;
-    const removedWeather = await this.weathersService.remove(
-      location.weatherId,
-    );
+    await this.weathersService.remove(location.weatherId);
     return await this.prisma.locations.delete({ where: { id } });
   }
 
   async removeByCoordinates(coordinates: CoordinatesInput): Promise<Location> {
     const location = await this.findOneByCoordinates(coordinates);
     if (location.users.length > 1) return;
-    const removedWeather = await this.weathersService.remove(
-      location.weatherId,
-    );
+    await this.weathersService.remove(location.weatherId);
     return await this.prisma.locations.delete({ where: { ll: coordinates } });
   }
 }

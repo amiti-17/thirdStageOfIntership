@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { JsonValue } from '@prisma/client/runtime/library';
 import { Weather } from 'src/weathers/entities/weather.entity';

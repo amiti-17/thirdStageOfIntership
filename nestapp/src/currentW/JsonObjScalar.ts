@@ -3,8 +3,7 @@ import { Kind } from 'graphql';
 
 export class JSONObject {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-@Scalar('JSONObject', (type) => JSONObject)
+@Scalar('JSONObject', () => JSONObject)
 export class JSONObjectScalar implements CustomScalar<object, object> {
   description: string = 'JSONObject custom scalar type';
 

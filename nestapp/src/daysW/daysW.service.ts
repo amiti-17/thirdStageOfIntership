@@ -7,7 +7,6 @@ export class DaysWService {
   constructor(private prisma: PrismaService) {}
 
   async create(dt: number, daily: string) {
-    // console.log('input in daysWService, create', dt, daily);
     return await this.prisma.days.create({
       data: {
         dt,
@@ -18,7 +17,6 @@ export class DaysWService {
   }
 
   async update(id: number, weatherId: number, dt: number, daily: string) {
-    // console.log('input in daysWService, update', id, dt, daily);
     return await this.prisma.days.update({
       where: { id },
       data: { dt, daily, weather: { connect: { id: weatherId } } },
@@ -33,14 +31,4 @@ export class DaysWService {
   async removeMany(weatherId: number) {
     return await this.prisma.days.deleteMany({ where: { weatherId } });
   }
-
-  // async findOne(daily: JsonValue) {
-  //   const currentDay = this.prisma.days.findUnique({
-  //     where: {
-  //       daily,
-  //     },
-  //     select: selectDay,
-  //   });
-  //   return currentDay;
-  // }
 }

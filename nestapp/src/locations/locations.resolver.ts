@@ -5,18 +5,10 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
-// import { UpdateLocationInput } from './dto/update-location.input';
 
 @Resolver(() => Location)
 export class LocationsResolver {
   constructor(private readonly locationsService: LocationsService) {}
-
-  // @Mutation(() => Location)
-  // async createLocation(
-  //   @Args('createLocationInput') createLocationInput: CreateLocationInput,
-  // ) {
-  //   return await this.locationsService.create(createLocationInput);
-  // }
 
   @Query(() => [Location], { name: 'locations' })
   async findAll() {
@@ -33,15 +25,14 @@ export class LocationsResolver {
   @UseGuards(JwtAuthGuard)
   async findOneByFetchedObj(
     @Args('coordinates') coordinates: FindOneByFetchedObjInput,
-    // @Context() context,
   ) {
-    // console.log(context.req?.user);
-    return {
-      id: 0,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      ...coordinates,
-    }; // await this.locationsService.findOneByCoordinates(coordinates);
+    return await this.locationsService.findOneByCoordinates(coordinates);
+    // {
+    //   id: 0,
+    //   createdAt: Date.now(),
+    //   updatedAt: Date.now(),
+    //   ...coordinates,
+    // };
   }
 
   @Query(() => [Location])
@@ -51,12 +42,6 @@ export class LocationsResolver {
   ): Promise<Location[]> {
     return await this.locationsService.getListOfPlaces(quantity);
   }
-
-  // @Query(() => [Location])
-  // @UseGuards(JwtAuthGuard)
-  // async getUsersPlaces(@Context() context): Promise<Location[]> {
-  //   return await this.locationsService.getUsersPlaces(context);
-  // }
 
   @Mutation(() => [Location])
   @UseGuards(JwtAuthGuard)
@@ -70,11 +55,6 @@ export class LocationsResolver {
       context,
     );
   }
-
-  // @Mutation(() => Location)
-  // updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput) {
-  //   return this.locationsService.update(updateLocationInput.id, updateLocationInput);
-  // }
 
   @Mutation(() => Location)
   async removeLocation(@Args('id', { type: () => Int }) id: number) {
