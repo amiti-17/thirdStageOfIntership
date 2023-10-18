@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AlertSearchBarContext } from "../../../../../Contexts/alertSearchBarContext";
 import { SearchInput } from "./components/SearchInput";
 import { Places } from "./components/Places";
+import { digits } from "config/system/constants/digits";
 
 export function SearchBar() {
   
@@ -21,7 +22,7 @@ export function SearchBar() {
       setAlertTimeOut(true);
       alertTimer = setTimeout(() => {
         setAlertTimeOut(false);
-      }, 3000);
+      }, digits[3000]);
     }
   }, [alertText]);
 

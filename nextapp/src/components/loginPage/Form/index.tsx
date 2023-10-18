@@ -12,6 +12,9 @@ import { auth } from "../../../Apollo/auth";
 import CustomError from "../../../CustomError";
 import { LoginMsgContext } from "Contexts/loginMsgContext";
 import { localStorageKeys } from "config/system/localStorage";
+import { strConstants } from "config/system/constants/strConstants";
+import { digits } from "config/system/constants/digits";
+import { pages } from "config/system/pages";
 
 export default function LoginForm() {
 
@@ -51,7 +54,7 @@ export default function LoginForm() {
       setCheckedInf(true);
       const timer = setTimeout(()=> {
         setCheckedInf(false);
-      }, 3000);
+      }, digits[3000]);
       setTimeOutInf(timer);
     }
   }, [infoMsg]);
@@ -62,7 +65,7 @@ export default function LoginForm() {
       setCheckedErr(true);
       const timer = setTimeout(()=> {
         setCheckedErr(false);
-      }, 3000);
+      }, digits[3000]);
       setTimeOutErr(timer);
     }
   }, [errorMsg])
@@ -72,8 +75,8 @@ export default function LoginForm() {
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
     const myFormData = {
-      email: formData.get('email'),
-      password: formData.get('password'),
+      email: formData.get(strConstants.email),
+      password: formData.get(strConstants.password),
     }
 
     try {
@@ -83,7 +86,7 @@ export default function LoginForm() {
       getTokenMutation({
         variables: { input: getValidatedFormData },
       }).then(() => {
-        router.replace('/weather');
+        router.replace(pages.weather);
       }).catch(e => {
         if (e instanceof ApolloError) {
           if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
@@ -99,7 +102,7 @@ export default function LoginForm() {
       
     } catch (error) {
       if (error instanceof z.ZodError) {
-        if (error.issues[0].path[0] === 'email') {
+        if (error.issues[0].path[0] === strConstants.email) {
           setEmailValidationError({
             status: true,
             message: error.issues[0].message,
@@ -107,7 +110,7 @@ export default function LoginForm() {
         } else {
           setEmailValidationError(defaultErrorValidation);
         }
-        if (error.issues[0].path[0] === 'password') {
+        if (error.issues[0].path[0] === strConstants.password) {
           setPasswordValidationError({
             status: true,
             message: error.issues[0].message,
@@ -153,7 +156,7 @@ export default function LoginForm() {
       {
         error &&
         <Collapse in={Boolean(checkedErr)} addEndListener={() => { 
-            if (errStatus) setErrorMsg('');
+            if (errStatus) setErrorMsg(strConstants.emptyStr);
             setErrStatus((prev) => !prev);
           }}
         >

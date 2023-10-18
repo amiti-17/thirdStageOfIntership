@@ -1,13 +1,14 @@
+import { fetchConstants } from "config/system/constants/fetchConstants";
 import CustomError from "../../CustomError";
 
 export async function fetchPost(url: string, data: any) {
   const headers = new Headers;
-  headers.append("Content-Type", "application/json")
+  headers.append(fetchConstants.contentType, fetchConstants.applicationJson);
   const body = JSON.stringify(data);
 
   try {
-    const response = await fetch('http://localhost:8080/' + url, {
-      method: 'POST',
+    const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + url, {
+      method: fetchConstants.post,
       headers,
       body,
     });

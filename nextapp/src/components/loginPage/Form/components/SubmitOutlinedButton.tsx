@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { strConstants } from "config/system/constants/strConstants";
 
 export default function SubmitOutlinedButton({ sx, isLoading }: {sx: {mt: number, mb: number}, isLoading: boolean}) {
   return (
@@ -11,7 +12,7 @@ export default function SubmitOutlinedButton({ sx, isLoading }: {sx: {mt: number
         
       }}
     >
-      {isLoading ? "Loading ..." : "Sign In"}
+      {isLoading ? strConstants.loadingLong : strConstants.signIn}
     </Button>
   )
 }

@@ -5,11 +5,14 @@ import { getNameOfPlace } from '../../../../../../../functions/places/getNameOfP
 import { Button, Collapse, List } from '@mui/material';
 import { renderPlaceItem } from './renderPlaceItem';
 import { LocationFetchedFromSearchString } from '../../../../../../../config/system/types/locations';
+import { strConstants } from '../../../../../../../config/system/constants/strConstants';
+import { symbols } from '../../../../../../../config/system/constants/symbols';
+import { digits } from 'config/system/constants/digits';
 
 
 export function Places() {
   
-  const [ morePlacesCounter, setMorePlacesCounter ] = useState<number>(0);
+  const [ morePlacesCounter, setMorePlacesCounter ] = useState<number>(digits[0]);
   const [ morePlacesCounterToggle, setMorePlacesCounterToggle ] = useState<boolean>(false);
   const { places, setPlaces } = useContext(PlacesContext);
 
@@ -57,8 +60,8 @@ export function Places() {
             }}
             onClick={(e) => setMorePlacesCounterToggle(prev => !prev)}
           >
-            {morePlacesCounterToggle ? 'less' : '+' + morePlacesCounter}
-          </Button> : ''
+            {morePlacesCounterToggle ? strConstants.less : symbols['+'] + morePlacesCounter}
+          </Button> : strConstants.emptyStr
       }
     </List>
   )

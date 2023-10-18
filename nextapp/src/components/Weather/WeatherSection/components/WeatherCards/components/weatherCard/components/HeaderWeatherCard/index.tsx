@@ -4,9 +4,10 @@ import { Box } from "@mui/material";
 import { grey } from '@mui/material/colors';
 import { getDate } from "functions/timeAndDate/getDate";
 import { getTime } from "functions/timeAndDate/getTime";
+import { digits } from "config/system/constants/digits";
 
 export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, currentDt: number, icon: string }) {
-  const currentTime = new Date(currentDt * 1000);
+  const currentTime = new Date(currentDt * digits[1000]);
   return (
     <Stack 
       direction='row' 

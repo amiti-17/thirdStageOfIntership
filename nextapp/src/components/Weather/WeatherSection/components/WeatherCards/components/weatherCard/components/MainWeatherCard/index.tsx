@@ -2,7 +2,6 @@ import { Stack, Box } from "@mui/material";
 
 export function MainWeatherCard({currentW}: {currentW: string}) {
   const current = JSON.parse(currentW);
-  console.log(current)
   return (
     <Stack
       direction='column'

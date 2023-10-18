@@ -4,11 +4,12 @@ import { Logo } from "./components/Logo";
 import { UserAvatar } from "./components/Avatar";
 import { useContext } from "react";
 import { CurrentUserContext } from "../../../Contexts/currentUserContext";
+import { strConstants } from "config/system/constants/strConstants";
 
 export function Header() {
 
   const { name } = useContext(CurrentUserContext);
-  const userAvatarData = stringAvatar(name ?? 'Users Name');
+  const userAvatarData = stringAvatar(name ?? strConstants.usersName);
   
   return (
     <Box component='header' sx={{
@@ -22,7 +23,7 @@ export function Header() {
       alignItems: 'center',
     }}>
       <Logo />
-      <UserAvatar {...userAvatarData} title={name ?? 'username'}/>
+      <UserAvatar {...userAvatarData} title={name ?? strConstants.username}/>
     </Box>
   )
 }

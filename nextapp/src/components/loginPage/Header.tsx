@@ -1,6 +1,7 @@
 import { Avatar, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import React from 'react';
+import { strConstants } from 'config/system/constants/strConstants';
 
 export default function LoginHeader() {
   return (
@@ -9,7 +10,7 @@ export default function LoginHeader() {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign in
+        {strConstants.signIn}
       </Typography>
     </>
   );

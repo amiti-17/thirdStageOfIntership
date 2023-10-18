@@ -4,11 +4,12 @@ import { getUrlForIcon } from 'functions/getUrlForIcon';
 import Collapse from '@mui/material/Collapse';
 import { useState } from 'react';
 import { getDate } from 'functions/timeAndDate/getDate';
+import { digits } from 'config/system/constants/digits';
 
 export function FutureDay({ daily }: { daily: string }) {
 
   const weather = JSON.parse(daily);
-  const currentTime = new Date(weather.dt * 1000);
+  const currentTime = new Date(weather.dt * digits[1000]);
   const [ checked, setChecked ] = useState(false);
   const handleChange = () => {
     setChecked((prev) => !prev);

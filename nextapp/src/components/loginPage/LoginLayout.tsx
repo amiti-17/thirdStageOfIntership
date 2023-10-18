@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import LoginHeader from './Header';
-import Footer from '../Footer';
 
 export default function LoginLayout({ children } : { children: React.ReactNode }): JSX.Element {
   return (
