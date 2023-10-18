@@ -26,8 +26,6 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh-token') {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
-    // request.body = ctx.getArgs().authUserInput;
-    // console.log(request.cookies, 'from jwt-auth.guards');
     return request;
   }
 
@@ -36,10 +34,7 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh-token') {
     user: any,
     info: any,
     context: ExecutionContext,
-    // status?: any,
   ): TUser {
-    // console.log('jwtRefreshAuthGuard: ', err, user, info, status);
-
     if (err || !user || info) throw err || new UnauthorizedException();
 
     const authContext = GqlExecutionContext.create(context);

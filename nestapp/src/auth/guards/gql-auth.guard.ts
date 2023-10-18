@@ -31,7 +31,6 @@ export class GqlAuthGuard extends AuthGuard('local') {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext();
     request.body = ctx.getArgs().authLoginInput;
-    // console.log('gql auth guard cookies', request);
     return request;
   }
 
@@ -45,7 +44,6 @@ export class GqlAuthGuard extends AuthGuard('local') {
 
     const authContext = GqlExecutionContext.create(context);
     const { req } = authContext.getContext();
-    // console.log('context: ', req.res?.cookie);
 
     const access_token = this.jwtService.sign(
       {
