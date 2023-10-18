@@ -89,10 +89,10 @@ export class WeathersService {
   async remove(weatherId: number) {
     const weather = await this.findOne(weatherId);
     if (weather.locations.length > 1) return;
-    const deletedDays = await this.daysWService.removeMany(weather.id); //TODO: Ask: how make it better (unused variables...)
+    const deletedDays = await this.daysWService.removeMany(weather.id); // Ask: how make it better (unused variables...)
     const deleteCurrentW = await this.prisma.current.delete({
       where: { id: weather.currentId },
-    }); //TODO: Ask: Is it good, if its the only place, where I use just prisma.current...
+    }); // Ask: Is it good, if its the only place, where I use just prisma.current...
     return await this.prisma.weathers.delete({ where: { id: weather.id } });
   }
 }

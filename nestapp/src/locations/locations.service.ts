@@ -175,7 +175,7 @@ export class LocationsService {
       });
       return;
     }
-    console.log(await this.weathersService.remove(location.weatherId));
+    await this.weathersService.remove(location.weatherId);
     return await this.prisma.locations.delete({ where: { id } });
   }
 

@@ -15,7 +15,7 @@ import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy
     UsersModule,
     JwtModule.register({
       global: true,
-      secret: process.env.access_secret, //TODO: after figured out how does env work, move...
+      secret: process.env.access_secret,
       signOptions: { expiresIn: process.env.EXPIRES_TIME },
     }),
   ],

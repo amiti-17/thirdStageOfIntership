@@ -4,6 +4,7 @@ export default class CustomError extends Error {
   static unauthorized: string;
   static unauthorizedMsg: string;
   static unrecognizedFetchError: string;
+  static requiredLoginAgain: string;
 
   constructor(public message: string) {
     super(message);
@@ -13,6 +14,7 @@ export default class CustomError extends Error {
     CustomError.unauthorized = "Unauthorized";
     CustomError.unauthorizedMsg = "Unauthorized error, you provide incorrect email or password";
     CustomError.unrecognizedFetchError = "Unknown error, which occurred in fetch";
+    CustomError.requiredLoginAgain = "Credential data is expired, please login again";
   }
 
 }

@@ -25,9 +25,9 @@ export class Location {
   @Field(() => [SafeUser], { nullable: 'items' })
   users?: SafeUser[];
 
-  @Field(() => Weather, { nullable: true }) //TODO: should be not nullable
+  @Field(() => Weather, { nullable: true })
   weather?: Weather;
 
-  @Field(() => Int, { nullable: true }) //TODO: should be not nullable
+  @Field(() => Int, { nullable: true })
   weatherId?: number;
 }

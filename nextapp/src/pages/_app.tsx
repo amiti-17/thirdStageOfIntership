@@ -5,6 +5,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import createEmotionCache from 'createEmotionCache';
 import RootLayout from 'components/RootLayout';
 import theme from '@/src/theme';
+import { useState } from 'react';
+import { LoginMsgContext } from 'Contexts/loginMsgContext';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -15,6 +17,8 @@ export interface myAppProps extends AppProps {
 export default function App( prop: myAppProps) {
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = prop;
+  const [ errorMsg, setErrorMsg ] = useState<string>('');
+  const [ infoMsg, setInfoMsg ] = useState<string>('');
 
   return (
     <RootLayout>
@@ -24,7 +28,12 @@ export default function App( prop: myAppProps) {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Component {...pageProps} />
+          <LoginMsgContext.Provider value={{
+            errorMsg, setErrorMsg,
+            infoMsg, setInfoMsg
+          }}>
+            <Component {...pageProps} />
+          </LoginMsgContext.Provider>
         </ThemeProvider>
       </CacheProvider>
     </RootLayout>

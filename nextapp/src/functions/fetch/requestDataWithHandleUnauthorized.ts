@@ -8,19 +8,21 @@ import {
   MutationFunction, 
   OperationVariables
 } from "@apollo/client";
+import { SetStateAction } from "react";
+import { localStorageKeys } from "config/system/localStorage";
 
 const customError = new CustomError('');
 
-export async function requestDataWithHandleUnauthorized(
+export async function requestDataWithHandleUnauthorized( // Deprecated
   currentRequest: LazyQueryExecFunction<any, OperationVariables>, 
   currentUserError: ApolloError, 
   refreshToken: MutationFunction,
   refreshTokenError: ApolloError,
   router: NextRouter,
+  setInfoMsg,
   options?: LazyQueryHookExecOptions,
 ) {
   try {
-    console.log('options: ', options)
     await options ? currentRequest(options) : currentRequest();
     
     if (currentUserError?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
@@ -32,7 +34,7 @@ export async function requestDataWithHandleUnauthorized(
       error?.message === customError.unauthorized || 
       error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
     ) {
-      if (await handleUnauthorized(refreshToken, router)) {
+      if (await handleUnauthorized(refreshToken, router, setInfoMsg)) {
         try {
           console.warn('update access token...')
           await options ? currentRequest(options) : currentRequest();
@@ -47,6 +49,7 @@ export async function requestDataWithHandleUnauthorized(
 export async function handleUnauthorized (
   refreshToken: MutationFunction,
   router: NextRouter,
+  setInfoMsg: React.Dispatch<SetStateAction<string>>,
 ): Promise<true> {
   try {
     await refreshToken();
@@ -55,6 +58,7 @@ export async function handleUnauthorized (
     console.warn("something unclear refresh token error in weather/index.ts", error);
     if (error && error.graphQLErrors.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
       console.warn(error);
+      localStorage.setItem(localStorageKeys.loginInfoMsg, CustomError.requiredLoginAgain);
       router.replace('/'); //TODO: make some alert, that credential was expired (on the login page).
     } else throw error;
   }
@@ -63,6 +67,7 @@ export async function handleUnauthorized (
 export async function handleUnauthorizedQuery(
   refreshToken: MutationFunction, 
   router: NextRouter,
+  setInfoMsg: React.Dispatch<SetStateAction<string>>,
   query: LazyQueryExecFunction<any, any> | null,
   refetch: (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<any>>,
   error: ApolloError,
@@ -76,7 +81,7 @@ export async function handleUnauthorizedQuery(
         error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized ||
         data.error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
       ) {
-        if (await handleUnauthorized(refreshToken, router)) {
+        if (await handleUnauthorized(refreshToken, router, setInfoMsg)) {
           try {
             console.warn('update refresh token...');
             await refetch(option.variables);
@@ -92,7 +97,7 @@ export async function handleUnauthorizedQuery(
     } catch (error) {
       console.error('catch error in requestDataWithHandleUnauthorized.ts...', error);
       if (error?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
-        if (await handleUnauthorized(refreshToken, router)) {
+        if (await handleUnauthorized(refreshToken, router, setInfoMsg)) {
           try {
             console.warn('update refresh token...');
             await refetch(option.variables);
@@ -105,8 +110,10 @@ export async function handleUnauthorizedQuery(
   }
 }
 
-export async function handleUnauthorizedMutation(refreshToken: MutationFunction, 
+export async function handleUnauthorizedMutation(
+  refreshToken: MutationFunction, 
   router: NextRouter,
+  setInfoMsg: React.Dispatch<SetStateAction<string>>,
   mutation: MutationFunction,
   error: ApolloError,
   option: OperationVariables = {},
@@ -120,7 +127,7 @@ export async function handleUnauthorizedMutation(refreshToken: MutationFunction,
             e?.message === customError.unauthorized || 
             e?.graphQLErrors?.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized
           ) {
-            if (await handleUnauthorized(refreshToken, router)) {
+            if (await handleUnauthorized(refreshToken, router, setInfoMsg)) {
               try {
                 console.warn('update refresh token...');
                 await mutation(option);

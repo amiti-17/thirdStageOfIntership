@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { SafeUserType, users } from "Apollo/users";
 import { useRouter } from "next/router";
@@ -13,15 +13,17 @@ import { Header } from "components/Weather/Header";
 import { auth } from "Apollo/auth";
 import { LocationFetchedFromSearchString } from "config/system/types/locations";
 import { PlacesContext } from "Contexts/placesContext";
+import { LoginMsgContext } from "Contexts/loginMsgContext";
 
-export default function Login() {
+export default function WeatherPage() {
   
+  const { setInfoMsg } = useContext(LoginMsgContext);
   const [ places, setPlaces ] = useState<LocationFetchedFromSearchString[]>([]);
   const [ shouldUpdateRefreshToken, setShouldUpdateRefreshToken ] = React.useState(false);
   const [ 
     getCurrentUser, 
     { data: currentUserData, error: currentUserError, loading: currentUserLoading, refetch } 
-  ] = useLazyQuery(users.getCurrentUser); //, {fetchPolicy: "network-only"}
+  ] = useLazyQuery(users.getCurrentUser);
   const [ refreshToken ] = useMutation(auth.refreshToken);
   const [ currentUser, setCurrentUser ] = React.useState<SafeUserType>();
   const [ currentQuery, setCurrentQuery ] = React.useState<LazyQueryObjType>();
@@ -46,6 +48,7 @@ export default function Login() {
       handleUnauthorizedQuery(
         refreshToken,
         router,
+        setInfoMsg,
         currentQuery.query,
         currentQuery.refetch,
         currentQuery.error,
@@ -58,7 +61,9 @@ export default function Login() {
   useEffect(() => {
     if (currentMutation) {
       handleUnauthorizedMutation(
-        refreshToken, router,
+        refreshToken,
+        router,
+        setInfoMsg,
         currentMutation.mutation,
         currentMutation.error,
         currentMutation.option,
