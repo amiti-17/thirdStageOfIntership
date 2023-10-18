@@ -60,7 +60,6 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): SafeUser!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
   refreshToken: RefreshTokenResponse!
-  removeLocation(id: Int!): Location!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
   updateUsersLocations(updateUserLocationInput: [UpdateUserLocationsInput!]!): [Location!]!

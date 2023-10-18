@@ -38,7 +38,6 @@ export class UsersResolver {
   @Query(() => SafeUser, { name: 'getCurrentUser' })
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Context() context) {
-    console.log('getCurrentUser context:', context.req.user);
     const currentUser = await this.findById(context.req.user.sub);
     return currentUser;
   }

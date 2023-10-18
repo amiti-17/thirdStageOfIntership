@@ -56,6 +56,7 @@ export class WeathersService {
   }
 
   async update(id: number, coordinates: Coordinates) {
+    const currentWeather = await this.findOne(id);
     const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
     fetchedWeather.daily = fetchedWeather.daily.slice(0, 3);
     const weather = await this.prisma.weathers.update({

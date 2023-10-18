@@ -55,9 +55,4 @@ export class LocationsResolver {
       context,
     );
   }
-
-  @Mutation(() => Location)
-  async removeLocation(@Args('id', { type: () => Int }) id: number) {
-    return await this.locationsService.remove(id);
-  }
 }

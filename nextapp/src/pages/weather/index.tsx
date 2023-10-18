@@ -57,7 +57,6 @@ export default function Login() {
 
   useEffect(() => {
     if (currentMutation) {
-      console.log('received new current mutation: ', currentMutation);
       handleUnauthorizedMutation(
         refreshToken, router,
         currentMutation.mutation,
