@@ -72,7 +72,7 @@ export function WeatherCards() {
         gap: '30px',
       }}
     >
-      {places && locations.map(location => <WeatherCard location={location} />)}
+      {places && locations.map(location => <WeatherCard key={location.id} location={location} />)}
     </Box>
   )
 }

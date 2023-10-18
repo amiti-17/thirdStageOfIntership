@@ -5,31 +5,26 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { authConstants } from '../authConstants';
 import { regExp } from 'src/config/system/regExp';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
-import { AuthService } from '../auth.service';
 
-const jwtExpiresSecond = authConstants.expiresTime.match(regExp.int)[0];
+const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
 
 const HTTP_ONLY_COOKIE_ACCESS: CookieOptions = {
   maxAge: Number(jwtExpiresSecond) * 1000,
   httpOnly: true,
-  domain: authConstants.domain,
+  domain: process.env.DOMAIN,
 };
 const HTTP_ONLY_COOKIE_REFRESH: CookieOptions = {
   maxAge: Number(jwtExpiresSecond) * 10000,
   httpOnly: true,
-  domain: authConstants.domain,
+  domain: process.env.DOMAIN,
 };
 
 @Injectable()
 export class GqlAuthGuard extends AuthGuard('local') {
-  constructor(
-    private jwtService: JwtService,
-    private authService: AuthService,
-  ) {
+  constructor(private jwtService: JwtService) {
     super();
   }
   getRequest(context: ExecutionContext) {
@@ -59,8 +54,8 @@ export class GqlAuthGuard extends AuthGuard('local') {
         email: user.email,
       },
       {
-        secret: authConstants.access_secret,
-        expiresIn: authConstants.expiresTime,
+        secret: process.env.ACCESS_SECRET,
+        expiresIn: process.env.EXPIRES_TIME,
       },
     );
 
@@ -71,7 +66,7 @@ export class GqlAuthGuard extends AuthGuard('local') {
         name: user.name,
       },
       {
-        secret: authConstants.refresh_secret,
+        secret: process.env.REFRESH_SECRET,
         expiresIn: `${Number(jwtExpiresSecond) * 10}s`,
       },
     );

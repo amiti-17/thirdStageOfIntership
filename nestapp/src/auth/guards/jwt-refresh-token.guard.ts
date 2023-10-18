@@ -6,16 +6,15 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
-import { authConstants } from '../authConstants';
 import { CookieOptions } from 'express';
 import { regExp } from 'src/config/system/regExp';
 
-const jwtExpiresSecond = authConstants.expiresTime.match(regExp.int)[0];
+const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
 
 const HTTP_ONLY_COOKIE_ACCESS: CookieOptions = {
   maxAge: Number(jwtExpiresSecond) * 1000,
   httpOnly: true,
-  domain: authConstants.domain,
+  domain: process.env.DOMAIN,
 };
 
 @Injectable()
@@ -53,8 +52,8 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh-token') {
         email: user.email,
       },
       {
-        secret: authConstants.access_secret,
-        expiresIn: authConstants.expiresTime,
+        secret: process.env.ACCESS_SECRET,
+        expiresIn: process.env.EXPIRES_TIME,
       },
     );
 
