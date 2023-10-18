@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { LocationType, locations as apolloLocations } from "Apollo/locations";
 import { useMutation } from "@apollo/client";
-import { CurrentQueryContext } from "../../../../../Contexts/currentQueryContext";
+import { CurrentQueryContext } from "Contexts/currentQueryContext";
 import { WeatherCard } from "./components/weatherCard";
 import CircularIndeterminate from "components/CircularIndeterminate";
 

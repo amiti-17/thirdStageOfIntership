@@ -1,15 +1,15 @@
 import { Alert, Box, Collapse } from "@mui/material";
 import RequiredTextField from "./components/RequiredTextField";
 import SubmitOutlinedButton from "./components/SubmitOutlinedButton";
-import { validateInputValue } from "../../../functions/validations/loginInput";
+import { validateInputValue } from "functions/validations/loginInput";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from 'zod';
-import { LoginType } from "../../../config/system/types/login";
-import { getCryptPassword } from "../../../functions/getCryptPassword";
+import { LoginType } from "config/system/types/login";
+import { getCryptPassword } from "functions/getCryptPassword";
 import { ApolloError, useMutation } from "@apollo/client";
-import { auth } from "../../../Apollo/auth";
-import CustomError from "../../../CustomError";
+import { auth } from "Apollo/auth";
+import CustomError from "CustomError";
 import { LoginMsgContext } from "Contexts/loginMsgContext";
 import { localStorageKeys } from "config/system/localStorage";
 import { strConstants } from "config/system/constants/strConstants";
@@ -68,9 +68,9 @@ export default function LoginForm() {
       }, digits[3000]);
       setTimeOutErr(timer);
     }
-  }, [errorMsg])
+  }, [errorMsg]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
@@ -78,22 +78,30 @@ export default function LoginForm() {
       email: formData.get(strConstants.email),
       password: formData.get(strConstants.password),
     }
+    
+    
 
     try {
-      const getValidatedFormData: LoginType = validateInputValue(myFormData);
-      getValidatedFormData.password = getCryptPassword(getValidatedFormData.password);
+        const getValidatedFormData: LoginType = validateInputValue(myFormData);
+        getValidatedFormData.password = getCryptPassword(getValidatedFormData.password);
       
-      getTokenMutation({
+      const isUserOk = await getTokenMutation({
         variables: { input: getValidatedFormData },
-      }).then(() => {
-        router.replace(pages.weather);
-      }).catch(e => {
-        if (e instanceof ApolloError) {
-          if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
-            setErrorMsg(() => CustomError.unauthorizedMsg);
-          }
-        }
-      })
+      });
+
+      if (isUserOk?.data.login.status) {
+        // router.replace(pages.weather); //TODO: make it uncomment
+      }
+      
+      throw new CustomError(CustomError.unauthorizedMsg);
+      // .catch(e => {
+      //   if (e instanceof ApolloError) {
+      //     if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
+      //       setErrorMsg(() => CustomError.unauthorizedMsg);
+      //       
+      //     }
+      //   }
+      // })
 
       if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
         setErrorMsg(CustomError.unauthorizedMsg)
@@ -101,6 +109,7 @@ export default function LoginForm() {
       }
       
     } catch (error) {
+      console.log(error);
       if (error instanceof z.ZodError) {
         if (error.issues[0].path[0] === strConstants.email) {
           setEmailValidationError({
@@ -170,4 +179,5 @@ export default function LoginForm() {
       
     </Box>
   )
+  
 }
