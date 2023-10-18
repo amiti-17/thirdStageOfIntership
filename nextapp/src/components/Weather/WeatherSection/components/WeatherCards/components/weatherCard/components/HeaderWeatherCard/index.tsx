@@ -2,6 +2,8 @@ import { getUrlForIcon } from "functions/getUrlForIcon";
 import Stack from '@mui/material/Stack';
 import { Box } from "@mui/material";
 import { grey } from '@mui/material/colors';
+import { getDate } from "functions/timeAndDate/getDate";
+import { getTime } from "functions/timeAndDate/getTime";
 
 export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, currentDt: number, icon: string }) {
   const currentTime = new Date(currentDt * 1000);
@@ -26,7 +28,7 @@ export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, cur
           borderRadius: '50%'
         }}
       />
-      {name} ({currentTime.getDate()}:{currentTime.getMonth()}:{currentTime.getFullYear()} {currentTime.getHours()}:{currentTime.getMinutes()})
+      {name} ({getDate(currentTime)} {getTime(currentTime)})
     </Stack>
   )
 }

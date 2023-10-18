@@ -3,6 +3,7 @@ import { grey } from '@mui/material/colors';
 import { getUrlForIcon } from 'functions/getUrlForIcon';
 import Collapse from '@mui/material/Collapse';
 import { useState } from 'react';
+import { getDate } from 'functions/timeAndDate/getDate';
 
 export function FutureDay({ daily }: { daily: string }) {
 
@@ -46,7 +47,7 @@ export function FutureDay({ daily }: { daily: string }) {
         </Stack>
         
         <Box>{weather.weather[0].main}</Box>
-        <Box>{currentTime.getDate()}:{currentTime.getMonth()}:{currentTime.getFullYear()}</Box>
+        <Box>{getDate(currentTime)}</Box>
         <Collapse in={checked}>
           <Stack direction='column' alignItems='center'>
             <Box>Temp: {weather.temp.eve}°C</Box>
