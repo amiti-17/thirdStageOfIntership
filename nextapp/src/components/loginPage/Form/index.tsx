@@ -90,10 +90,12 @@ export default function LoginForm() {
       });
 
       if (isUserOk?.data.login.status) {
-        // router.replace(pages.weather); //TODO: make it uncomment
+        router.replace(pages.weather); //TODO: make it uncomment
+      } else {
+        throw new CustomError(CustomError.unauthorizedMsg);
       }
       
-      throw new CustomError(CustomError.unauthorizedMsg);
+      
       // .catch(e => {
       //   if (e instanceof ApolloError) {
       //     if (e.graphQLErrors.find(el => el.message)?.message === customError.unauthorized) {
@@ -104,12 +106,13 @@ export default function LoginForm() {
       // })
 
       if (error?.message === customError.unauthorized && error?.graphQLErrors.find(el => el.message === customError.unauthorized)) {
+        console.log('error in mutation login: 109, form/index.ts', error);
         setErrorMsg(CustomError.unauthorizedMsg)
         throw new CustomError(CustomError.unauthorizedMsg);
       }
       
     } catch (error) {
-      console.log(error);
+      console.log('error in handleSubmit catch: 115, form/index.ts', error);
       if (error instanceof z.ZodError) {
         if (error.issues[0].path[0] === strConstants.email) {
           setEmailValidationError({

@@ -20,9 +20,9 @@ export default function WeatherPage() {
   const { setInfoMsg } = useContext(LoginMsgContext);
   const [ places, setPlaces ] = useState<LocationFetchedFromSearchString[]>([]);
   const [ shouldUpdateRefreshToken, setShouldUpdateRefreshToken ] = React.useState(false);
-  const [ 
-    getCurrentUser, 
-    { data: currentUserData, error: currentUserError, loading: currentUserLoading, refetch } 
+  const [
+    getCurrentUser,
+    { data: currentUserData, error: currentUserError, loading: currentUserLoading, refetch }
   ] = useLazyQuery(users.getCurrentUser);
   const [ refreshToken ] = useMutation(auth.refreshToken);
   const [ currentUser, setCurrentUser ] = React.useState<SafeUserType>();
@@ -32,16 +32,20 @@ export default function WeatherPage() {
 
   useEffect(() => {
     if (!currentUserData && !currentUserLoading) {
-      setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
+      getCurrentUser();
+      // setCurrentQuery({ query: getCurrentUser, error: currentUserError, refetch });
     }
   }, []);
   
   useEffect(() => {
+    console.log(currentUserData);
+    console.log({currentUserError});
+    console.log({currentUserLoading});
     if (currentUserData) {
       setCurrentUser(currentUserData?.getCurrentUser);
       setPlaces(currentUserData?.getCurrentUser.locations);
     }
-  }, [currentUserData]);
+  }, [currentUserData, currentUserError, currentUserLoading]);
 
   useEffect(() => {
     if (currentQuery) {

@@ -2,7 +2,6 @@ import { ApolloClient, HttpLink, InMemoryCache, split, from } from "@apollo/clie
 import { fetchConstants } from "config/system/constants/fetchConstants";
 import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from "@apollo/client/link/error";
-import { GraphQLError } from "graphql";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { auth } from "./auth";
@@ -22,7 +21,10 @@ const wsLink = new GraphQLWsLink(createClient({
 }));
 
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward  }) => {
-  // console.log(graphQLErrors, operation)
+  console.log(graphQLErrors, networkError, operation);
+  // const Cookie = operation.getContext().req.headers.cookie
+  // operation.setContext({Headers: { Cookie }});
+  // forward(operation)
   // if (graphQLErrors) {
   //   graphQLErrors.forEach(({ message, locations, path }) =>
   //     // console.log(
@@ -46,7 +48,10 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward  })
   // if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL })
+const httpLink = new HttpLink({ 
+  uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL,
+  credentials: fetchConstants.include,
+})
 
 const splitLink = split(
   ({ query }) => {

@@ -11,12 +11,12 @@ import { CookieOptions } from 'express';
 
 const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
 
-const HTTP_ONLY_COOKIE_ACCESS: CookieOptions = {
+const accessCookieOptions: CookieOptions = {
   maxAge: Number(jwtExpiresSecond) * 1000,
   httpOnly: true,
   domain: process.env.DOMAIN,
 };
-const HTTP_ONLY_COOKIE_REFRESH: CookieOptions = {
+const refreshCookieOptions: CookieOptions = {
   maxAge: Number(jwtExpiresSecond) * 10000,
   httpOnly: true,
   domain: process.env.DOMAIN,
@@ -69,8 +69,8 @@ export class GqlAuthGuard extends AuthGuard('local') {
       },
     );
 
-    req.res?.cookie('access_token', access_token, HTTP_ONLY_COOKIE_ACCESS);
-    req.res?.cookie('refresh_token', refresh_token, HTTP_ONLY_COOKIE_REFRESH);
+    req.res?.cookie('access_token', access_token, accessCookieOptions);
+    req.res?.cookie('refresh_token', refresh_token, refreshCookieOptions);
 
     return user;
   }
