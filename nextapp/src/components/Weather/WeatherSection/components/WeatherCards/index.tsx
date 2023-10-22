@@ -24,29 +24,29 @@ export function WeatherCards() {
     }
   );
 
-  useEffect(() => {
-    const myPlaces = places.map(place => {
-      const { local_names, ...others } = place;
-      return others;
-    });
-    setCurrentMutation({
-      mutation: getLocation,
-      option: {
-        variables: {
-          input: myPlaces.map(el => {
-            return {
-              name: el.name,
-              state: el.state,
-              country: el.country,
-              lat: el.lat,
-              lon: el.lon,
-            }
-          }),
-        },
-      },
-      error: locationError,
-    });
-  }, [places]);
+  // useEffect(() => {
+  //   const myPlaces = places.map(place => {
+  //     const { local_names, ...others } = place;
+  //     return others;
+  //   });
+  //   setCurrentMutation({
+  //     mutation: getLocation,
+  //     option: {
+  //       variables: {
+  //         input: myPlaces.map(el => {
+  //           return {
+  //             name: el.name,
+  //             state: el.state,
+  //             country: el.country,
+  //             lat: el.lat,
+  //             lon: el.lon,
+  //           }
+  //         }),
+  //       },
+  //     },
+  //     error: locationError,
+  //   });
+  // }, [places]);
 
   return (
     <Box

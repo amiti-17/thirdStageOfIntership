@@ -38,7 +38,7 @@ export default function WeatherPage() {
   }, []);
   
   useEffect(() => {
-    console.log(currentUserData);
+    console.log({currentUserData});
     console.log({currentUserError});
     console.log({currentUserLoading});
     if (currentUserData) {
