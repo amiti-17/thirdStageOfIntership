@@ -1,4 +1,6 @@
+import { Subscription } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
 import { CreateLocationInput } from './dto/createLocation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
@@ -10,6 +12,8 @@ import { selectLocation } from './selectLocation';
 import { Coordinates } from 'src/config/types/coordinates';
 import { WeathersService } from 'src/weathers/weathers.service';
 
+const pubSub = new PubSub();
+
 @Injectable()
 export class LocationsService {
   constructor(
@@ -17,6 +21,16 @@ export class LocationsService {
     private usersService: UsersService,
     private weathersService: WeathersService,
   ) {}
+
+  @Subscription(() => Location, {
+    name: 'locationAdded',
+    resolve: (value) => value,
+    filter: () => true,
+  })
+  subscribeToLocationAdd() {
+    console.log('subscription was triggered ');
+    return pubSub.asyncIterator('locationAdded');
+  }
 
   async create(createLocationInput: CreateLocationInput, usersId: number) {
     const coordinates: Coordinates = {
@@ -73,7 +87,9 @@ export class LocationsService {
       });
       await this.weathersService.create(coordinates);
     }
-    return await this.findOneByCoordinates(coordinates);
+    const currentLocation = await this.findOneByCoordinates(coordinates);
+    pubSub.publish('locationAdded', currentLocation);
+    return currentLocation;
   }
 
   async findAll() {

@@ -14,6 +14,11 @@ import { DaysWModule } from './daysW/daysW.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      subscriptions: {
+        'graphql-ws': {
+          path: '/subscriptions', // /graphql
+        },
+      },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),

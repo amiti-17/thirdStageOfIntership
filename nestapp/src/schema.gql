@@ -89,6 +89,10 @@ type SafeUser {
   name: String!
 }
 
+type Subscription {
+  locationAdded: Location!
+}
+
 input UpdateUserLocationsInput {
   country: String
   lat: Float!
