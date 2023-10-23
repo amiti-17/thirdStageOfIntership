@@ -1,13 +1,10 @@
-import {
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { regExp } from 'src/config/system/regExp';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
+import { regExp } from 'src/config/system/regExp';
+import { UnauthorizedError } from 'src/CustomError/Unauthorized';
 
 const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
 
@@ -40,7 +37,10 @@ export class GqlAuthGuard extends AuthGuard('local') {
     info: any,
     context: ExecutionContext,
   ): TUser {
-    if (err || !user || info) throw err || new UnauthorizedException();
+    if (err || !user || info) {
+      // throw err || new UnauthorizedException();
+      throw new UnauthorizedError();
+    }
 
     const authContext = GqlExecutionContext.create(context);
     const { req } = authContext.getContext();
