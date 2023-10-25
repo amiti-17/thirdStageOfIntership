@@ -1,4 +1,4 @@
-import { LocationType } from "Apollo/locations";
+import { LocationType } from "Apollo/queries/locations";
 import { getUrlForIcon } from "functions/getUrlForIcon";
 import { HeaderWeatherCard } from "./components/HeaderWeatherCard";
 import { FooterWeatherCard } from "./components/FooterWeatherCard";

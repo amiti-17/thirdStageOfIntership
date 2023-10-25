@@ -6,7 +6,7 @@ import RequiredTextField from "./components/RequiredTextField";
 import SubmitOutlinedButton from "./components/SubmitOutlinedButton";
 import CustomError from "CustomError";
 import { getCryptPassword } from "functions/getCryptPassword";
-import { auth } from "Apollo/auth";
+import { auth } from "Apollo/queries/auth";
 import { useFormik } from "formik";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { ShowMsgType, showMsgDefault } from "CustomError/ShowMshType";

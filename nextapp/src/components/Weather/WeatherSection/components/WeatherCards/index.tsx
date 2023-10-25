@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
-import { LocationType, locations as apolloLocations } from "Apollo/locations";
+import { LocationType, locations as apolloLocations } from "Apollo/queries/locations";
 import { useMutation, useSubscription } from "@apollo/client";
 import { CurrentQueryContext } from "Contexts/currentQueryContext";
 import { WeatherCard } from "./components/weatherCard";

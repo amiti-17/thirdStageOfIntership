@@ -1,37 +1,19 @@
 import {
   ApolloClient,
   InMemoryCache,
-  HttpLink,
-  split,
-  from,
-  fromPromise
+  from
 } from "@apollo/client";
-import { Observable } from "apollo-link";
-import { fetchConstants } from "config/system/constants/fetchConstants";
-import { getMainDefinition } from '@apollo/client/utilities';
+import { Observable, FetchResult } from "apollo-link";
 import { onError } from "@apollo/client/link/error";
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import { auth } from "./auth";
+
+import { fetchConstants } from "config/system/constants/fetchConstants";
 import CustomError from "CustomError";
+import { refreshAccessToken } from "./queries/refreshAccessToken";
+import { splitLink } from "./components/splitLink";
 
 export default function getClient(router) {
-  const refreshAccessToken = async () => {
-    const response = await client.mutate({
-        mutation: auth.refreshToken,
-    });
-
-    const accessTokenStatus = response.data;
-    console.log(accessTokenStatus);
-    return accessTokenStatus;
-  };
-
-  const wsLink = new GraphQLWsLink(createClient({
-    url: process.env.NEXT_PUBLIC_BASE_URL_SUBSCRIPTIONS,
-  }));
 
   const errorLink = onError(({ graphQLErrors, networkError, operation, forward  }) => {
-
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
         switch (err.extensions.code) {
@@ -39,8 +21,8 @@ export default function getClient(router) {
             router.refresh();
             break;
           case 'UNAUTHENTICATED':
-            return new Observable(observer => {
-              refreshAccessToken()
+            return new Observable<FetchResult>(observer => {
+              refreshAccessToken(client)
                 .then(refreshResponse => {
                   if (!refreshResponse.refreshToken.status) throw new CustomError(CustomError.unauthorizedMsg);
                 })
@@ -51,39 +33,19 @@ export default function getClient(router) {
                     complete: observer.complete.bind(observer)
                   };
 
-                  // Retry last failed request
                   forward(operation).subscribe(subscriber);
                 })
                 .catch(error => {
-                  // No refresh or client token available, we force user to login
+                  //TODO: No refresh or client token available, we force user to login
                   observer.error(error);
                 });
             });
-            break;
         }
       }
     }
     
-    // console.log('errors: ', networkError, graphQLErrors)
     if (networkError) router.replace('/'); // TODO: rewrite it to normal way...
   });
-
-  const httpLink = new HttpLink({ 
-    uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL,
-    credentials: fetchConstants.include,
-  })
-
-  const splitLink = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query);
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      );
-    },
-    wsLink,
-    httpLink,
-  );
 
   const client = new ApolloClient({
     // uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL,

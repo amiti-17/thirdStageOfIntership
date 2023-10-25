@@ -7,7 +7,7 @@ import { AlertSearchBarContext } from "../../../../../../../Contexts/alertSearch
 import { getNameOfPlace } from "../../../../../../../functions/places/getNameOfPlace";
 import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
 import { useQuery } from "@apollo/client";
-import { locations } from "Apollo/locations";
+import { locations } from "Apollo/queries/locations";
 
 export function SearchInput() {
 

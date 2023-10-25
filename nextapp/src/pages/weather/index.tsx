@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { SafeUserType, users } from "Apollo/users";
+import { SafeUserType, users } from "Apollo/queries/users";
 import { useRouter } from "next/router";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { WeatherSection } from "components/Weather/WeatherSection";
@@ -10,7 +10,7 @@ import { RefreshTokenContext } from "Contexts/refreshTokenContext";
 import { CurrentQueryContext, LazyQueryObjType, MutationObjType } from "Contexts/currentQueryContext";
 import { WeatherLayout } from "components/Weather/WeatherLayout";
 import { Header } from "components/Weather/Header";
-import { auth } from "Apollo/auth";
+import { auth } from "Apollo/queries/auth";
 import { LocationFetchedFromSearchString } from "config/system/types/locations";
 import { PlacesContext } from "Contexts/placesContext";
 import { LoginMsgContext } from "Contexts/loginMsgContext";
