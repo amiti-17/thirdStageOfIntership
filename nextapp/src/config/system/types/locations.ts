@@ -3,8 +3,5 @@ export interface LocationFetchedFromSearchString {
   lat: number,
   lon: number,
   name: string,
-  local_names: {
-    [index: string]: string,
-  }
   state?: string,
 }

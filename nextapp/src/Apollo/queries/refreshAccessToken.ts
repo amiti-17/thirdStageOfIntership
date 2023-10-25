@@ -6,6 +6,5 @@ export const refreshAccessToken = async (client) => {
   });
 
   const accessTokenStatus = response.data;
-  console.log(accessTokenStatus);
   return accessTokenStatus;
 };

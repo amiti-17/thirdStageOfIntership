@@ -108,7 +108,7 @@ export type LocationType = {
   lat: number,
   lon: number,
   id: number,
-  weather: Weather,
+  weather?: Weather,
 }
 
 export type Weather = {

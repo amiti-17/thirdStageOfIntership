@@ -11,7 +11,7 @@ export function WeatherCards() {
 
   const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { setCurrentMutation } = useContext(CurrentQueryContext);
-  const { places } = useContext(PlacesContext);
+  const { places, setPlaces } = useContext(PlacesContext);
   const [ 
     getLocation, 
     { error: locationError, loading: locationLoading, data: locationData }
@@ -23,36 +23,24 @@ export function WeatherCards() {
       },
     }
   );
-  const { data, loading } = useSubscription(apolloLocations.onLocationAdded);
+
+  const { data, loading } = useSubscription(apolloLocations.onLocationAdded, {
+    onData(options) {
+      setPlaces(prev => {
+        console.log(options.data);
+        if (prev.find(el => el.lat === options.data?.data.locationAdded.lat && el.lon === options.data?.data.locationAdded.lon)) {
+          return prev;
+        }
+        const newPlaces = [...prev];
+        newPlaces.push(options.data?.data.locationAdded);
+        return newPlaces;
+      })
+    },
+  });
 
   useEffect(() => {
-    console.log('subscription loading: ', loading);
-    console.log('subscription data: ', data);
-  }, [data, loading]);
-
-  // useEffect(() => {
-  //   const myPlaces = places.map(place => {
-  //     const { local_names, ...others } = place;
-  //     return others;
-  //   });
-  //   setCurrentMutation({
-  //     mutation: getLocation,
-  //     option: {
-  //       variables: {
-  //         input: myPlaces.map(el => {
-  //           return {
-  //             name: el.name,
-  //             state: el.state,
-  //             country: el.country,
-  //             lat: el.lat,
-  //             lon: el.lon,
-  //           }
-  //         }),
-  //       },
-  //     },
-  //     error: locationError,
-  //   });
-  // }, [places]);
+    console.log(places);
+  }, [places]);
 
   return (
     <Box

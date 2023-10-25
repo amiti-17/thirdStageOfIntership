@@ -35,16 +35,16 @@ export function SearchBar() {
         mx: 'auto',
       }}>
         <SearchInput />
-        <Places />
+        {/* <Places /> */}
       </Box>
-      {
+      {/* {
         alertText && 
           <Collapse in={alertTimeOut} onExited={() => setAlertText('')}>
             <Alert severity="warning">
               {alertText}
             </Alert>
           </Collapse>
-      }
+      } */}
     </AlertSearchBarContext.Provider>
   )
 }

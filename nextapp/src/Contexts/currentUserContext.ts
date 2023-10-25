@@ -1,4 +1,15 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { SafeUserType } from "../Apollo/queries/users";
 
-export const CurrentUserContext = React.createContext<SafeUserType>({} as SafeUserType);
+
+export type CurrentUserContextType = {
+  user: SafeUserType,
+  setUser: Dispatch<SetStateAction<SafeUserType>>,
+}
+
+export const defaultCurrentUserContext: CurrentUserContextType = {
+  user: {} as SafeUserType,
+  setUser: () => {},
+}
+
+export const CurrentUserContext = React.createContext<CurrentUserContextType>({} as CurrentUserContextType);

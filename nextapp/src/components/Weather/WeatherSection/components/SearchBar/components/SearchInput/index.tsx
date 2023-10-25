@@ -17,7 +17,7 @@ export function SearchInput() {
   );
 
   const cities: LocationFetchedFromSearchString[] = [
-    { name: 'Kyiv', lat: 0, lon: 0, local_names: {ua: 'Kyiv'} } //TODO: replace this example object with fetched list of places...
+    { name: 'Kyiv', lat: 0, lon: 0 } //TODO: replace this example object with fetched list of places...
   ];
   
   const { setAlertText } = useContext(AlertSearchBarContext);

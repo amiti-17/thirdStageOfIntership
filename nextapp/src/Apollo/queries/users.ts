@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { LocationType } from "./locations";
 
 export const users = {
   createUser: gql`
@@ -57,9 +58,9 @@ export const users = {
 }
 
 export type SafeUserType = {
-  __typename: 'SafeUser',
   name: string,
   email: string,
+  locations: LocationType[],
   id: number,
 }
 

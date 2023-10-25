@@ -31,7 +31,6 @@ export default function getClient(router) {
               return new Observable<FetchResult>(observer => {
                 refreshAccessToken(client)
                   .then(refreshResponse => {
-                    console.log(refreshResponse)
                     if (!refreshResponse?.refreshToken.status) throw new CustomError(CustomError.unauthorizedMsg);
                   })
                   .then(() => {
