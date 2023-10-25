@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "../../../../../Contexts/placesContext";
 import { LocationType, locations as apolloLocations } from "Apollo/locations";
-import { useMutation } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 import { CurrentQueryContext } from "Contexts/currentQueryContext";
 import { WeatherCard } from "./components/weatherCard";
 import CircularIndeterminate from "components/CircularIndeterminate";
@@ -16,13 +16,19 @@ export function WeatherCards() {
     getLocation, 
     { error: locationError, loading: locationLoading, data: locationData }
   ] = useMutation( // TODO: think about rewrite into smaller queries by principe CRUD...
-    apolloLocations.updateUsersInfoAndGetWeather, 
-    { 
+    apolloLocations.updateUsersInfoAndGetWeather,
+    {
       onCompleted(data) {
         setLocations(data.updateUsersLocations);
       },
     }
   );
+  const { data, loading } = useSubscription(apolloLocations.onLocationAdded);
+
+  useEffect(() => {
+    console.log('subscription loading: ', loading);
+    console.log('subscription data: ', data);
+  }, [data, loading]);
 
   // useEffect(() => {
   //   const myPlaces = places.map(place => {

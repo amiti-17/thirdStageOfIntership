@@ -1,0 +1,9 @@
+pub   rsa3072 2023-09-12 [SC] [годен до: 2025-09-11]
+      B16B465ADDE54CD6B1189950A88A79AF8F110260
+uid                      Tymofii <timjobit@gmail.com>
+sub   rsa3072 2023-09-12 [E] [годен до: 2025-09-11]
+
+
+gpg: ключ A88A79AF8F110260 помечен как абсолютно доверенный
+gpg: создан каталог '/home/sysgears/.gnupg/openpgp-revocs.d'
+gpg: сертификат отзыва записан в '/home/sysgears/.gnupg/openpgp-revocs.d/B16B465ADDE54CD6B1189950A88A79AF8F110260.rev'.

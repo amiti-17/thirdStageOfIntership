@@ -9,4 +9,8 @@ export const strConstants = {
   email: 'email',
   password: 'password',
   loadingLong: 'Loading ...',
+  warning: 'warning',
+  error: 'error',
+  info: 'info',
+  success: 'success',
 }

@@ -82,7 +82,22 @@ export const locations = {
         lon
       }
     }
-  `
+  `,
+  onLocationAdded: gql`
+    subscription onLocationAdded {
+      locationAdded {
+        id
+        lat
+        lon
+        name
+        weather {
+          id
+          currentId
+        }
+      }
+    }
+  `,
+  
   
 }
 
