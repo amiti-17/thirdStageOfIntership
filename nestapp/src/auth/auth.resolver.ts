@@ -10,6 +10,7 @@ import { CreateUserInput } from 'src/users/dto/create-user.input';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
+import { LogoutGuard } from './guards/logout.guard';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -22,6 +23,12 @@ export class AuthResolver {
     @Args('authLoginInput') authLoginInput: AuthLoginInput,
   ): Promise<LoginResponse> {
     return await this.authService.login();
+  }
+
+  @Mutation(() => LoginResponse)
+  @UseGuards(LogoutGuard)
+  async logout() {
+    return await this.authService.logout();
   }
 
   @UseGuards(JwtAuthGuard)

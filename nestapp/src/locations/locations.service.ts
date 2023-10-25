@@ -28,7 +28,6 @@ export class LocationsService {
     filter: () => true,
   })
   subscribeToLocationAdd() {
-    console.log('subscription was triggered ');
     return pubSub.asyncIterator('locationAdded');
   }
 

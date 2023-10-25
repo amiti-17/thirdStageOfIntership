@@ -46,6 +46,8 @@ export default function LoginForm() {
         // Object.keys(error).map(el => console.log('map: ', el, error[el]))
         if (error.graphQLErrors[0]) setShowMsg(graphqlErrorsHandler(error.graphQLErrors));
         if (error.networkError) setShowMsg(networkErrorsHandler(error.networkError));
+
+        console.error('unrecognized error in Form => LoginForm => formik => onSubmit: ', error);
       } finally {
         setIsLoading(false);
       }

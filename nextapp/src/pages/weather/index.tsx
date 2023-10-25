@@ -38,9 +38,9 @@ export default function WeatherPage() {
   }, []);
   
   useEffect(() => {
-    console.log({currentUserData});
-    console.log({currentUserError});
-    console.log({currentUserLoading});
+    // console.log({currentUserData});
+    // console.log({currentUserError});
+    // console.log({currentUserLoading});
     if (currentUserData) {
       setCurrentUser(currentUserData?.getCurrentUser);
       setPlaces(currentUserData?.getCurrentUser.locations);

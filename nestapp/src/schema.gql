@@ -59,6 +59,7 @@ type LoginResponse {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): SafeUser!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
+  logout: LoginResponse!
   refreshToken: RefreshTokenResponse!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!

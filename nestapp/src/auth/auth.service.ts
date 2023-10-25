@@ -32,6 +32,12 @@ export class AuthService {
     };
   }
 
+  async logout() {
+    return {
+      status: true,
+    };
+  }
+
   async signup(createUserInput: CreateUserInput) {
     const user = await this.usersServices.findOne(createUserInput.email);
 

@@ -7,11 +7,11 @@ import LoginForm from 'components/loginPage/Form';
 export default function Login() {
 
   return (
-      <Container component="main" maxWidth="xs">
+      <>
         <CssBaseline />
         <LoginLayout>
           <LoginForm />
         </LoginLayout>
-      </Container>
+      </>
   );
 }

@@ -21,6 +21,7 @@ import { DaysWModule } from './daysW/daysW.module';
       },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      // context: ({ req, res }) => ({ req, res }),
     }),
     UsersModule,
     LocationsModule,
