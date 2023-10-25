@@ -84,7 +84,7 @@ export default function LoginForm() {
     try {
         const getValidatedFormData: LoginType = validateInputValue(myFormData);
         getValidatedFormData.password = getCryptPassword(getValidatedFormData.password);
-      
+        console.log(getValidatedFormData);
       const isUserOk = await getTokenMutation({
         variables: { input: getValidatedFormData },
       });
