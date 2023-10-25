@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import { ChangeEvent, FocusEvent } from "react";
 
 export default function RequiredTextField({ 
     id,
@@ -8,6 +9,9 @@ export default function RequiredTextField({
     autoFocus,
     type,
     error,
+    onChange,
+    onBlur,
+    value,
     errorText
   }: { 
     id: string,
@@ -17,11 +21,15 @@ export default function RequiredTextField({
     autoFocus?: boolean,
     type?: string,
     error?: boolean,
+    onChange: { (e: ChangeEvent<any>): void; <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any> ? void : (e: string | ChangeEvent<any>) => void; },
+    onBlur: { (e: FocusEvent<any, Element>): void; <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void; },
+    value: {},
     errorText?: string,
   }) {
 
-  name ??= id;
-
+  name ??= id
+  type ??= id
+  
   return (
     <TextField
       margin="normal"
@@ -35,6 +43,12 @@ export default function RequiredTextField({
       error={error}
       helperText= {error ? errorText ? errorText : 'Incorrect entry. Failed validation.' : ''}
       type={type ? type : 'text'}
+      onChange={onChange}
+      onBlur={onBlur}
+      // sx={{
+      //   minWidth: '300px',
+      //   fontSize: 'larger',
+      // }}
     />
   )
 }

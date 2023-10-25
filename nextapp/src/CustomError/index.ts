@@ -11,6 +11,12 @@ export default class CustomError extends Error {
   static pwdShouldContainUpperCase: string;
   static pwdShouldContainLowerCase: string;
   static pwdShouldContainDigit: string;
+  static requiredEmail: string;
+  static requiredPassword: string;
+  static strangeError: string;
+  static networkError: string;
+  static successfullyLogIn: string;
+  static 401_401: string;
 
   constructor(public message: string) {
     super(message);
@@ -27,6 +33,12 @@ export default class CustomError extends Error {
     CustomError.pwdShouldContainUpperCase = "Must contain at least one letter in Uppercase";
     CustomError.pwdShouldContainLowerCase = "Must contain at least one letter in lowercase";
     CustomError.pwdShouldContainDigit = "Must contain at least one digit";
+    CustomError.requiredEmail = "Email is required field...";
+    CustomError.requiredPassword = "Password is required field...";
+    CustomError.strangeError = "Strange error, need to be learned";
+    CustomError.networkError = "Something happens with network, try again later...";
+    CustomError.successfullyLogIn = "You successfully log in!";
+    CustomError['401_401'] = '401_401';
   }
 
 }
