@@ -9,7 +9,7 @@ import CircularIndeterminate from "components/CircularIndeterminate";
 
 export function WeatherCards() {
 
-  const [ locations, setLocations ] = useState<LocationType[]>([]);
+  // const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { setCurrentMutation } = useContext(CurrentQueryContext);
   const { places, setPlaces } = useContext(PlacesContext);
   const [ 
@@ -17,26 +17,35 @@ export function WeatherCards() {
     { error: locationError, loading: locationLoading, data: locationData }
   ] = useMutation( // TODO: think about rewrite into smaller queries by principe CRUD...
     apolloLocations.updateUsersInfoAndGetWeather,
-    {
-      onCompleted(data) {
-        setLocations(data.updateUsersLocations);
-      },
-    }
+    // {
+    //   onCompleted(data) {
+    //     setLocations(data.updateUsersLocations);
+    //   },
+    // }
   );
 
-  const { data, loading } = useSubscription(apolloLocations.onLocationAdded, {
+  const { data: locationAdded } = useSubscription(apolloLocations.onLocationAdded, {
     onData(options) {
+      console.log(options);
       setPlaces(prev => {
-        console.log(options.data);
         if (prev.find(el => el.lat === options.data?.data.locationAdded.lat && el.lon === options.data?.data.locationAdded.lon)) {
           return prev;
         }
-        const newPlaces = [...prev];
+        const newPlaces = [ ...prev ];
         newPlaces.push(options.data?.data.locationAdded);
         return newPlaces;
       })
     },
   });
+
+  const {data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
+    onData(options) {
+      console.log(options);
+      setPlaces(prev => {
+        return [ ...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)) ];
+      })
+    },
+  })
 
   useEffect(() => {
     console.log(places);
@@ -57,7 +66,7 @@ export function WeatherCards() {
       {
         locationLoading ?
           <CircularIndeterminate /> :
-          locations.map(location => <WeatherCard key={location.id} location={location} />)
+          places.map(place => <WeatherCard key={place.id} place={place} />)
       }
     </Box>
   )

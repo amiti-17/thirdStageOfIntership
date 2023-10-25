@@ -1,6 +1,4 @@
-import { Subscription } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
-import { PubSub } from 'graphql-subscriptions';
 import { CreateLocationInput } from './dto/createLocation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
@@ -11,8 +9,7 @@ import { CoordinatesInput } from './dto/coordinates.input';
 import { selectLocation } from './selectLocation';
 import { Coordinates } from 'src/config/types/coordinates';
 import { WeathersService } from 'src/weathers/weathers.service';
-
-const pubSub = new PubSub();
+import { pubSub } from './pubSub';
 
 @Injectable()
 export class LocationsService {
@@ -21,15 +18,6 @@ export class LocationsService {
     private usersService: UsersService,
     private weathersService: WeathersService,
   ) {}
-
-  @Subscription(() => Location, {
-    name: 'locationAdded',
-    resolve: (value) => value,
-    filter: () => true,
-  })
-  subscribeToLocationAdd() {
-    return pubSub.asyncIterator('locationAdded');
-  }
 
   async create(createLocationInput: CreateLocationInput, usersId: number) {
     const coordinates: Coordinates = {
@@ -191,7 +179,11 @@ export class LocationsService {
       return;
     }
     await this.weathersService.remove(location.weatherId);
-    return await this.prisma.locations.delete({ where: { id } });
+    const currentLocation = await this.prisma.locations.delete({
+      where: { id },
+    });
+    pubSub.publish('locationRemoved', currentLocation);
+    return currentLocation;
   }
 
   async removeByCoordinates(
@@ -213,6 +205,10 @@ export class LocationsService {
       return;
     }
     await this.weathersService.remove(location.weatherId);
-    return await this.prisma.locations.delete({ where: { ll: coordinates } });
+    const currentLocation = await this.prisma.locations.delete({
+      where: { ll: coordinates },
+    });
+    pubSub.publish('locationRemoved', currentLocation);
+    return currentLocation;
   }
 }

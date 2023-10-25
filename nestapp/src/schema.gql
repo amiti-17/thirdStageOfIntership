@@ -70,6 +70,7 @@ type Query {
   findById(id: Float!): SafeUser!
   getCurrentUser: SafeUser!
   getListOfPlaces(quantity: Int!): [Location!]!
+  getWeather(id: Int!): Weather!
   locationByCoordinates(coordinates: FindOneByFetchedObjInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
@@ -92,6 +93,7 @@ type SafeUser {
 
 type Subscription {
   locationAdded: Location!
+  locationRemoved: Location!
 }
 
 input UpdateUserLocationsInput {

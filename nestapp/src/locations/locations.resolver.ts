@@ -1,10 +1,19 @@
-import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Context,
+  Subscription,
+} from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
-import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
+import { pubSub } from './pubSub';
 
 @Resolver(() => Location)
 export class LocationsResolver {
@@ -54,5 +63,23 @@ export class LocationsResolver {
       updateUserLocationInput,
       context,
     );
+  }
+
+  @Subscription(() => Location, {
+    name: 'locationAdded',
+    resolve: (value) => value,
+    filter: () => true,
+  })
+  subscribeToLocationAdd() {
+    return pubSub.asyncIterator('locationAdded');
+  }
+
+  @Subscription(() => Location, {
+    name: 'locationRemoved',
+    resolve: (value) => value,
+    filter: () => true,
+  })
+  subscribeToLocationRemoved() {
+    return pubSub.asyncIterator('locationRemoved');
   }
 }

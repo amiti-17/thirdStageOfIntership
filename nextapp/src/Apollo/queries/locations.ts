@@ -97,7 +97,16 @@ export const locations = {
       }
     }
   `,
-  
+  onLocationRemoved: gql`
+    subscription onLocationRemoved {
+      locationRemoved {
+        id
+        name
+        lat
+        lon
+      }
+    }
+  `,
   
 }
 
