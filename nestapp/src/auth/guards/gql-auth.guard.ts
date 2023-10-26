@@ -9,7 +9,7 @@ import { UnauthorizedError } from 'src/CustomError/Unauthorized';
 const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
 
 const accessCookieOptions: CookieOptions = {
-  maxAge: Number(jwtExpiresSecond) * 1000,
+  maxAge: Number(jwtExpiresSecond) * 0.01,
   httpOnly: true,
   domain: process.env.DOMAIN,
 };
