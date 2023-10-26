@@ -4,7 +4,7 @@ let attempt = 0;
 
 export const refreshAccessToken = async (client) => {
   attempt++;
-  console.log(attempt);
+  
   if (attempt == 5) {
     attempt = 0;
     throw new Error('myError in auth');
@@ -13,7 +13,7 @@ export const refreshAccessToken = async (client) => {
   const response = await client.mutate({
       mutation: auth.refreshToken,
   });
-  
+
   if (response?.data.refreshToken.status) {
     attempt = 0;
   }

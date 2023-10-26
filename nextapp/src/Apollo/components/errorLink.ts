@@ -1,4 +1,4 @@
-import { onError } from "@apollo/client/link/error";
+import { ErrorHandler, onError } from "@apollo/client/link/error";
 import { refreshAccessToken } from "Apollo/queries/refreshAccessToken";
 import CustomError from "CustomError";
 import { FetchResult, Observable } from "apollo-link";
@@ -13,11 +13,6 @@ export const errorLink = (router) => onError(({ graphQLErrors, networkError, ope
             router.refresh();
             break;
           case 'UNAUTHENTICATED':
-            // refreshAccessToken(client).catch((err) => {
-            //   router.replace('/');
-            //   window.location.assign('http://localhost:3000');
-            // });
-            // forward(operation);
             return new Observable<FetchResult>(observer => {
               refreshAccessToken(globalClient)
                 .then(refreshResponse => {
@@ -33,7 +28,6 @@ export const errorLink = (router) => onError(({ graphQLErrors, networkError, ope
                 })
                 .catch(err => {
                   if (window.location.pathname !== '/') router.replace('/');
-                  
                 })
             });
         }

@@ -26,7 +26,7 @@ export function WeatherCards() {
 
   const { data: locationAdded } = useSubscription(apolloLocations.onLocationAdded, {
     onData(options) {
-      console.log(options);
+      console.log('location added: ', options);
       setPlaces(prev => {
         if (prev.find(el => el.lat === options.data?.data.locationAdded.lat && el.lon === options.data?.data.locationAdded.lon)) {
           return prev;
@@ -40,7 +40,7 @@ export function WeatherCards() {
 
   const {data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
     onData(options) {
-      console.log(options);
+      console.log('location removed', options);
       setPlaces(prev => {
         return [ ...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)) ];
       })
@@ -50,6 +50,14 @@ export function WeatherCards() {
   useEffect(() => {
     console.log(places);
   }, [places]);
+
+  // useEffect(() => {
+  //   console.log(locationAdded);
+  // }, [locationAdded]);
+
+  // useEffect(() => {
+  //   console.log(locationRemoved);
+  // }, [locationRemoved]);
 
   return (
     <Box

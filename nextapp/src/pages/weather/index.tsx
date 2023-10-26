@@ -25,7 +25,6 @@ export default function WeatherPage() {
   
   useEffect(() => {
     if (user?.email) {
-      console.log(user);
       setPlaces(user?.locations);
     }
   }, [user]);
