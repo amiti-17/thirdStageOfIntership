@@ -14,9 +14,7 @@ import { useEffect } from "react";
 export function WeatherCard({ place }: {place: LocationFetchedFromSearchString}) {
 
   const { data, loading, error } = useQuery(weathers.getById, { variables: { input: place.id } });
-
-  // useEffect(() => getData())
-  useEffect(() => console.log(data), [data]);
+  
   return (
     <>
       { loading && !data?.getWeather && <CircularIndeterminate /> }

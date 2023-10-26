@@ -92,8 +92,8 @@ type SafeUser {
 }
 
 type Subscription {
-  locationAdded: Location!
-  locationRemoved: Location!
+  locationAdded(usersId: Int!): Location!
+  locationRemoved(usersId: Int!): Location!
 }
 
 input UpdateUserLocationsInput {

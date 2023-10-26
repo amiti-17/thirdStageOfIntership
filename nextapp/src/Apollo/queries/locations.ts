@@ -84,8 +84,8 @@ export const locations = {
     }
   `,
   onLocationAdded: gql`
-    subscription onLocationAdded {
-      locationAdded {
+    subscription onLocationAdded($input: Int!) {
+      locationAdded(usersId: $input) {
         id
         lat
         lon
@@ -94,16 +94,22 @@ export const locations = {
           id
           currentId
         }
+        users {
+          id
+        }
       }
     }
   `,
   onLocationRemoved: gql`
-    subscription onLocationRemoved {
-      locationRemoved {
+    subscription onLocationRemoved($input: Int!) {
+      locationRemoved(usersId: $input) {
         id
         name
         lat
         lon
+        users {
+          id
+        }
       }
     }
   `,

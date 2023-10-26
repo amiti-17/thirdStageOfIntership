@@ -181,6 +181,7 @@ export class LocationsService {
     await this.weathersService.remove(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { id },
+      select: selectLocation,
     });
     pubSub.publish('locationRemoved', currentLocation);
     return currentLocation;
@@ -207,6 +208,7 @@ export class LocationsService {
     await this.weathersService.remove(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { ll: coordinates },
+      select: selectLocation,
     });
     pubSub.publish('locationRemoved', currentLocation);
     return currentLocation;

@@ -68,18 +68,34 @@ export class LocationsResolver {
   @Subscription(() => Location, {
     name: 'locationAdded',
     resolve: (value) => value,
-    filter: () => true,
+    filter: (payload, variables, context) => {
+      return Boolean(payload.users.find((el) => el.id === variables.usersId));
+      console.log('payload: ', payload);
+      console.log('variables: ', variables);
+      console.log('context: ', context);
+      return true;
+    },
   })
-  subscribeToLocationAdd() {
+  subscribeToLocationAdd(
+    @Args('usersId', { type: () => Int }) usersId: string,
+  ) {
     return pubSub.asyncIterator('locationAdded');
   }
 
   @Subscription(() => Location, {
     name: 'locationRemoved',
     resolve: (value) => value,
-    filter: () => true,
+    filter: (payload, variables, context) => {
+      return Boolean(payload.users.find((el) => el.id === variables.usersId));
+      console.log('payload1: ', payload);
+      console.log('variables1: ', variables);
+      console.log('context1: ', context);
+      return true;
+    },
   })
-  subscribeToLocationRemoved() {
+  subscribeToLocationRemoved(
+    @Args('usersId', { type: () => Int }) usersId: string,
+  ) {
     return pubSub.asyncIterator('locationRemoved');
   }
 }
