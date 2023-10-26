@@ -7,6 +7,7 @@ import { UserContext } from "../../Contexts/userContext";
 import { strConstants } from "config/system/constants/strConstants";
 import { useQuery } from "@apollo/client";
 import { users } from "Apollo/queries/users";
+import { cssConstants } from "@/src/cssConstants";
 
 export function Header() {
 
@@ -21,16 +22,21 @@ export function Header() {
   }, [currentUserData]);
   
   return (
-    <Box component='header' sx={{
-      pt: 2,
-      px: 4,
-      // bgcolor: 'lightGreen',
-      width: '100%',
-      height: '80px',
-      display: "flex",
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}>
+    <Box 
+      component='header' 
+      sx={{
+        pt: 2,
+        px: 4,
+        mx: 'auto',
+        // bgcolor: 'lightGreen',
+        width: '100%',
+        height: '80px',
+        display: "flex",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        maxWidth: cssConstants.maxPageWidth,
+      }}
+    >
       <Logo />
       {user?.email && <UserAvatar {...userAvatarData} title={user?.name ?? strConstants.username}/>}
     </Box>

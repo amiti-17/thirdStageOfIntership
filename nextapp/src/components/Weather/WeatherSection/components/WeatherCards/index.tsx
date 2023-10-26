@@ -1,11 +1,9 @@
 import { Box } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import { PlacesContext } from "../../../../../Contexts/placesContext";
-import { LocationType, locations as apolloLocations } from "Apollo/queries/locations";
-import { useMutation, useSubscription } from "@apollo/client";
-import { CurrentQueryContext } from "Contexts/currentQueryContext";
+import React, { useContext, useEffect } from "react";
+import { PlacesContext } from "Contexts/placesContext";
+import { locations as apolloLocations } from "Apollo/queries/locations";
+import { useSubscription } from "@apollo/client";
 import { WeatherCard } from "./components/weatherCard";
-import CircularIndeterminate from "components/CircularIndeterminate";
 import { UserContext } from "Contexts/userContext";
 
 export function WeatherCards() {
@@ -13,19 +11,13 @@ export function WeatherCards() {
   // const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { places, setPlaces } = useContext(PlacesContext);
   const { user } = useContext(UserContext);
-  const [ 
-    getLocation, 
-    { error: locationError, loading: locationLoading, data: locationData }
-  ] = useMutation(
-    apolloLocations.updateUsersInfoAndGetWeather,
-  );
 
   const { data: locationAdded } = useSubscription(apolloLocations.onLocationAdded, {
     variables: { input: user.id },
     onData(options) {
       console.log('location added: ', options);
       setPlaces(prev => {
-        if (prev.find(el => el.id === options.data?.data.locationAdded.id)) { // lat === options.data?.data.locationAdded.lat && el.lon === options.data?.data.locationAdded.lon)) {
+        if (prev.find(el => el.id === options.data?.data.locationAdded.id)) {
           return prev;
         }
         const newPlaces = [ ...prev ];
@@ -62,11 +54,8 @@ export function WeatherCards() {
         gap: '30px',
       }}
     >
-      {
-        locationLoading ?
-          <CircularIndeterminate /> :
-          places.map(place => <WeatherCard key={place.id} place={place} />)
-      }
+      { places.map(place => <WeatherCard key={place.id} place={place} />) }
+      { !places[0]?.name && ('Try to add any of places') }
     </Box>
   )
 }

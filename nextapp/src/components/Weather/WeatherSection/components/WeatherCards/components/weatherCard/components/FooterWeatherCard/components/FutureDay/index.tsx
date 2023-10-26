@@ -5,6 +5,7 @@ import Collapse from '@mui/material/Collapse';
 import { useState } from 'react';
 import { getDate } from 'functions/timeAndDate/getDate';
 import { digits } from 'config/system/constants/digits';
+import { cssConstants } from '@/src/cssConstants';
 
 export function FutureDay({ daily }: { daily: string }) {
 
@@ -30,7 +31,7 @@ export function FutureDay({ daily }: { daily: string }) {
             width='40px' 
             loading='lazy'
             sx={{
-              bgcolor: grey[300],
+              bgcolor: cssConstants.backgroundForIcon,
               borderRadius: '50%'
             }}
           />

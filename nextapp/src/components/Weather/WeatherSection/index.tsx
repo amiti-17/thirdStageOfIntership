@@ -6,13 +6,13 @@ import React from 'react';
 export function WeatherSection() {
 
   return (
-      <Stack 
-        direction='column'
-        gap='10px'
-        component='section'
-      >
-        <SearchBar />
-        <WeatherCards />
-      </Stack>
+    <Stack
+      direction='column'
+      gap='30px'
+      component='section'
+    >
+      <SearchBar />
+      <WeatherCards />
+    </Stack>
   )
 }

@@ -9,6 +9,7 @@ import { useMutation } from "@apollo/client";
 import { locations } from "Apollo/queries/locations";
 import { useContext } from "react";
 import { UserContext } from "Contexts/userContext";
+import { cssConstants } from "@/src/cssConstants";
 
 export function HeaderWeatherCard({ name, currentDt, icon, onDeleteHandler }: { name: string, currentDt: number, icon: string, onDeleteHandler: () => {} }) {
 
@@ -27,11 +28,11 @@ export function HeaderWeatherCard({ name, currentDt, icon, onDeleteHandler }: { 
       <Box 
         component='img' 
         src={getUrlForIcon(icon)} 
-        width='50px' 
+        width='50px'
         loading="lazy" 
         title="weather icon"
         sx={{
-          bgcolor: grey[300],
+          bgcolor: cssConstants.backgroundForIcon,
           borderRadius: '50%'
         }}
       />
