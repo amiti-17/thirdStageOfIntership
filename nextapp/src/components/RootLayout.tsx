@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { ApolloProvider, useQuery } from '@apollo/client';
 import { useRouter } from "next/navigation";
 import getClient from '../Apollo';
-import { CurrentUserContext } from 'Contexts/currentUserContext';
+import { UserContext } from 'Contexts/userContext';
 import Footer from './Footer';
-import { SafeUserType, users } from 'Apollo/queries/users';
+import { SafeUserType } from 'Apollo/queries/users';
 import { Header } from './Header';
 
 export default function RootLayout({ children } : { children: React.ReactNode }): JSX.Element {
@@ -16,11 +16,11 @@ export default function RootLayout({ children } : { children: React.ReactNode })
   return (
     //ToThink: Is UserProvider should be here???
       <ApolloProvider client={client}>
-        <CurrentUserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser }}>
           <Header />
           {children}
           <Footer />
-        </CurrentUserContext.Provider>
+        </UserContext.Provider>
       </ApolloProvider>
   );
 }

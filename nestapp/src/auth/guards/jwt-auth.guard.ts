@@ -6,6 +6,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
+import { strConstants } from 'src/config/public/strConstants';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -24,7 +25,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const request = ctx.getContext().req;
     try {
       const payload = await this.jwtService.verifyAsync(
-        request.cookies['access_token'],
+        request.cookies[strConstants.accessToken],
         {
           secret: process.env.ACCESS_SECRET,
           ignoreExpiration: false,

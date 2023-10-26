@@ -1,7 +1,23 @@
-import { Avatar, Box, Stack, SxProps } from "@mui/material"
-import { strConstants } from "config/system/constants/strConstants"
+import { useMutation } from "@apollo/client"
+import { Avatar, Box, Button, Stack, SxProps } from "@mui/material"
+import { useRouter } from "next/navigation";
+import { auth } from "Apollo/queries/auth"
+import { UserContext } from "Contexts/userContext";
+import CircularIndeterminate from "components/CircularIndeterminate";
+import { strConstants } from "config/system/constants/strConstants";
+import { useContext } from "react";
 
 export function UserAvatar(props: {sx: SxProps, children: string, title: string}) {
+
+  const [ logOut, { data: logoutData, loading: logoutLoading, error: logoutError } ] = useMutation(auth.logout);
+  const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
+
+  const logoutHandler = () => {
+    logOut();
+    setUser(null);
+    if (window.location.pathname !== '/') router.replace('/');
+  }
 
   return (
     <Stack
@@ -10,7 +26,21 @@ export function UserAvatar(props: {sx: SxProps, children: string, title: string}
       }}
     >
       <Avatar title={props.title} sx={props.sx} children={props.children} alt="users image"/>
-      <Box>{strConstants.logOut}</Box>
+      {logoutLoading && <CircularIndeterminate />}
+      {
+        !logoutLoading && <Button
+          sx={{
+            fontSize: '13px',
+            m: '3px',
+            p: '3px 7px',
+          }}
+          onClick={(e) => {
+            logoutHandler();
+          }}
+        >
+          {strConstants.logOut}
+        </Button>
+      }
     </Stack>
   )
   

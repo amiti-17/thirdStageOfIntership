@@ -3,14 +3,14 @@ import { stringAvatar } from "./stringAvatar";
 import { Logo } from "./components/Logo";
 import { UserAvatar } from "./components/Avatar";
 import { useContext, useEffect } from "react";
-import { CurrentUserContext } from "../../Contexts/currentUserContext";
+import { UserContext } from "../../Contexts/userContext";
 import { strConstants } from "config/system/constants/strConstants";
 import { useQuery } from "@apollo/client";
 import { users } from "Apollo/queries/users";
 
 export function Header() {
 
-  const { user, setUser } = useContext(CurrentUserContext);
+  const { user, setUser } = useContext(UserContext);
   const userAvatarData = stringAvatar(user?.name ?? strConstants.usersName);
   const { data: currentUserData, error: currentUserError, loading: currentUserLoading } = useQuery(users.getCurrentUser);
 

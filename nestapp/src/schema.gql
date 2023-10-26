@@ -7,6 +7,14 @@ input AuthLoginInput {
   password: String!
 }
 
+input CreateLocationInput {
+  country: String
+  lat: Float!
+  lon: Float!
+  name: String!
+  state: String
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -57,10 +65,12 @@ type LoginResponse {
 }
 
 type Mutation {
+  createLocation(locationInput: CreateLocationInput!, usersId: Int!): Location!
   createUser(createUserInput: CreateUserInput!): SafeUser!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
   logout: LoginResponse!
   refreshToken: RefreshTokenResponse!
+  removeLocation(locationsId: Int!, usersId: Int!): Location!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
   updateUsersLocations(updateUserLocationInput: [UpdateUserLocationsInput!]!): [Location!]!

@@ -147,6 +147,7 @@ export class LocationsService {
           currentUserLocal.weatherId,
           coordinates,
         );
+        // pubSub.publish('locationUpdated', currentLocation);
       } else {
         await this.create(fetchedUserLocations[i], context?.req?.user.sub);
       }
@@ -165,8 +166,9 @@ export class LocationsService {
 
   async remove(id: number, usersId: number): Promise<Location> {
     const location = await this.findOne(id);
+    // console.log(context);
     if (location.users.length > 1) {
-      await this.prisma.locations.update({
+      const currentLocation = await this.prisma.locations.update({
         where: {
           id,
         },
@@ -175,14 +177,17 @@ export class LocationsService {
             disconnect: { id: usersId },
           },
         },
+        select: selectLocation,
       });
-      return;
+      pubSub.publish('locationRemoved', currentLocation);
+      return location;
     }
     await this.weathersService.remove(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { id },
       select: selectLocation,
     });
+    currentLocation.users = [];
     pubSub.publish('locationRemoved', currentLocation);
     return currentLocation;
   }
@@ -193,7 +198,7 @@ export class LocationsService {
   ): Promise<Location> {
     const location = await this.findOneByCoordinates(coordinates);
     if (location.users.length > 1) {
-      await this.prisma.locations.update({
+      const currentLocation = await this.prisma.locations.update({
         where: {
           ll: { ...coordinates },
         },
@@ -202,14 +207,17 @@ export class LocationsService {
             disconnect: { id: usersId },
           },
         },
+        select: selectLocation,
       });
-      return;
+      pubSub.publish('locationRemoved', currentLocation);
+      return location;
     }
     await this.weathersService.remove(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { ll: coordinates },
       select: selectLocation,
     });
+    currentLocation.users = [];
     pubSub.publish('locationRemoved', currentLocation);
     return currentLocation;
   }

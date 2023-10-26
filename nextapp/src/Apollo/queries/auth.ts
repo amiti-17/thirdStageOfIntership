@@ -8,6 +8,13 @@ export const auth = {
       }
     }
   `,
+  logout: gql`
+    mutation logout {
+      logout {
+        status
+      }
+    }
+  `,
   refreshToken: gql`
     mutation GetNewAccessToken{
       refreshToken {

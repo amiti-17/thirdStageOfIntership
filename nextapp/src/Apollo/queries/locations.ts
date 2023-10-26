@@ -57,11 +57,17 @@ export const locations = {
     }
   `,
   createLocation: gql`
-    mutation CreateLocation($coordinates: CreateLocationInput!) {
-      createLocation(createLocationInput: $coordinates) {
+    mutation createLocation($input: CreateLocationInput!, $usersId: Int!) {
+      createLocation(locationInput: $input, usersId: $usersId) {
+        id
         lat
         lon
-        id
+        name
+        country
+        weatherId
+        users {
+          id
+        }
       }
     }
   `,
@@ -75,11 +81,17 @@ export const locations = {
     }
   `,
   removeLocations: gql`
-    mutation RemoveLocation($id: Int!) {
-      removeLocation(id: $id) {
+    mutation removeLocation($locationsId: Int!, $usersId: Int!) {
+      removeLocation(locationsId: $locationsId, usersId: $usersId) {
         id
         lat
         lon
+        name
+        country
+        weatherId
+        users {
+          id
+        }
       }
     }
   `,

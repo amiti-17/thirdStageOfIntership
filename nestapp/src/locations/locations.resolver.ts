@@ -14,6 +14,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
 import { pubSub } from './pubSub';
+import { CreateLocationInput } from './dto/createLocation.input';
 
 @Resolver(() => Location)
 export class LocationsResolver {
@@ -44,7 +45,7 @@ export class LocationsResolver {
     // };
   }
 
-  @Query(() => [Location])
+  @Query(() => [Location], { name: 'getListOfPlaces' })
   @UseGuards(JwtAuthGuard)
   async getListOfPlaces(
     @Args('quantity', { type: () => Int }) quantity: number,
@@ -52,7 +53,27 @@ export class LocationsResolver {
     return await this.locationsService.getListOfPlaces(quantity);
   }
 
-  @Mutation(() => [Location])
+  @Mutation(() => Location, { name: 'createLocation' })
+  @UseGuards(JwtAuthGuard)
+  async create(
+    @Args('locationInput', { type: () => CreateLocationInput })
+    locationInput: CreateLocationInput,
+    @Args('usersId', { type: () => Int }) usersId: number,
+  ): Promise<Location> {
+    return await this.locationsService.create(locationInput, usersId);
+  }
+
+  @Mutation(() => Location, { name: 'removeLocation' })
+  @UseGuards(JwtAuthGuard)
+  async remove(
+    @Args('locationsId', { type: () => Int })
+    locationsId: number,
+    @Args('usersId', { type: () => Int }) usersId: number,
+  ): Promise<Location> {
+    return await this.locationsService.remove(locationsId, usersId);
+  }
+
+  @Mutation(() => [Location], { name: 'updateUsersLocations' })
   @UseGuards(JwtAuthGuard)
   async updateUsersLocations(
     @Args('updateUserLocationInput', { type: () => [UpdateUserLocationsInput] })
@@ -68,11 +89,10 @@ export class LocationsResolver {
   @Subscription(() => Location, {
     name: 'locationAdded',
     resolve: (value) => value,
-    filter: (payload, variables, context) => {
+    filter: (payload, variables) => {
       return Boolean(payload.users.find((el) => el.id === variables.usersId));
       console.log('payload: ', payload);
       console.log('variables: ', variables);
-      console.log('context: ', context);
       return true;
     },
   })
@@ -82,18 +102,33 @@ export class LocationsResolver {
     return pubSub.asyncIterator('locationAdded');
   }
 
+  // @Subscription(() => Location, {
+  //   name: 'locationUpdated',
+  //   resolve: (value) => value,
+  //   filter: (payload, variables, context) => {
+  //     return Boolean(payload.users.find((el) => el.id === variables.usersId));
+  //     console.log('payload1: ', payload);
+  //     console.log('variables1: ', variables);
+  //     console.log('context1: ', context);
+  //     return true;
+  //   },
+  // })
+  // subscribeToLocationUpdate(
+  //   @Args('usersId', { type: () => Int }) usersId: string,
+  // ) {
+  //   return pubSub.asyncIterator('locationUpdated');
+  // }
+
   @Subscription(() => Location, {
     name: 'locationRemoved',
     resolve: (value) => value,
-    filter: (payload, variables, context) => {
-      return Boolean(payload.users.find((el) => el.id === variables.usersId));
-      console.log('payload1: ', payload);
-      console.log('variables1: ', variables);
-      console.log('context1: ', context);
-      return true;
+    filter: (payload, variables) => {
+      // console.log('payload: ', payload);
+      if (!payload.users) return true;
+      return !Boolean(payload.users?.find((el) => el.id === variables.usersId));
     },
   })
-  subscribeToLocationRemoved(
+  subscribeToLocationRemove(
     @Args('usersId', { type: () => Int }) usersId: string,
   ) {
     return pubSub.asyncIterator('locationRemoved');

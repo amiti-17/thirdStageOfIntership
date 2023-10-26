@@ -6,13 +6,13 @@ import { useMutation, useSubscription } from "@apollo/client";
 import { CurrentQueryContext } from "Contexts/currentQueryContext";
 import { WeatherCard } from "./components/weatherCard";
 import CircularIndeterminate from "components/CircularIndeterminate";
-import { CurrentUserContext } from "Contexts/currentUserContext";
+import { UserContext } from "Contexts/userContext";
 
 export function WeatherCards() {
 
   // const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { places, setPlaces } = useContext(PlacesContext);
-  const { user } = useContext(CurrentUserContext);
+  const { user } = useContext(UserContext);
   const [ 
     getLocation, 
     { error: locationError, loading: locationLoading, data: locationData }
@@ -35,7 +35,7 @@ export function WeatherCards() {
     },
   });
 
-  const {data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
+  const { data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
     variables: { input: user.id },
     onData(options) {
       console.log('location removed', options);

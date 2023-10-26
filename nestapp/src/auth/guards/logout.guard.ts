@@ -1,15 +1,8 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { CookieOptions } from 'express';
-
-import { strConstants } from 'src/config/system/public/strconstants';
-
-const cookieOptions: CookieOptions = {
-  maxAge: 0,
-  httpOnly: true,
-  domain: process.env.DOMAIN,
-};
+import { strConstants } from 'src/config/public/strConstants';
+import { defaultCookieOptions } from 'src/config/system/cookiesOption';
 
 @Injectable()
 export class LogoutGuard extends AuthGuard('local') {
@@ -34,14 +27,14 @@ export class LogoutGuard extends AuthGuard('local') {
     const { req } = authContext.getContext();
 
     req.res?.cookie(
-      'access_token',
+      strConstants.accessToken,
       strConstants.defaultCookieValue,
-      cookieOptions,
+      defaultCookieOptions,
     );
     req.res?.cookie(
-      'refresh_token',
+      strConstants.refreshToken,
       strConstants.defaultCookieValue,
-      cookieOptions,
+      defaultCookieOptions,
     );
 
     return user;

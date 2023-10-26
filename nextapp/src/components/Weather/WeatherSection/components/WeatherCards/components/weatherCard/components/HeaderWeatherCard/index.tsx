@@ -1,19 +1,26 @@
-import { getUrlForIcon } from "functions/getUrlForIcon";
-import Stack from '@mui/material/Stack';
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { grey } from '@mui/material/colors';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { getUrlForIcon } from "functions/getUrlForIcon";
 import { getDate } from "functions/timeAndDate/getDate";
 import { getTime } from "functions/timeAndDate/getTime";
 import { digits } from "config/system/constants/digits";
+import { useMutation } from "@apollo/client";
+import { locations } from "Apollo/queries/locations";
+import { useContext } from "react";
+import { UserContext } from "Contexts/userContext";
 
-export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, currentDt: number, icon: string }) {
+export function HeaderWeatherCard({ name, currentDt, icon, onDeleteHandler }: { name: string, currentDt: number, icon: string, onDeleteHandler: () => {} }) {
+
   const currentTime = new Date(currentDt * digits[1000]);
+
   return (
-    <Stack 
-      direction='row' 
-      alignItems='center' 
-      gap='5px'
+    <Box
       sx={{
+        display: 'flex',
+        flexFlow: 'row wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         fontSize: 'larger',
       }}
     >
@@ -29,6 +36,20 @@ export function HeaderWeatherCard({ name, currentDt, icon }: { name: string, cur
         }}
       />
       {name} ({getDate(currentTime)} {getTime(currentTime)})
-    </Stack>
+      <Button
+        sx={{
+          m: '3px',
+          p: '2px',
+          minWidth: 'fit-content',
+          color: 'black',
+        }}
+        onClick={(e) => {
+          onDeleteHandler()
+        }}
+      >
+        <DeleteOutlineIcon />
+      </Button>
+      
+    </Box>
   )
 }
