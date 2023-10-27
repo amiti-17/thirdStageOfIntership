@@ -1,10 +1,10 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { CssBaseline, Experimental_CssVarsProvider, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import createEmotionCache from 'createEmotionCache';
 import RootLayout from 'components/RootLayout';
-import { extendedTheme, theme } from '@/src/theme';
+import { theme } from '@/src/theme';
 import { useState } from 'react';
 import { LoginMsgContext } from 'Contexts/loginMsgContext';
 
@@ -27,15 +27,13 @@ export default function App( prop: myAppProps) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
-          <Experimental_CssVarsProvider theme={extendedTheme}>
-            <CssBaseline />
-            <LoginMsgContext.Provider value={{
-              errorMsg, setErrorMsg,
-              infoMsg, setInfoMsg
-            }}>
-              <Component {...pageProps} />
-            </LoginMsgContext.Provider>
-          </Experimental_CssVarsProvider>
+          <CssBaseline />
+          <LoginMsgContext.Provider value={{
+            errorMsg, setErrorMsg,
+            infoMsg, setInfoMsg
+          }}>
+            <Component {...pageProps} />
+          </LoginMsgContext.Provider>
         </ThemeProvider>
       </CacheProvider>
     </RootLayout>

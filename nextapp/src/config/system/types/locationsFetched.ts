@@ -1,11 +1,11 @@
 import { Weather } from "./Weather";
 
-export type LocationType = {
-  name: string,
+export interface LocationFetchedFromSearchString {
+  id: number,
   country?: string,
-  state?: string,
   lat: number,
   lon: number,
-  id: number,
+  name: string,
+  state?: string,
   weather?: Weather,
 }

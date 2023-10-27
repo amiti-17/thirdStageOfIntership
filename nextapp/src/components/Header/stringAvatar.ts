@@ -1,7 +1,7 @@
 import { strConstants } from "config/system/constants/strConstants";
 import { stringToColor } from "./stringToColor";
 
-export function stringAvatar(name: string) {
+export function avatarFromString(name: string) {
   const nameAndSurnameArr = name.split(strConstants.spaceStr);
   return {
     sx: {

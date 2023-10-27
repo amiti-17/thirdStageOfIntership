@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { ChangeEvent, FocusEvent } from "react";
+import style from "./style.module.css";
 
 export default function RequiredTextField({ 
     id,
@@ -45,10 +46,7 @@ export default function RequiredTextField({
       type={type ? type : 'text'}
       onChange={onChange}
       onBlur={onBlur}
-      // sx={{
-      //   minWidth: '300px',
-      //   fontSize: 'larger',
-      // }}
+      className={style.requiredTextField}
     />
   )
 }

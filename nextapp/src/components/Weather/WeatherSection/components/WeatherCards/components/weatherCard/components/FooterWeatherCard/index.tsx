@@ -1,17 +1,12 @@
-import { Stack } from "@mui/material"
-import { FutureDay } from "./components/FutureDay"
+import { Box } from "@mui/material";
+import { FutureDay } from "./components/FutureDay";
+import style from "./style.module.css"
 
 export function FooterWeatherCard({ daily }: { daily: { dt: number, daily: string }[] }) {
   return (
-    <Stack
-      direction='row'
-      gap='10px'
-      sx={{
-        mt: '5px'
-      }}
-    >
+    <Box className={style.footerWeatherCard}>
       {daily.map(day => <FutureDay key={day.dt} daily={day.daily} />)}
-    </Stack>
+    </Box>
   ) 
   
 }

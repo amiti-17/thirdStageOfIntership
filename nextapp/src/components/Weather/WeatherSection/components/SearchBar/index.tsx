@@ -1,8 +1,9 @@
 import { Alert, Box, Collapse } from "@mui/material";
 import { useEffect, useState } from "react";
-import { AlertSearchBarContext } from "../../../../../Contexts/alertSearchBarContext";
+import { AlertSearchBarContext } from "Contexts/alertSearchBarContext";
 import { SearchInput } from "./components/SearchInput";
 import { digits } from "config/system/constants/digits";
+import style from "./style.module.css";
 
 export function SearchBar() {
   
@@ -27,12 +28,7 @@ export function SearchBar() {
 
   return (
     <AlertSearchBarContext.Provider value={{ alertText, setAlertText }}>
-      <Box sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        width: '90%',
-        mx: 'auto',
-      }}>
+      <Box className={style.weatherSearchInput}>
         <SearchInput />
       </Box>
       {

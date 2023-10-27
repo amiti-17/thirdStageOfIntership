@@ -1,4 +1,4 @@
-import { LocationFetchedFromSearchString } from "config/system/types/locations";
+import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 
 export async function getLocationsAttr(nameOfPlace): Promise<LocationFetchedFromSearchString[]> {
   const url = process.env.NEXT_PUBLIC_OW_URL_GEO + 

@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import React, { useContext, useEffect } from "react";
+import { useSubscription } from "@apollo/client";
 import { PlacesContext } from "Contexts/placesContext";
 import { locations as apolloLocations } from "Apollo/queries/locations";
-import { useSubscription } from "@apollo/client";
 import { WeatherCard } from "./components/weatherCard";
 import { UserContext } from "Contexts/userContext";
+import style from "./style.module.css";
 
 export function WeatherCards() {
 
@@ -43,17 +44,7 @@ export function WeatherCards() {
   }, [places]);
 
   return (
-    <Box
-      sx={{
-        width: '90%',
-        mx: 'auto',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        gap: '30px',
-      }}
-    >
+    <Box className={style.weatherContainers}>
       { places.map(place => <WeatherCard key={place.id} place={place} />) }
       { !places[0]?.name && ('Try to add any of places') }
     </Box>

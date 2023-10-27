@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+import { CurrentQueryContext, LazyQueryObjType, MutationObjType } from "Contexts/currentQueryContext";
+import { RefreshTokenContext } from "Contexts/refreshTokenContext";
+import { PlacesContext } from "Contexts/placesContext";
+import { UserContext } from "Contexts/userContext";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { WeatherSection } from "components/Weather/WeatherSection";
-import { UserContext } from "Contexts/userContext";
-import { RefreshTokenContext } from "Contexts/refreshTokenContext";
-import { CurrentQueryContext, LazyQueryObjType, MutationObjType } from "Contexts/currentQueryContext";
 import { WeatherLayout } from "components/Weather/WeatherLayout";
-import { LocationFetchedFromSearchString } from "config/system/types/locations";
-import { PlacesContext } from "Contexts/placesContext";
+import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 
 export default function WeatherPage() {
   

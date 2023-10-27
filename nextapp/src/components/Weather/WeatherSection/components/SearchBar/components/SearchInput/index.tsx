@@ -5,10 +5,11 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react
 import { locations } from "Apollo/queries/locations";
 import { PlacesContext } from "Contexts/placesContext";
 import { AlertSearchBarContext } from "Contexts/alertSearchBarContext";
-import { LocationFetchedFromSearchString } from "config/system/types/locations";
+import { UserContext } from "Contexts/userContext";
+import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 import { getNameOfPlace } from "functions/places/getNameOfPlace";
 import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
-import { UserContext } from "Contexts/userContext";
+import style from "./style.module.css";
 
 export function SearchInput() {
 
@@ -26,7 +27,7 @@ export function SearchInput() {
   const { places } = useContext(PlacesContext);
   const [ inputValue, setInputValue ] = useState<string>('');
   const [ options, setOptions ] = useState<LocationFetchedFromSearchString[]>(cities);
-  const [ createPlace, { data: placeData, loading: placeLoading, error: placeError } ] = useMutation(locations.createLocation);
+  const [ createPlace ] = useMutation(locations.createLocation);
 
   const setValuePush = setValuePushExtended.bind(null);
   const isUniqValue = isUniqValueExtended.bind(null, places);
@@ -40,7 +41,7 @@ export function SearchInput() {
   }, [myPlacesData]);
 
   function setOptionsWrapper(options: LocationFetchedFromSearchString[]) {
-    setOptions(options); //TODO: rewrite for parsing into fetched data
+    setOptions(options);
   }
 
   function setDefaultOptionsExtended(setOptions: Dispatch<SetStateAction<LocationFetchedFromSearchString[]>>) {
@@ -96,7 +97,6 @@ export function SearchInput() {
       freeSolo
       limitTags={3}
       id="place-select-demo"
-      sx={{ width: 300 }}
       options={options}
       autoHighlight
       autoComplete
@@ -110,7 +110,8 @@ export function SearchInput() {
       renderInput={(params) => (
         <TextField
           {...params}
-          variant="standard"
+          variant="filled"
+          size="small"
           label="Start entering your place"
           placeholder="Favorites"
           inputProps={{
@@ -136,6 +137,7 @@ export function SearchInput() {
           setDefaultOptions();
         }
       }}
+      className={style.weatherInput}
     />
   )
 }

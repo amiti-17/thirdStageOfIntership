@@ -20,6 +20,4 @@ export const refreshAccessToken = async (client) => {
 
   const accessTokenStatus = response.data;
   return accessTokenStatus;
-  
-
 };

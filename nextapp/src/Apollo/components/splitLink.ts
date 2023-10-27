@@ -1,6 +1,5 @@
 import { split } from "@apollo/client";
 import { getMainDefinition } from '@apollo/client/utilities';
-
 import { wsLink } from "./wsLink";
 import { httpLink } from "./httpLink";
 

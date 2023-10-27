@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { LocationType } from "./locations";
 
 export const users = {
   createUser: gql`
@@ -56,51 +55,3 @@ export const users = {
     }
   `,
 }
-
-export type SafeUserType = {
-  name: string,
-  email: string,
-  locations: LocationType[],
-  id: number,
-}
-
-export const listAll = gql`
-  {
-    users{
-      id 
-      email
-      name
-    }
-  }
-`
-
-export const getByEmail = gql`
-  {
-    user(email: $input) {
-      id
-      name
-      email
-    }
-  }
-`
-
-export const removeUser = gql`
-  mutation RemoveUser($input: Int!) {
-    removeUser(id: $input) {
-      id
-      email
-    }
-  }
-`
-
-export const createUser = gql`
-  mutation CreateUser($input: CreateUserInput!){
-    createUser(createUserInput: $input){
-      id
-      email
-      name
-      password
-      
-    }
-  }
-`

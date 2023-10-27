@@ -1,8 +1,8 @@
-import { ErrorHandler, onError } from "@apollo/client/link/error";
-import { refreshAccessToken } from "Apollo/queries/refreshAccessToken";
-import CustomError from "CustomError";
+import { onError } from "@apollo/client/link/error";
 import { FetchResult, Observable } from "apollo-link";
 import { globalClient } from "Apollo";
+import { refreshAccessToken } from "Apollo/queries/refreshAccessToken";
+import CustomError from "CustomError";
 
 export const errorLink = (router) => onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {

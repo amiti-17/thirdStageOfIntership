@@ -1,11 +1,12 @@
-import { useMutation } from "@apollo/client"
-import { Avatar, Box, Button, Stack, SxProps } from "@mui/material"
+import { useMutation } from "@apollo/client";
+import { Avatar, Button, Stack, SxProps } from "@mui/material";
+import { useContext } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "Apollo/queries/auth"
+import { auth } from "Apollo/queries/auth";
 import { UserContext } from "Contexts/userContext";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { strConstants } from "config/system/constants/strConstants";
-import { useContext } from "react";
+import style from "./style.module.css";
 
 export function UserAvatar(props: {sx: SxProps, children: string, title: string}) {
 
@@ -29,11 +30,7 @@ export function UserAvatar(props: {sx: SxProps, children: string, title: string}
       {logoutLoading && <CircularIndeterminate />}
       {
         !logoutLoading && <Button
-          sx={{
-            fontSize: '13px',
-            m: '3px',
-            p: '3px 7px',
-          }}
+          className={style.logoutButton}
           onClick={(e) => {
             logoutHandler();
           }}

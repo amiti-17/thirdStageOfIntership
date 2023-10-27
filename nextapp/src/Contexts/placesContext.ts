@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { LocationFetchedFromSearchString } from "../config/system/types/locations";
+import { LocationFetchedFromSearchString } from "../config/system/types/locationsFetched";
 
 type PlacesContextType = {
   places: LocationFetchedFromSearchString[],

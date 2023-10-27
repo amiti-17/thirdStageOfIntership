@@ -1,17 +1,11 @@
 import { Box } from '@mui/material';
 import React from 'react';
+import style from './style.module.css'
 import LoginHeader from './LoginHeader';
 
 export default function LoginLayout({ children } : { children: React.ReactNode }): JSX.Element {
   return (
-    <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
+    <Box className={style.loginLayout}>
       <LoginHeader />
       {children}
     </Box>

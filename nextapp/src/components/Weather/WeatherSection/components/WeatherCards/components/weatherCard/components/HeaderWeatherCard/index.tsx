@@ -1,56 +1,21 @@
-import { Box, Button } from "@mui/material";
-import { grey } from '@mui/material/colors';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { getUrlForIcon } from "functions/getUrlForIcon";
-import { getDate } from "functions/timeAndDate/getDate";
-import { getTime } from "functions/timeAndDate/getTime";
-import { digits } from "config/system/constants/digits";
-import { useMutation } from "@apollo/client";
-import { locations } from "Apollo/queries/locations";
-import { useContext } from "react";
-import { UserContext } from "Contexts/userContext";
-import { cssConstants } from "@/src/cssConstants";
+import { Box, Stack } from "@mui/material";
+import style from "./style.module.css"
+import { WeatherIcon } from "../WeatherIcon";
+import { NameAndCaption } from "./components/NameAndCaption";
+import { DeleteButton } from "./components/DeleteButton";
+import { Current } from "config/system/types/Current";
 
-export function HeaderWeatherCard({ name, currentDt, icon, onDeleteHandler }: { name: string, currentDt: number, icon: string, onDeleteHandler: () => {} }) {
+export function HeaderWeatherCard({ name, current, onDeleteHandler }: { name: string, current: Current, onDeleteHandler: () => {} }) {
 
-  const currentTime = new Date(currentDt * digits[1000]);
-
+  const currentData = JSON.parse(current.current)
+  
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexFlow: 'row wrap',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        fontSize: 'larger',
-      }}
-    >
-      <Box 
-        component='img' 
-        src={getUrlForIcon(icon)} 
-        width='50px'
-        loading="lazy" 
-        title="weather icon"
-        sx={{
-          bgcolor: cssConstants.backgroundForIcon,
-          borderRadius: '50%'
-        }}
-      />
-      {name} ({getDate(currentTime)} {getTime(currentTime)})
-      <Button
-        sx={{
-          m: '3px',
-          p: '2px',
-          minWidth: 'fit-content',
-          color: 'black',
-        }}
-        onClick={(e) => {
-          onDeleteHandler()
-        }}
-      >
-        <DeleteOutlineIcon />
-      </Button>
-      
+    <Box className={style.headerWeatherCard}>
+      <Stack direction='row' gap='10px'>
+        <WeatherIcon icon={currentData.weather[0].icon} width={'50px'} />
+        <NameAndCaption name={name} caption={currentData.weather[0].description} />
+      </Stack>
+      <DeleteButton onDeleteHandler={onDeleteHandler} />
     </Box>
   )
 }

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { stringAvatar } from "./stringAvatar";
+import { avatarFromString } from "./stringAvatar";
 import { Logo } from "./components/Logo";
 import { UserAvatar } from "./components/Avatar";
 import { useContext, useEffect } from "react";
@@ -7,13 +7,13 @@ import { UserContext } from "../../Contexts/userContext";
 import { strConstants } from "config/system/constants/strConstants";
 import { useQuery } from "@apollo/client";
 import { users } from "Apollo/queries/users";
-import { cssConstants } from "@/src/cssConstants";
+import style from "./style.module.css";
 
 export function Header() {
 
   const { user, setUser } = useContext(UserContext);
-  const userAvatarData = stringAvatar(user?.name ?? strConstants.usersName);
-  const { data: currentUserData, error: currentUserError, loading: currentUserLoading } = useQuery(users.getCurrentUser);
+  const userAvatarData = avatarFromString(user?.name ?? strConstants.usersName);
+  const { data: currentUserData} = useQuery(users.getCurrentUser);
 
   useEffect(() => {
     if (currentUserData?.getCurrentUser.email && user?.email !== currentUserData?.getCurrentUser.email) {
@@ -23,19 +23,8 @@ export function Header() {
   
   return (
     <Box 
-      component='header' 
-      sx={{
-        pt: 2,
-        px: 4,
-        mx: 'auto',
-        // bgcolor: 'lightGreen',
-        width: '100%',
-        height: '80px',
-        display: "flex",
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        maxWidth: cssConstants.maxPageWidth,
-      }}
+      component='header'
+      className={style.header}
     >
       <Logo />
       {user?.email && <UserAvatar {...userAvatarData} title={user?.name ?? strConstants.username}/>}

@@ -1,0 +1,9 @@
+.footer {
+  margin: 4px 0;
+  text-align: center;
+}
+
+.footerLocalHost {
+  text-transform: lowercase;
+  margin: 2px;
+}

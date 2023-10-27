@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ApolloProvider, useQuery } from '@apollo/client';
+import React, { useState } from 'react';
+import { ApolloProvider } from '@apollo/client';
 import { useRouter } from "next/navigation";
 import getClient from '../Apollo';
 import { UserContext } from 'Contexts/userContext';
 import Footer from './Footer';
-import { SafeUserType } from 'Apollo/queries/users';
 import { Header } from './Header';
+import { SafeUserType } from 'config/system/types/SafeUserType';
 
 export default function RootLayout({ children } : { children: React.ReactNode }): JSX.Element {
 

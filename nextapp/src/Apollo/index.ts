@@ -3,7 +3,6 @@ import {
   InMemoryCache,
   from
 } from "@apollo/client";
-
 import { fetchConstants } from "config/system/constants/fetchConstants";
 import { splitLink } from "./components/splitLink";
 import { errorLink } from "./components/errorLink";

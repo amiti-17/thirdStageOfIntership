@@ -2,8 +2,9 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { Button }from '@mui/material';
+import style from './style.module.css';
 
-export default function Copyright(props: {sx: {mt: number, mb: number}}) {
+export default function Copyright() {
 
   const [ currentUrl, setCurrentUrl ] = React.useState<string>('');
 
@@ -15,12 +16,12 @@ export default function Copyright(props: {sx: {mt: number, mb: number}}) {
   }, []);
 
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" className={style.footer}>
       {'Copyright © '}
       <Button
         href={currentUrl}
         LinkComponent={Link}
-        sx={{textTransform: 'lowercase', m:'2'}}
+        className={style.footerLocalHost}
       >
         {currentUrl}
         {' '}

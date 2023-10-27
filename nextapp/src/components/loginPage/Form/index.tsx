@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
-import { Alert, Collapse, Slider } from "@mui/material";
+import { Alert, Collapse } from "@mui/material";
+import { useFormik } from "formik";
 import RequiredTextField from "./components/RequiredTextField";
 import SubmitOutlinedButton from "./components/SubmitOutlinedButton";
 import CustomError from "CustomError";
 import { getCryptPassword } from "functions/getCryptPassword";
 import { auth } from "Apollo/queries/auth";
-import { useFormik } from "formik";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { ShowMsgType, showMsgDefault } from "CustomError/ShowMshType";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
@@ -18,7 +18,7 @@ export default function LoginForm() {
 
   const [ showMsg, setShowMsg ] = useState<ShowMsgType>(showMsgDefault);
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
-  const [ getTokenMutation, {error: loginError, loading: loginLoading, data: loadingData}] = useMutation(auth.login);
+  const [ getTokenMutation ] = useMutation(auth.login);
   const router = useRouter();
 
   const formik = useFormik({
@@ -78,7 +78,7 @@ export default function LoginForm() {
           error={formik.touched.password && Boolean(formik.errors.password)}
           errorText={formik.touched.password && formik.errors.password}
         />
-        <SubmitOutlinedButton sx={{mt: 3, mb: 2}} isLoading={isLoading} isDisabled={formik.isSubmitting} />
+        <SubmitOutlinedButton isLoading={isLoading} isDisabled={formik.isSubmitting} />
       </form>
       {
         showMsg?.message && (

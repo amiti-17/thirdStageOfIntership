@@ -1,14 +1,15 @@
 import { Button } from "@mui/material";
 import { strConstants } from "config/system/constants/strConstants";
+import style from "./style.module.css";
 
-export default function SubmitOutlinedButton({ sx, isLoading, isDisabled }: {sx: {mt: number, mb: number}, isLoading: boolean, isDisabled: boolean}) {
+export default function SubmitOutlinedButton({ isLoading, isDisabled }: { isLoading: boolean, isDisabled: boolean }) {
   return (
     <Button
       type="submit"
-      fullWidth
       variant="outlined"
-      sx={sx}
       disabled={isDisabled}
+      className={style.submitOutlinedButton}
+      fullWidth
     >
       {isLoading ? strConstants.loadingLong : strConstants.signIn}
     </Button>
