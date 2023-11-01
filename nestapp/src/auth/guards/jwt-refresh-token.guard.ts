@@ -31,8 +31,6 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh-token') {
     const { req } = authContext.getContext();
 
     if (err || !user || info) {
-      // req['refreshNotFound'] = true;
-      // throw new RedirectError(403, 'http://localhost:3000');
       throw err || new UnauthorizedException();
     }
 

@@ -35,7 +35,7 @@ export default function LoginForm() {
           variables: { input: myCryptValues },
         });
 
-        if (isUserOk?.data.login.status) {
+        if (isUserOk?.data?.login.status) {
           setShowMsg({
             message: CustomError.successfullyLogIn,
             severity: 'success',
@@ -43,9 +43,15 @@ export default function LoginForm() {
           router.replace(pages.weather); //TODO: make it uncomment
         }
       } catch (error) {
+
         // Object.keys(error).map(el => console.log('map: ', el, error[el]))
-        if (error.graphQLErrors[0]) setShowMsg(graphqlErrorsHandler(error.graphQLErrors));
-        if (error.networkError) setShowMsg(networkErrorsHandler(error.networkError));
+        if (error.graphQLErrors[0]) {
+          setShowMsg(graphqlErrorsHandler(error.graphQLErrors));
+        }
+
+        if (error.networkError) {
+          setShowMsg(networkErrorsHandler(error.networkError));
+        }
 
         console.error('unrecognized error in Form => LoginForm => formik => onSubmit: ', error);
       } finally {

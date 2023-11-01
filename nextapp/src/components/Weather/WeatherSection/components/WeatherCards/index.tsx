@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useSubscription } from "@apollo/client";
 import { PlacesContext } from "Contexts/placesContext";
 import { locations as apolloLocations } from "Apollo/queries/locations";
@@ -37,11 +37,7 @@ export function WeatherCards() {
         return [ ...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)) ];
       })
     },
-  })
-
-  useEffect(() => {
-    console.log(places);
-  }, [places]);
+  });
 
   return (
     <Box className={style.weatherContainers}>

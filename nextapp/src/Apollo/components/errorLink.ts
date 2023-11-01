@@ -27,7 +27,7 @@ export const errorLink = (router) => onError(({ graphQLErrors, networkError, ope
                   forward(operation).subscribe(subscriber);
                 })
                 .catch(err => {
-                  if (window.location.pathname !== '/') router.replace('/');
+                  if (window.location.pathname !== '/') router.replace('/'); // if I wanna handle invalid user credential, here should be redirect to another login page with that error)
                 })
             });
         }
