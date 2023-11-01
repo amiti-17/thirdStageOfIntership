@@ -1,0 +1,21 @@
+.name {
+  font-size: 1.3rem;
+  margin: 5px;
+  text-align: center;
+}
+
+.currentTempWithIcon {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: fit-content;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.description {
+  text-align: center;
+  font-style: italic;
+  font: larger;
+
+}

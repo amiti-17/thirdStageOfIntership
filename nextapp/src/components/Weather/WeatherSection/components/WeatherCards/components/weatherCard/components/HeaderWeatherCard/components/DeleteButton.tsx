@@ -7,6 +7,8 @@ export function DeleteButton({ onDeleteHandler }: { onDeleteHandler: () => {} })
     <Button
       className={style.headerWeatherCardDeleteButton}
       onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
         onDeleteHandler()
       }}
     >

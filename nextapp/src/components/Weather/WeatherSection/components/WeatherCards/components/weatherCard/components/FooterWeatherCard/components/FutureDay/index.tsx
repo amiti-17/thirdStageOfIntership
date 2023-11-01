@@ -1,17 +1,21 @@
 import { Box, Tooltip, Stack } from '@mui/material';
 import { useState } from 'react';
-import Collapse from '@mui/material/Collapse';
 import style from './style.module.css';
-import { getUrlForIcon } from 'functions/getUrlForIcon';
 import { getDate } from 'functions/timeAndDate/getDate';
 import { digits } from 'config/system/constants/digits';
-import { cssConstants } from 'styles/cssConstants';
+import { WeatherIcon } from '../../../WeatherIcon';
+import { ShowTemperature } from '../../../ShowTemperature';
+import { CollapsedDetail } from './CollapsedDetail';
 
 export function FutureDay({ daily }: { daily: string }) {
 
   const weather = JSON.parse(daily);
   const currentTime = new Date(weather.dt * digits[1000]);
   const [ checked, setChecked ] = useState(false);
+  const weatherDescription = weather.weather[0].main;
+  const myWeather = weather;
+  myWeather.windSpeed = myWeather.wind_speed;
+
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
@@ -23,42 +27,17 @@ export function FutureDay({ daily }: { daily: string }) {
         gap='5px'
         alignItems='center'
         className={style.footerWeatherCard}
-        onClick={handleChange}
+        // onClick={handleChange} // Fix this if you want expand the Collapse
       >
         <Stack direction='row' gap='5px'>
-          <Box 
-            component='img' 
-            src={getUrlForIcon(weather.weather[0].icon)} 
-            width='40px' 
-            loading='lazy'
-            sx={{
-              bgcolor: cssConstants.backgroundForIcon,
-              borderRadius: '50%'
-            }}
-          />
-          <Box sx={{
-            display: 'flex',
-            alignItems: 'flex-start'
-          }}>
-            <Box sx={{fontSize: '25px'}} component='span'>
-              {Math.round(weather.temp.eve)}
-            </Box>
-            °C
-          </Box>
+          <WeatherIcon icon={weather.weather[0].icon} width={'40px'} />
+          <ShowTemperature temperature={weather.temp.eve} fontSize={25}/>
         </Stack>
         
-        <Box>{weather.weather[0].main}</Box>
+        <Box>{weatherDescription}</Box>
         <Box>{getDate(currentTime)}</Box>
-        <Collapse in={checked}>
-          <Stack direction='column' alignItems='center'>
-            {Boolean(String(weather.temp.eve)) && <Box>Temp: {weather.temp.eve}°C</Box>}
-            {Boolean(String(weather.temp.max)) && <Box>Max: {weather.temp.max}°C</Box>}
-            {Boolean(String(weather.temp.min)) && <Box>Min: {weather.temp.min}°C</Box>}
-            {Boolean(String(weather.pressure)) && <Box>P: {weather.pressure} hPa</Box>}
-            {Boolean(String(weather.wind_speed)) && <Box>Wind: {weather.wind_speed} km</Box>}
-            {Boolean(String(weather.humidity)) && <Box>Hum: {weather.humidity}%</Box>}
-          </Stack>
-        </Collapse>
+
+        <CollapsedDetail checked={ checked } weather={ myWeather } />
       </Stack>
     </Tooltip>
   )

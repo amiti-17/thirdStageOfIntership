@@ -6,9 +6,9 @@ export function ShowDetails({current}: {current: { pressure: number, humidity: n
     <Stack
       direction='column'
     >
-      Pressure: {pressure} hPa<br />
-      Humidity: {humidity}%<br />
-      Wind: {windSpeed} metre/sec
+      {pressure && <>Pressure: {pressure} hPa<br /></>}
+      {humidity && <>Humidity: {humidity}%<br /></>}
+      {windSpeed && <>Wind: {windSpeed} metre/sec</>}
     </Stack>
   )
 }

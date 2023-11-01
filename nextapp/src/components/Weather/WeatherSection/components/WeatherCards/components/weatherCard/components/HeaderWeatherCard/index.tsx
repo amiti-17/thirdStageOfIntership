@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import style from "./style.module.css"
 import { WeatherIcon } from "../WeatherIcon";
 import { NameAndCaption } from "./components/NameAndCaption";
@@ -11,7 +11,7 @@ export function HeaderWeatherCard({ name, current, onDeleteHandler }: { name: st
   
   return (
     <Box className={style.headerWeatherCard}>
-      <Stack direction='row' gap='10px'>
+      <Stack direction='row' gap='10px' className={style.iconAndName}> {/* I couldn't get name for this component, so it here) */}
         <WeatherIcon icon={currentData.weather[0].icon} width={'50px'} />
         <NameAndCaption name={name} caption={currentData.weather[0].description} />
       </Stack>
