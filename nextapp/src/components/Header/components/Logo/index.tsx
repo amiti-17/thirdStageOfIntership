@@ -1,6 +1,6 @@
-import CloudTwoToneIcon from '@mui/icons-material/CloudTwoTone';
-import { Box, Stack } from '@mui/material';
-import style from './style.module.css';
+import { Stack } from '@mui/material';
+import { CloudTwoToneIcon } from './components/CloudTwoToneIcon';
+import { LogoText } from './components/LogoText';
 
 export function Logo() {
   return (
@@ -9,10 +9,10 @@ export function Logo() {
       alignItems='center'
       spacing={2}
     >
-      <CloudTwoToneIcon className={style.mainLogo}/>
-      <Box className={style.mainLogoText}>
+      <CloudTwoToneIcon />
+      <LogoText>
         WeatherApp
-      </Box>
+      </LogoText>
     </Stack>
   )
 }

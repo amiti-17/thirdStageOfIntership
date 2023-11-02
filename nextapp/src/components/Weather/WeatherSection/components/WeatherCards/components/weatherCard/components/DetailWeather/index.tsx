@@ -8,15 +8,13 @@ import { DetailFooter } from "./DetailFooter";
 
 export function DetailWeather({ weather, place }: { weather: Weather, place: LocationFetchedFromSearchString }) {
 
-  const { getWeather } = weather;
-  const current = JSON.parse(getWeather.current.current);
-  console.log(getWeather, place);
+  const current = JSON.parse(weather.current.current);
 
   return (
     <Box className={style.weatherCard}>
       <DetailHeader place={place} weather={current}/>
       <DetailMain current={current} />
-      <DetailFooter days={getWeather.days} />
+      <DetailFooter days={weather.days} />
     </Box>
   )
 }

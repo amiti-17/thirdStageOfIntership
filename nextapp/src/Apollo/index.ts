@@ -11,7 +11,6 @@ export let globalClient;
 
 export default function getClient(router) {
   const client = new ApolloClient({
-    // uri: process.env.NEXT_PUBLIC_BASE_URL_GRAPHQL,
     link: from([errorLink(router), splitLink]),
     cache: new InMemoryCache(),
     credentials: fetchConstants.include,

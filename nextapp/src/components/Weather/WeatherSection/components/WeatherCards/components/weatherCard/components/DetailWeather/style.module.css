@@ -12,3 +12,12 @@
   max-height: 600px;
   overflow-y: auto;
 }
+
+.listItem {
+  margin: 1px 0px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}

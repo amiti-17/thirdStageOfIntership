@@ -6,7 +6,11 @@ import style from "./style.module.css";
 export function DetailFooter({ days }: { days: Day[]}) {
   return (
     <Box className={style.detailFooter}>
-      {days.map(el => <DailyFooterItem key={el.dt} item={el.daily} />)}
+      {
+        days
+          .sort((elA, elB) => elA.dt - elB.dt)
+          .map(el => <DailyFooterItem key={el.dt} item={el.daily} />)
+      }
     </Box>
   )
 }

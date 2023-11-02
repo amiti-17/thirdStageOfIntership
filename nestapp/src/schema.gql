@@ -7,6 +7,11 @@ input AuthLoginInput {
   password: String!
 }
 
+input CoordinatesInput {
+  lat: Float!
+  lon: Float!
+}
+
 input CreateLocationInput {
   country: String
   lat: Float!
@@ -73,7 +78,7 @@ type Mutation {
   removeLocation(locationsId: Int!, usersId: Int!): Location!
   removeUser(id: Int!): SafeUser!
   signup(createUserInput: CreateUserInput!): SafeUser!
-  updateUsersLocations(updateUserLocationInput: [UpdateUserLocationsInput!]!): [Location!]!
+  updateWeather(coordinates: CoordinatesInput!, id: Int!): Weather!
 }
 
 type Query {
@@ -104,14 +109,6 @@ type SafeUser {
 type Subscription {
   locationAdded(usersId: Int!): Location!
   locationRemoved(usersId: Int!): Location!
-}
-
-input UpdateUserLocationsInput {
-  country: String
-  lat: Float!
-  lon: Float!
-  name: String!
-  state: String
 }
 
 type User {

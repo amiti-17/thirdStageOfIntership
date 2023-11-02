@@ -5,7 +5,7 @@ import CustomError from "CustomError";
 export const networkErrorsHandler = (errors: GraphQLErrors): ShowMsgType => {
 
   if (networkErrorsHandler.name) {
-    console.log('networkErrorsHandler: ', networkErrorsHandler);
+    console.warn('networkErrorsHandler: ', networkErrorsHandler);
     return {
       message: CustomError.networkError,
       severity: 'error',

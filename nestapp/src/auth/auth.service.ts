@@ -3,16 +3,10 @@ import { UsersService } from 'src/users/users.service';
 import { SafeUser } from 'src/users/entities/safe-user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private jwtService: JwtService,
-    private prisma: PrismaService,
-    private usersServices: UsersService,
-  ) {}
+  constructor(private usersServices: UsersService) {}
 
   async validateUser(email: string, password: string): Promise<SafeUser> {
     const user = await this.usersServices.findOneUnsafe(email);

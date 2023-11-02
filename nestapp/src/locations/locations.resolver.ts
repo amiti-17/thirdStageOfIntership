@@ -4,14 +4,12 @@ import {
   Mutation,
   Args,
   Int,
-  Context,
   Subscription,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
 import { pubSub } from './pubSub';
 import { CreateLocationInput } from './dto/createLocation.input';
@@ -37,12 +35,6 @@ export class LocationsResolver {
     @Args('coordinates') coordinates: FindOneByFetchedObjInput,
   ) {
     return await this.locationsService.findOneByCoordinates(coordinates);
-    // {
-    //   id: 0,
-    //   createdAt: Date.now(),
-    //   updatedAt: Date.now(),
-    //   ...coordinates,
-    // };
   }
 
   @Query(() => [Location], { name: 'getListOfPlaces' })
@@ -60,7 +52,10 @@ export class LocationsResolver {
     locationInput: CreateLocationInput,
     @Args('usersId', { type: () => Int }) usersId: number,
   ): Promise<Location> {
-    return await this.locationsService.create(locationInput, usersId);
+    return await this.locationsService.createWithWeather(
+      locationInput,
+      usersId,
+    );
   }
 
   @Mutation(() => Location, { name: 'removeLocation' })
@@ -73,62 +68,30 @@ export class LocationsResolver {
     return await this.locationsService.remove(locationsId, usersId);
   }
 
-  @Mutation(() => [Location], { name: 'updateUsersLocations' })
-  @UseGuards(JwtAuthGuard)
-  async updateUsersLocations(
-    @Args('updateUserLocationInput', { type: () => [UpdateUserLocationsInput] })
-    updateUserLocationInput: UpdateUserLocationsInput[],
-    @Context() context,
-  ): Promise<Location[]> {
-    return await this.locationsService.updateUsersLocations(
-      updateUserLocationInput,
-      context,
-    );
-  }
-
   @Subscription(() => Location, {
     name: 'locationAdded',
     resolve: (value) => value,
     filter: (payload, variables) => {
       return Boolean(payload.users.find((el) => el.id === variables.usersId));
-      console.log('payload: ', payload);
-      console.log('variables: ', variables);
-      return true;
     },
   })
   subscribeToLocationAdd(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Args('usersId', { type: () => Int }) usersId: string,
   ) {
     return pubSub.asyncIterator('locationAdded');
   }
 
-  // @Subscription(() => Location, {
-  //   name: 'locationUpdated',
-  //   resolve: (value) => value,
-  //   filter: (payload, variables, context) => {
-  //     return Boolean(payload.users.find((el) => el.id === variables.usersId));
-  //     console.log('payload1: ', payload);
-  //     console.log('variables1: ', variables);
-  //     console.log('context1: ', context);
-  //     return true;
-  //   },
-  // })
-  // subscribeToLocationUpdate(
-  //   @Args('usersId', { type: () => Int }) usersId: string,
-  // ) {
-  //   return pubSub.asyncIterator('locationUpdated');
-  // }
-
   @Subscription(() => Location, {
     name: 'locationRemoved',
     resolve: (value) => value,
     filter: (payload, variables) => {
-      // console.log('payload: ', payload);
       if (!payload.users) return true;
       return !Boolean(payload.users?.find((el) => el.id === variables.usersId));
     },
   })
   subscribeToLocationRemove(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Args('usersId', { type: () => Int }) usersId: string,
   ) {
     return pubSub.asyncIterator('locationRemoved');

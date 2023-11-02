@@ -1,12 +1,11 @@
 import { GraphQLErrors } from "@apollo/client/errors";
 import { ShowMsgType, showMsgDefault } from "./ShowMshType";
 import CustomError from "CustomError";
-import { error } from "console";
 
 const customError = new CustomError('');
 
 export const graphqlErrorsHandler = (errors: GraphQLErrors): ShowMsgType => {
-console.log(errors.find(el => console.log(el.extensions.code)))
+  console.warn(errors.find(el => console.warn(el.extensions.code)));
   if (errors.find(el => el.message === customError.unauthorized)) {
     return {
       message: CustomError.unauthorizedMsg,

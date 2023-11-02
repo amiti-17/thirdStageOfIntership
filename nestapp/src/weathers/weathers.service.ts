@@ -13,9 +13,10 @@ export class WeathersService {
     private daysWService: DaysWService,
   ) {}
 
-  async create(coordinates: Coordinates) {
+  async fetchAndCreateAll(coordinates: Coordinates) {
     const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
-    const fetchedDays = fetchedWeather.daily.slice(0, 3);
+    const { daily: fetchedDays } = fetchedWeather;
+
     const localDays = [];
     for (let i = 0; i < fetchedDays.length; i++) {
       localDays.push(
@@ -55,10 +56,8 @@ export class WeathersService {
     });
   }
 
-  async update(id: number, coordinates: Coordinates) {
-    const currentWeather = await this.findOne(id);
+  async fetchAndUpdateAll(id: number, coordinates: Coordinates) {
     const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
-    fetchedWeather.daily = fetchedWeather.daily.slice(0, 3);
     const weather = await this.prisma.weathers.update({
       where: {
         id,
@@ -86,13 +85,13 @@ export class WeathersService {
     return await this.findOne(id);
   }
 
-  async remove(weatherId: number) {
+  async removeWithAllRelated(weatherId: number) {
     const weather = await this.findOne(weatherId);
     if (weather.locations.length > 1) return;
     const deletedDays = await this.daysWService.removeMany(weather.id); // Ask: how make it better (unused variables...)
     const deleteCurrentW = await this.prisma.current.delete({
       where: { id: weather.currentId },
-    }); // Ask: Is it good, if its the only place, where I use just prisma.current...
+    });
     return await this.prisma.weathers.delete({ where: { id: weather.id } });
   }
 }

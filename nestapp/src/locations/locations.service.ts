@@ -1,25 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/createLocation.input';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneByFetchedObjInput } from './dto/findOneByFetchedObj.input';
-import { UpdateUserLocationsInput } from './dto/updateUserLocations.input';
-import { UsersService } from 'src/users/users.service';
-import { Location } from './entities/location.entity';
 import { CoordinatesInput } from './dto/coordinates.input';
+import { Location } from './entities/location.entity';
 import { selectLocation } from './selectLocation';
 import { Coordinates } from 'src/config/types/coordinates';
 import { WeathersService } from 'src/weathers/weathers.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { pubSub } from './pubSub';
 
 @Injectable()
 export class LocationsService {
   constructor(
     private prisma: PrismaService,
-    private usersService: UsersService,
     private weathersService: WeathersService,
   ) {}
 
-  async create(createLocationInput: CreateLocationInput, usersId: number) {
+  async createWithWeather(
+    createLocationInput: CreateLocationInput,
+    usersId: number,
+  ) {
     const coordinates: Coordinates = {
       lat: createLocationInput.lat,
       lon: createLocationInput.lon,
@@ -51,28 +51,10 @@ export class LocationsService {
               id: usersId,
             },
           },
-          // weather: { // Ask: is it good way, or my current is better?
-          //   create: {
-          //     current: {
-          //       create: {
-          //         dt: currentWeather.current.dt,
-          //         current: JSON.stringify(currentWeather.current),
-          //       },
-          //     },
-          //     days: {
-          //       create: currentWeather.daily.slice(0, 3).map((el) => {
-          //         return {
-          //           dt: el.dt,
-          //           daily: JSON.stringify(el),
-          //         };
-          //       }),
-          //     },
-          //   },
-          // },
         },
         select: selectLocation,
       });
-      await this.weathersService.create(coordinates);
+      await this.weathersService.fetchAndCreateAll(coordinates);
     }
     const currentLocation = await this.findOneByCoordinates(coordinates);
     pubSub.publish('locationAdded', currentLocation);
@@ -115,58 +97,8 @@ export class LocationsService {
       : await this.prisma.locations.findMany({});
   }
 
-  async updateUsersLocations(
-    fetchedUserLocations: UpdateUserLocationsInput[],
-    context,
-  ): Promise<Location[]> {
-    const currentUser = await this.usersService.findById(
-      context?.req?.user.sub,
-    );
-
-    const shouldBeDeleted = currentUser.locations.filter((location) => {
-      return !fetchedUserLocations.find(
-        (el) => el.lat === location.lat && el.lon === location.lon,
-      );
-    });
-    for (let i = 0; i < shouldBeDeleted.length; i++) {
-      await this.remove(shouldBeDeleted[i].id, currentUser.id);
-    }
-
-    for (let i = 0; i < fetchedUserLocations.length; i++) {
-      const currentLoc = fetchedUserLocations[i];
-      const currentUserLocal = currentUser.locations.find(
-        (location) =>
-          location.lat === currentLoc.lat && location.lon === currentLoc.lon,
-      );
-      if (currentUserLocal) {
-        const coordinates = {
-          lat: fetchedUserLocations[i].lat,
-          lon: fetchedUserLocations[i].lon,
-        };
-        await this.weathersService.update(
-          currentUserLocal.weatherId,
-          coordinates,
-        );
-        // pubSub.publish('locationUpdated', currentLocation);
-      } else {
-        await this.create(fetchedUserLocations[i], context?.req?.user.sub);
-      }
-    }
-
-    const usersLocations = (
-      await this.usersService.findById(context?.req?.user.sub)
-    ).locations;
-    for (let i = 0; i < usersLocations.length; i++) {
-      usersLocations[i].weather = await this.weathersService.findOne(
-        usersLocations[i].weatherId,
-      );
-    }
-    return usersLocations;
-  }
-
   async remove(id: number, usersId: number): Promise<Location> {
     const location = await this.findOne(id);
-    // console.log(context);
     if (location.users.length > 1) {
       const currentLocation = await this.prisma.locations.update({
         where: {
@@ -182,7 +114,7 @@ export class LocationsService {
       pubSub.publish('locationRemoved', currentLocation);
       return location;
     }
-    await this.weathersService.remove(location.weatherId);
+    await this.weathersService.removeWithAllRelated(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { id },
       select: selectLocation,
@@ -212,7 +144,7 @@ export class LocationsService {
       pubSub.publish('locationRemoved', currentLocation);
       return location;
     }
-    await this.weathersService.remove(location.weatherId);
+    await this.weathersService.removeWithAllRelated(location.weatherId);
     const currentLocation = await this.prisma.locations.delete({
       where: { ll: coordinates },
       select: selectLocation,

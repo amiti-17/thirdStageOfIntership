@@ -59,7 +59,7 @@ export async function handleUnauthorized (
     if (error && error.graphQLErrors.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
       console.warn(error);
       localStorage.setItem(localStorageKeys.loginInfoMsg, CustomError.requiredLoginAgain);
-      router.replace('/'); //TODO: make some alert, that credential was expired (on the login page).
+      router.replace('/');
     } else throw error;
   }
 }

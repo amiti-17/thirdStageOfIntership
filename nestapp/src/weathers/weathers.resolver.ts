@@ -1,11 +1,10 @@
-import { Query, Args, Int, Resolver } from '@nestjs/graphql';
-// import { PubSub } from 'graphql-subscriptions';
-import { Weather } from './entities/weather.entity';
+import { Query, Args, Int, Resolver, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { Weather } from './entities/weather.entity';
 import { WeathersService } from './weathers.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-
-// const pubSub = new PubSub();
+import { Coordinates } from 'src/config/types/coordinates';
+import { CoordinatesInput } from './dto/coordinates.input';
 
 @Resolver(() => Weather)
 export class WeathersResolver {
@@ -15,5 +14,16 @@ export class WeathersResolver {
   @UseGuards(JwtAuthGuard)
   async findOne(@Args('id', { type: () => Int }) id: number) {
     return await this.weathersService.findOne(id);
+  }
+
+  @Mutation(() => Weather, { name: 'updateWeather' })
+  @UseGuards(JwtAuthGuard)
+  async updateOne(
+    @Args('id', { type: () => Int })
+    id: number,
+    @Args('coordinates', { type: () => CoordinatesInput })
+    coordinates: Coordinates,
+  ) {
+    return await this.weathersService.fetchAndUpdateAll(id, coordinates);
   }
 }

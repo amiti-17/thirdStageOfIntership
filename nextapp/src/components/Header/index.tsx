@@ -1,13 +1,12 @@
-import { Box } from "@mui/material";
+import { useQuery } from "@apollo/client";
+import { users } from "Apollo/queries/users";
 import { avatarFromString } from "./stringAvatar";
 import { Logo } from "./components/Logo";
+import { MyHeader } from "./components/MyHeader";
 import { UserAvatar } from "./components/Avatar";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../Contexts/userContext";
 import { strConstants } from "config/system/constants/strConstants";
-import { useQuery } from "@apollo/client";
-import { users } from "Apollo/queries/users";
-import style from "./style.module.css";
 
 export function Header() {
 
@@ -22,12 +21,11 @@ export function Header() {
   }, [currentUserData]);
   
   return (
-    <Box 
+    <MyHeader
       component='header'
-      className={style.header}
     >
       <Logo />
       {user?.email && <UserAvatar {...userAvatarData} title={user?.name ?? strConstants.username}/>}
-    </Box>
+    </MyHeader>
   )
 }

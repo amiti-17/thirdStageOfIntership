@@ -1,5 +1,4 @@
 import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
-import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { SafeUser } from './entities/safe-user.entity';
@@ -9,10 +8,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => SafeUser)
 export class UsersResolver {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly usersController: UsersController,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => SafeUser)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
@@ -22,7 +18,7 @@ export class UsersResolver {
   @Query(() => [SafeUser], { name: 'users' })
   @UseGuards(JwtAuthGuard)
   async findAll() {
-    return await this.usersController.getAllUsers();
+    return await this.usersService.findAll();
   }
 
   @Query(() => SafeUser, { name: 'user' })
@@ -38,8 +34,7 @@ export class UsersResolver {
   @Query(() => SafeUser, { name: 'getCurrentUser' })
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Context() context) {
-    const currentUser = await this.findById(context.req.user.sub);
-    return currentUser;
+    return await this.findById(context.req.user.sub);
   }
 
   @Query(() => User, { name: 'userUnsafe' })

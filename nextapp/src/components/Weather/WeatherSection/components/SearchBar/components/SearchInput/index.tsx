@@ -19,7 +19,7 @@ export function SearchInput() {
   );
 
   const cities: LocationFetchedFromSearchString[] = [
-    { name: 'Kyiv', lat: 0, lon: 0, id: 0 } //TODO: replace this example object with fetched list of places...
+    { name: 'Kyiv', lat: 0, lon: 0, id: 0 }
   ];
   
   const { user } = useContext(UserContext);
@@ -50,13 +50,6 @@ export function SearchInput() {
 
   async function fetchCoordinatesAndSetOptions(nameOfPlace) {
     const mySupposesPlaces = await getLocationsAttr(nameOfPlace);
-    // const mySupposesPlaces = [
-    //   {name: 'Klagenfurt', lat: 46.623943, lon: 14.3075976, country: 'AT'},
-    //   {name: 'Koło', lat: 52.2019866, lon: 18.6359912, country: 'PL'},
-    //   {name: 'Koło', lat: 52.1983889, lon: 18.635758559956344, country: 'PL', state: 'Greater Poland Voivodeship'},
-    //   {name: 'Koło', lat: 51.4276417, lon: 19.8296447, country: 'PL', state: 'Łódź Voivodeship'},
-    //   {name: 'Königsallee', lat: 49.93645405, lon: 11.601889705219069, country: 'DE'},
-    // ]
     setOptionsWrapper(mySupposesPlaces);
   }
 
@@ -82,7 +75,6 @@ export function SearchInput() {
         usersId: user.id,
       }
     });
-    // setValue((prevValue: LocationFetchedFromSearchString[]) => [value, ...prevValue]);
   }
 
   function findAndSetCurrentObjExtended(options, currentValue) {

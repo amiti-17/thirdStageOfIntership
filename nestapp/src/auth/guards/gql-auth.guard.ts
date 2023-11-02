@@ -35,7 +35,6 @@ export class GqlAuthGuard extends AuthGuard('local') {
   ): TUser {
     if (err || !user || info) {
       throw err || new UnauthorizedException();
-      // throw new UnauthorizedError();
     }
 
     const authContext = GqlExecutionContext.create(context);

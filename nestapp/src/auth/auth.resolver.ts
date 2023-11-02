@@ -1,18 +1,17 @@
 import { Resolver, Args, Mutation, Query } from '@nestjs/graphql';
-import { Auth } from './entities/auth.entity';
+import { UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { LoginResponse } from './dto/login-response';
-import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { SafeUser } from 'src/users/entities/safe-user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
-import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { LogoutGuard } from './guards/logout.guard';
 
-@Resolver(() => Auth)
+@Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 

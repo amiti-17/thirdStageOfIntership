@@ -1,17 +1,19 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { strConstants } from "config/system/constants/strConstants";
-import style from "./style.module.css";
+import { LoginPageButton } from "./components/LoginPageButton";
 
 export default function SubmitOutlinedButton({ isLoading, isDisabled }: { isLoading: boolean, isDisabled: boolean }) {
+  
   return (
-    <Button
+    <LoginPageButton
       type="submit"
       variant="outlined"
       disabled={isDisabled}
-      className={style.submitOutlinedButton}
       fullWidth
     >
-      {isLoading ? strConstants.loadingLong : strConstants.signIn}
-    </Button>
+      {isLoading && strConstants.loadingLong}
+      {!isLoading && strConstants.signIn}
+    </LoginPageButton>
   )
 }

@@ -7,7 +7,6 @@ import { PrismaService } from './prisma/prisma.service';
 import { LocationsModule } from './locations/locations.module';
 import { AuthModule } from './auth/auth.module';
 import { WeathersModule } from './weathers/weathers.module';
-import { CurrentWModule } from './currentW/currentW.module';
 import { DaysWModule } from './daysW/daysW.module';
 
 @Module({
@@ -16,18 +15,16 @@ import { DaysWModule } from './daysW/daysW.module';
       driver: ApolloDriver,
       subscriptions: {
         'graphql-ws': {
-          path: '/subscriptions', // /graphql
+          path: '/subscriptions',
         },
       },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      // context: ({ req, res }) => ({ req, res }),
     }),
     UsersModule,
     LocationsModule,
     AuthModule,
     WeathersModule,
-    CurrentWModule,
     DaysWModule,
   ],
   providers: [PrismaService],

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
+import { PassportModule } from '@nestjs/passport';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
+import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [

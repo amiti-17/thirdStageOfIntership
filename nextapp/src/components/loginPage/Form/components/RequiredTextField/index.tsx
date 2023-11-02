@@ -1,8 +1,9 @@
+
 import { TextField } from "@mui/material";
 import { ChangeEvent, FocusEvent } from "react";
-import style from "./style.module.css";
+import { LoginTextField } from "./components/LoginTextField";
 
-export default function RequiredTextField({ 
+export function RequiredTextField({ 
     id,
     label,
     name,
@@ -32,7 +33,7 @@ export default function RequiredTextField({
   type ??= id
   
   return (
-    <TextField
+    <LoginTextField
       margin="normal"
       required
       fullWidth
@@ -41,12 +42,12 @@ export default function RequiredTextField({
       name={name}
       autoComplete={autoComplete}
       autoFocus={autoFocus}
+      value={value}
       error={error}
       helperText= {error ? errorText ? errorText : 'Incorrect entry. Failed validation.' : ''}
       type={type ? type : 'text'}
       onChange={onChange}
       onBlur={onBlur}
-      className={style.requiredTextField}
     />
   )
 }

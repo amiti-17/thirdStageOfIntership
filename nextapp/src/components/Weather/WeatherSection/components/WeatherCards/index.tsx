@@ -1,11 +1,10 @@
-import { Box } from "@mui/material";
 import React, { useContext } from "react";
 import { useSubscription } from "@apollo/client";
 import { PlacesContext } from "Contexts/placesContext";
 import { locations as apolloLocations } from "Apollo/queries/locations";
 import { WeatherCard } from "./components/weatherCard";
 import { UserContext } from "Contexts/userContext";
-import style from "./style.module.css";
+import { MyWeatherSection } from "./components/MyWeatherSection";
 
 export function WeatherCards() {
 
@@ -16,14 +15,11 @@ export function WeatherCards() {
   const { data: locationAdded } = useSubscription(apolloLocations.onLocationAdded, {
     variables: { input: user.id },
     onData(options) {
-      console.log('location added: ', options);
       setPlaces(prev => {
         if (prev.find(el => el.id === options.data?.data.locationAdded.id)) {
           return prev;
         }
-        const newPlaces = [ ...prev ];
-        newPlaces.push(options.data?.data.locationAdded);
-        return newPlaces;
+        return [options.data?.data.locationAdded, ...prev ];
       })
     },
   });
@@ -31,18 +27,16 @@ export function WeatherCards() {
   const { data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
     variables: { input: user.id },
     onData(options) {
-      console.log('location removed', options);
       setPlaces(prev => {
-        console.log(...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)))
         return [ ...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)) ];
       })
     },
   });
 
   return (
-    <Box className={style.weatherContainers}>
+    <MyWeatherSection>
       { places.map(place => <WeatherCard key={place.id} place={place} />) }
       { !places[0]?.name && ('Try to add any of places') }
-    </Box>
+    </MyWeatherSection>
   )
 }

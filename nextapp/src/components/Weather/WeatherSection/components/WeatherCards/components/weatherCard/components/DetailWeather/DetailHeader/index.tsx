@@ -10,7 +10,7 @@ export function DetailHeader({ place, weather }: { place: LocationFetchedFromSea
   return (
     <>
       <Name place={ place } description={ description } />
-      <ShowCurrentTempWithIcon icon={icon} temp={weather.temp}/>
+      <ShowCurrentTempWithIcon icon={icon} temp={weather.temp} summary={description}/>
     </>
     
   )

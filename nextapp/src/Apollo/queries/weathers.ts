@@ -17,4 +17,19 @@ export const weathers = {
       }
     }
   `,
+  updateWeather: gql`
+    mutation updateWeather($coordinates: CoordinatesInput!, $id: Int!){
+      updateWeather(coordinates: $coordinates, id: $id) {
+        id
+        current {
+          dt
+          current
+        }
+        days {
+          dt
+          daily
+        }
+      }
+    }
+  `,
 }

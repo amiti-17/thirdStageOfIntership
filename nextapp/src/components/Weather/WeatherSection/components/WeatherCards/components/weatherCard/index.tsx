@@ -8,20 +8,26 @@ import { HeaderWeatherCard } from "./components/HeaderWeatherCard";
 import { FooterWeatherCard } from "./components/FooterWeatherCard";
 import { MainWeatherCard } from "./components/MainWeatherCard";
 import { OverLayLayout } from "./components/OverLayLayout";
+import { DetailWeather } from "./components/DetailWeather";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
+import { Weather } from "config/system/types/Weather";
 import { UserContext } from "Contexts/userContext";
 import style from "./style.module.css";
 import { ModalLayoutContext } from "Contexts/modalLayoutContext";
-import { DetailWeather } from "./components/DetailWeather";
-import { Weather } from "config/system/types/Weather";
+import { cssConstants } from "config/system/constants/cssConstants";
+import { isWeatherNeedUpdate } from "functions/timeAndDate/isWeatherNeedUpdate";
 
 
 export function WeatherCard({ place }: {place: LocationFetchedFromSearchString}) {
 
-  const { data, loading } = useQuery<Weather>(weathers.getById, { variables: { input: place.id } });
-  const { user } = useContext(UserContext);
+  const [ currentWeather, setCurrentWeather ] = useState<Weather>();
   const [ deletePlace ] = useMutation(locations.removeLocations);
   const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
+  const [ getUpdatedWeather, {loading: updateWeatherLoading} ] = useMutation(weathers.updateWeather);
+  const { data, loading } = useQuery(weathers.getById, { variables: { input: place.id }, onCompleted(data) {
+    setCurrentWeather(data.getWeather);
+  }, });
+  const { user } = useContext(UserContext);
 
   const onDeleteHandler = (locationsId, usersId) => {
     deletePlace({
@@ -33,28 +39,39 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
   }
 
   useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'visible';
+    if (currentWeather && isWeatherNeedUpdate(currentWeather.current.dt)) {
+      getUpdatedWeather({ variables: {
+        coordinates: { lat: place.lat, lon: place.lon },
+        id: currentWeather.id,
+      }, onCompleted(data) {
+        setCurrentWeather(data.updateWeather);
+      },});
     }
-  })
+  }, [data]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = cssConstants.hidden;
+    } else {
+      document.body.style.overflow = cssConstants.visible;
+    }
+  }, [isModalOpen]);
 
   return (
     <Box onClick={() => setIsModalOpen(prev => !prev)}>
       <ModalLayoutContext.Provider value={{ isModalOpen, setIsModalOpen }}>
-        { loading && !data?.getWeather && <CircularIndeterminate /> }
-        {isModalOpen && !loading && <OverLayLayout><DetailWeather weather={data} place={place} /></OverLayLayout>}
+        { loading && updateWeatherLoading && !currentWeather && <CircularIndeterminate /> }
+        {isModalOpen && !loading && !updateWeatherLoading && <OverLayLayout><DetailWeather weather={currentWeather} place={place} /></OverLayLayout>}
         { 
-          !loading && data?.getWeather &&
+          !loading && !updateWeatherLoading && currentWeather &&
             <Stack direction='column' gap='10px' className={style.weatherCard}>
               <HeaderWeatherCard 
                 name={place.name}
-                current={data?.getWeather.current}
+                current={currentWeather.current}
                 onDeleteHandler={onDeleteHandler.bind(null, place.id, user.id)}
               />
-              <MainWeatherCard currentW={data?.getWeather.current.current} />
-              <FooterWeatherCard daily={data?.getWeather.days} />
+              <MainWeatherCard currentW={currentWeather.current.current} />
+              <FooterWeatherCard daily={currentWeather.days} />
             </Stack>
         }
       </ModalLayoutContext.Provider>

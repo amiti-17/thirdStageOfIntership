@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { SafeUser } from './entities/safe-user.entity';
 import { User } from './entities/user.entity';
 import { Location } from 'src/locations/entities/location.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { selectUser } from './selectUser';
 
 @Injectable()
 export class UsersService {
@@ -15,47 +16,27 @@ export class UsersService {
       data: {
         ...createUserInput,
       },
-      select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
-      },
+      select: selectUser,
     });
   }
 
   async findAll(): Promise<SafeUser[]> {
     return await this.prisma.users.findMany({
-      select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
-      },
+      select: selectUser,
     });
   }
 
   async findOne(email: string): Promise<SafeUser> {
     return await this.prisma.users.findUnique({
       where: { email },
-      select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
-      },
+      select: selectUser,
     });
   }
 
   async findById(id: number): Promise<SafeUser> {
     return await this.prisma.users.findUnique({
       where: { id },
-      select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
-      },
+      select: selectUser,
     });
   }
 
@@ -67,10 +48,7 @@ export class UsersService {
     return await this.prisma.users.findUnique({
       where: { email },
       select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
+        ...selectUser,
         password: true,
       },
     });
@@ -91,12 +69,7 @@ export class UsersService {
   async remove(id: number): Promise<SafeUser> {
     return await this.prisma.users.delete({
       where: { id },
-      select: {
-        name: true,
-        email: true,
-        id: true,
-        locations: true,
-      },
+      select: selectUser,
     });
   }
 }

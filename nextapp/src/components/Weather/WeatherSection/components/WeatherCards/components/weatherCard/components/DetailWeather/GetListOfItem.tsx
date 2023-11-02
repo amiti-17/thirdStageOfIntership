@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import style from "./style.module.css";
 
 export function GetListOfItem({ name, item, measure: measure }: { name: string, item: string | number, measure?: string }) {
 
@@ -9,6 +10,6 @@ export function GetListOfItem({ name, item, measure: measure }: { name: string, 
   }
 
   return (
-    <>{isOk && <Box>{name}: {item}{measure}</Box>}</>
+    <>{isOk && <Box component='li' className={style.listItem}>{name}: {item}{measure}</Box>}</>
   )
 }

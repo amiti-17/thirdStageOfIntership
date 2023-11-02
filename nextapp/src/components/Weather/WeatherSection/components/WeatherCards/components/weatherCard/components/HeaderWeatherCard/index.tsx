@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import style from "./style.module.css"
 import { WeatherIcon } from "../WeatherIcon";
 import { NameAndCaption } from "./components/NameAndCaption";
@@ -7,7 +7,7 @@ import { Current } from "config/system/types/Current";
 
 export function HeaderWeatherCard({ name, current, onDeleteHandler }: { name: string, current: Current, onDeleteHandler: () => {} }) {
 
-  const currentData = JSON.parse(current.current)
+  const currentData = JSON.parse(current.current);
   
   return (
     <Box className={style.headerWeatherCard}>
