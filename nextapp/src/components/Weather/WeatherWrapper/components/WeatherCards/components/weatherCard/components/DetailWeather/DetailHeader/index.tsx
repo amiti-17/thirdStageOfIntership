@@ -1,10 +1,16 @@
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 import { ShowCurrentTempWithIcon } from "./components/ShowCurrentTempWithIcon";
 import { Name } from "./components/Name";
-import { ShowTemperature } from "../../ShowTemperature";
-import { Box } from "@mui/material";
 
-export function DetailHeader({ place, weather }: { place: LocationFetchedFromSearchString, weather: { weather: ({ icon: string, description: string })[], temp: number }}) {
+type DetailHeaderType = {
+  place: LocationFetchedFromSearchString,
+  weather: {
+    weather: ({ icon: string, description: string })[],
+    temp: number
+  },
+}
+
+export function DetailHeader({ place, weather }: DetailHeaderType) {
 
   const { description, icon } = weather.weather[0];
   return (
@@ -12,6 +18,5 @@ export function DetailHeader({ place, weather }: { place: LocationFetchedFromSea
       <Name place={ place } description={ description } />
       <ShowCurrentTempWithIcon icon={icon} temp={weather.temp} summary={description}/>
     </>
-    
   )
 }

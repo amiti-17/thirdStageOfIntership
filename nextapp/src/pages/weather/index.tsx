@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PlacesContext } from "Contexts/placesContext";
 import { UserContext } from "Contexts/userContext";
-import CircularIndeterminate from "components/CircularIndeterminate";
+import CircularIndeterminate from "components/Common/CircularIndeterminate";
 import { WeatherWrapper } from "components/Weather/WeatherWrapper";
 import { WeatherLayout } from "components/Weather/WeatherLayout";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";

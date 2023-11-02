@@ -1,8 +1,8 @@
 import { Alert, Collapse } from "@mui/material";
 import { useEffect, useState } from "react";
 import { AlertSearchBarContext } from "Contexts/alertSearchBarContext";
-import { SearchInput } from "./components/SearchInput";
 import { digits } from "config/system/constants/digits";
+import { SearchInput } from "./components/SearchInput";
 import { WeatherSearchInputWrapper } from "./styled/WeatherSearchInputWrapper";
 
 export function SearchBar() {

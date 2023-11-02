@@ -1,6 +1,6 @@
 import React from "react";
 import { WeatherContext } from "Contexts/weatherContext";
-import { WeatherLayoutWrapper } from "./components/WeatherLayoutWrapper";
+import { WeatherLayoutWrapper } from "./styled/WeatherLayoutWrapper";
 
 export function WeatherLayout({ children } : { children: React.ReactNode }): JSX.Element {
 

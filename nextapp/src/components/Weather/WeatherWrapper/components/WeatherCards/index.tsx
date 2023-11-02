@@ -4,15 +4,14 @@ import { PlacesContext } from "Contexts/placesContext";
 import { locations as apolloLocations } from "Apollo/queries/locations";
 import { WeatherCard } from "./components/weatherCard";
 import { UserContext } from "Contexts/userContext";
-import { MyWeatherSection } from "./components/MyWeatherSection";
+import { WeatherCardsStyled } from "./styled/WeatherCardsStyled";
 
 export function WeatherCards() {
 
-  // const [ locations, setLocations ] = useState<LocationType[]>([]);
   const { places, setPlaces } = useContext(PlacesContext);
   const { user } = useContext(UserContext);
 
-  const { data: locationAdded } = useSubscription(apolloLocations.onLocationAdded, {
+  useSubscription(apolloLocations.onLocationAdded, {
     variables: { input: user.id },
     onData(options) {
       setPlaces(prev => {
@@ -24,7 +23,7 @@ export function WeatherCards() {
     },
   });
 
-  const { data: locationRemoved } = useSubscription(apolloLocations.onLocationRemoved, {
+  useSubscription(apolloLocations.onLocationRemoved, {
     variables: { input: user.id },
     onData(options) {
       setPlaces(prev => {
@@ -34,9 +33,9 @@ export function WeatherCards() {
   });
 
   return (
-    <MyWeatherSection>
+    <WeatherCardsStyled>
       { places.map(place => <WeatherCard key={place.id} place={place} />) }
       { !places[0]?.name && ('Try to add any of places') }
-    </MyWeatherSection>
+    </WeatherCardsStyled>
   )
 }

@@ -7,6 +7,7 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
   return (
     <Stack
       direction='row'
+      margin='0 auto'
       gap='15px'
     >
       <ShowTemperature temperature={current.temp} fontSize={50} />

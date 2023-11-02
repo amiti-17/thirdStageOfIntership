@@ -1,5 +1,5 @@
 import { strConstants } from "config/system/constants/strConstants";
-import { LoginPageButton } from "components/loginPage/Form/styled/LoginPageButton";
+import { LoginPageButton } from "components/LoginPage/Form/styled/LoginPageButton";
 
 type SubmitOutlinedButtonType = { isLoading: boolean, isDisabled: boolean }
 

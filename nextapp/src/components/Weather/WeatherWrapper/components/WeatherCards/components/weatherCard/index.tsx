@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { weathers } from "Apollo/queries/weathers";
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { locations } from "Apollo/queries/locations";
-import CircularIndeterminate from "components/CircularIndeterminate";
+import CircularIndeterminate from "components/Common/CircularIndeterminate";
 import { HeaderWeatherCard } from "./components/HeaderWeatherCard";
 import { FooterWeatherCard } from "./components/FooterWeatherCard";
 import { MainWeatherCard } from "./components/MainWeatherCard";
@@ -12,10 +12,10 @@ import { DetailWeather } from "./components/DetailWeather";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 import { Weather } from "config/system/types/Weather";
 import { UserContext } from "Contexts/userContext";
-import style from "./style.module.css";
 import { ModalLayoutContext } from "Contexts/modalLayoutContext";
 import { cssConstants } from "config/system/constants/cssConstants";
 import { isWeatherNeedUpdate } from "functions/timeAndDate/isWeatherNeedUpdate";
+import { WeatherCardStyled } from "./styled/WeatherCardStyled";
 
 
 export function WeatherCard({ place }: {place: LocationFetchedFromSearchString}) {
@@ -64,7 +64,7 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
         {isModalOpen && !loading && !updateWeatherLoading && <OverLayLayout><DetailWeather weather={currentWeather} place={place} /></OverLayLayout>}
         { 
           !loading && !updateWeatherLoading && currentWeather &&
-            <Stack direction='column' gap='10px' className={style.weatherCard}>
+            <WeatherCardStyled direction='column' gap='10px'>
               <HeaderWeatherCard 
                 name={place.name}
                 current={currentWeather.current}
@@ -72,7 +72,7 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
               />
               <MainWeatherCard currentW={currentWeather.current.current} />
               <FooterWeatherCard daily={currentWeather.days} />
-            </Stack>
+            </WeatherCardStyled>
         }
       </ModalLayoutContext.Provider>
       
