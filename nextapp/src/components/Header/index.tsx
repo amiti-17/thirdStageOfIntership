@@ -2,10 +2,10 @@ import { useQuery } from "@apollo/client";
 import { users } from "Apollo/queries/users";
 import { avatarFromString } from "./stringAvatar";
 import { Logo } from "./components/Logo";
-import { MyHeader } from "./components/MyHeader";
+import { MyHeader } from "./styled/MyHeader";
 import { UserAvatar } from "./components/Avatar";
 import { useContext, useEffect } from "react";
-import { UserContext } from "../../Contexts/userContext";
+import { UserContext } from "Contexts/userContext";
 import { strConstants } from "config/system/constants/strConstants";
 
 export function Header() {

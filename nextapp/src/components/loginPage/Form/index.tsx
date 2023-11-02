@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
-import { Alert, Box, Button, Collapse } from "@mui/material";
+import { Alert, Collapse } from "@mui/material";
 import { useFormik } from "formik";
-import SubmitOutlinedButton from "./components/SubmitOutlinedButton";
-import style from "./style.module.css";
+import { SubmitOutlinedButton } from "./components/SubmitOutlinedButton";
+import { RequiredTextField } from "./components/RequiredTextField";
 import CustomError from "CustomError";
 import { ShowMsgType, showMsgDefault } from "CustomError/ShowMshType";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
@@ -14,7 +14,8 @@ import { auth } from "Apollo/queries/auth";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { pages } from "config/system/pages";
 import { UserContext } from "Contexts/userContext";
-import { RequiredTextField } from "./components/RequiredTextField";
+import { LoginPageButton } from "./styled/LoginPageButton";
+import { LoginButtonGroup } from "./styled/LoginButtonGroup";
 
 export default function LoginForm() {
 
@@ -86,19 +87,19 @@ export default function LoginForm() {
           error={formik.touched.password && Boolean(formik.errors.password)}
           errorText={formik.touched.password && formik.errors.password}
         />
-        <Box className={style.buttonsGroup}>
+        <LoginButtonGroup>
           <SubmitOutlinedButton isLoading={isLoading} isDisabled={formik.isSubmitting} />
-          { 
+          {
             user && 
-              <Button 
-                variant='outlined' 
-                className={style.usersButton}
+              <LoginPageButton 
+                fullWidth
+                variant='outlined'
                 onClick={() => router.push('/weather')}
               >
                 {user.name} {'=>'}
-              </Button>
+              </LoginPageButton>
           }
-        </Box>
+        </LoginButtonGroup>
       </form>
       {
         showMsg?.message && (

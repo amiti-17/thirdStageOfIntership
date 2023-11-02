@@ -6,7 +6,7 @@ import { auth } from "Apollo/queries/auth";
 import { UserContext } from "Contexts/userContext";
 import CircularIndeterminate from "components/CircularIndeterminate";
 import { strConstants } from "config/system/constants/strConstants";
-import { LogoutButton } from "./components/LogoutButton";
+import { LogoutButton } from "./styled/LogoutButton";
 
 export function UserAvatar(props: {sx: SxProps, children: string, title: string}) {
 

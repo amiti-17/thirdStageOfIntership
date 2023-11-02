@@ -1,9 +1,23 @@
-
-import { TextField } from "@mui/material";
 import { ChangeEvent, FocusEvent } from "react";
-import { LoginTextField } from "./components/LoginTextField";
+import { LoginTextField } from "./styled/LoginTextField";
 
-export function RequiredTextField({ 
+type RequiredTextFieldType = {
+  id: string,
+    label: string,
+    name?: string,
+    autoComplete: string,
+    autoFocus?: boolean,
+    type?: string,
+    error?: boolean,
+    onChange: { (e: ChangeEvent<any>): void; <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any> ? void : (e: string | ChangeEvent<any>) => void; },
+    onBlur: { (e: FocusEvent<any, Element>): void; <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void; },
+    value: {},
+    errorText?: string,
+}
+
+export function RequiredTextField(props: RequiredTextFieldType) {
+
+  const {
     id,
     label,
     name,
@@ -15,22 +29,7 @@ export function RequiredTextField({
     onBlur,
     value,
     errorText
-  }: { 
-    id: string,
-    label: string,
-    name?: string,
-    autoComplete: string,
-    autoFocus?: boolean,
-    type?: string,
-    error?: boolean,
-    onChange: { (e: ChangeEvent<any>): void; <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any> ? void : (e: string | ChangeEvent<any>) => void; },
-    onBlur: { (e: FocusEvent<any, Element>): void; <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void; },
-    value: {},
-    errorText?: string,
-  }) {
-
-  name ??= id
-  type ??= id
+  } = props;
   
   return (
     <LoginTextField
@@ -39,7 +38,7 @@ export function RequiredTextField({
       fullWidth
       id={id}
       label={label}
-      name={name}
+      name={name ?? id}
       autoComplete={autoComplete}
       autoFocus={autoFocus}
       value={value}

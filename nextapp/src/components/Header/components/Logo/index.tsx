@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
-import { CloudTwoToneIcon } from './components/CloudTwoToneIcon';
-import { LogoText } from './components/LogoText';
+import { CloudTwoToneIcon } from './styled/CloudTwoToneIcon';
+import { LogoText } from './styled/LogoText';
 
 export function Logo() {
   return (

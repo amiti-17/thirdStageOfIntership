@@ -1,10 +1,12 @@
-import styled from "@emotion/styled";
-import { Button } from "@mui/material";
 import { strConstants } from "config/system/constants/strConstants";
-import { LoginPageButton } from "./components/LoginPageButton";
+import { LoginPageButton } from "components/loginPage/Form/styled/LoginPageButton";
 
-export default function SubmitOutlinedButton({ isLoading, isDisabled }: { isLoading: boolean, isDisabled: boolean }) {
+type SubmitOutlinedButtonType = { isLoading: boolean, isDisabled: boolean }
+
+export function SubmitOutlinedButton(props: SubmitOutlinedButtonType) {
   
+  const { isLoading, isDisabled } = props;
+
   return (
     <LoginPageButton
       type="submit"
