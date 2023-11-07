@@ -1,10 +1,11 @@
-import { Box, Collapse } from "@mui/material";
+import { Collapse } from "@mui/material";
 import { useState } from "react";
 import { getDate } from "functions/timeAndDate/getDate";
 import { ShowCurrentTempWithIcon } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailWeather/DetailHeader/components/ShowCurrentTempWithIcon";
 import { DetailList } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailWeather/DetailFooter/components/DailyFooterItem/components/DetailList";
 import { DetailedList } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailedList";
 import { GetListOfItem } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailedList/components/DetailWeatherMatched/components/GetListOfItem";
+import { DailyFooterStyled } from "./styled/DailyFooterStyled";
 
 export function DailyFooterItem({ item }: { item: string }) {
 
@@ -19,8 +20,7 @@ export function DailyFooterItem({ item }: { item: string }) {
 
   return (
     <DetailList>
-      <Box 
-        className={'style.listItemWrapper'} 
+      <DailyFooterStyled
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -33,7 +33,7 @@ export function DailyFooterItem({ item }: { item: string }) {
           <DetailedList weather={currentDay}/>
         </Collapse>
         
-      </Box>
+      </DailyFooterStyled>
     </DetailList>
   )
 }

@@ -1,8 +1,0 @@
-.detailFooter {
-  display: flex;
-  justify-content: space-around;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
