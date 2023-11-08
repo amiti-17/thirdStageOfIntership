@@ -23,7 +23,7 @@ Table Locations {
   state String
   users Users [not null]
   weather Weathers
-  weatherId Int
+  weatherId Int [unique]
 
   indexes {
     (lat, lon) [unique]
@@ -37,7 +37,7 @@ Table Weathers {
   current Current
   currentId Int [unique]
   days Days [not null]
-  locations Locations [not null]
+  locations Locations
 }
 
 Table Current {
@@ -59,7 +59,7 @@ Table Days {
   weatherId Int
 }
 
-Ref: Locations.weatherId > Weathers.id
+Ref: Locations.weatherId - Weathers.id
 
 Ref: Weathers.currentId - Current.id
 

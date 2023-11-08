@@ -10,24 +10,18 @@ import { MainWeatherCard } from "./components/MainWeatherCard";
 import { OverLayLayout } from "./components/OverLayLayout";
 import { DetailWeather } from "./components/DetailWeather";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
-import { Weather } from "config/system/types/Weather";
+import { cssConstants } from "config/system/constants/cssConstants";
 import { UserContext } from "Contexts/userContext";
 import { ModalLayoutContext } from "Contexts/modalLayoutContext";
-import { cssConstants } from "config/system/constants/cssConstants";
-import { isWeatherNeedUpdate } from "functions/timeAndDate/isWeatherNeedUpdate";
 import { WeatherCardStyled } from "./styled/WeatherCardStyled";
 
 
 export function WeatherCard({ place }: {place: LocationFetchedFromSearchString}) {
 
-  const [ currentWeather, setCurrentWeather ] = useState<Weather>();
+  const { user } = useContext(UserContext);
+  const { data, loading } = useQuery(weathers.getById, { variables: { input: place.id } });
   const [ deletePlace ] = useMutation(locations.removeLocations);
   const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
-  const [ getUpdatedWeather, {loading: updateWeatherLoading} ] = useMutation(weathers.updateWeather);
-  const { data, loading } = useQuery(weathers.getById, { variables: { input: place.id }, onCompleted(data) {
-    setCurrentWeather(data.getWeather);
-  }, });
-  const { user } = useContext(UserContext);
 
   const onDeleteHandler = (locationsId, usersId) => {
     deletePlace({
@@ -37,17 +31,6 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
       }
     })
   }
-
-  useEffect(() => {
-    if (currentWeather && isWeatherNeedUpdate(currentWeather.current.dt)) {
-      getUpdatedWeather({ variables: {
-        coordinates: { lat: place.lat, lon: place.lon },
-        id: currentWeather.id,
-      }, onCompleted(data) {
-        setCurrentWeather(data.updateWeather);
-      },});
-    }
-  }, [data]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -60,18 +43,18 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
   return (
     <Box onClick={() => setIsModalOpen(prev => !prev)}>
       <ModalLayoutContext.Provider value={{ isModalOpen, setIsModalOpen }}>
-        { loading && updateWeatherLoading && !currentWeather && <CircularIndeterminate /> }
-        {isModalOpen && !loading && !updateWeatherLoading && <OverLayLayout><DetailWeather weather={currentWeather} place={place} /></OverLayLayout>}
+        { loading && !data?.getWeather && <CircularIndeterminate /> }
+        {isModalOpen && !loading && <OverLayLayout><DetailWeather weather={data?.getWeather} place={place} /></OverLayLayout>}
         { 
-          !loading && !updateWeatherLoading && currentWeather &&
+          !loading && data?.getWeather &&
             <WeatherCardStyled direction='column' gap='10px'>
               <HeaderWeatherCard 
                 name={place.name}
-                current={currentWeather.current}
+                current={data?.getWeather.current}
                 onDeleteHandler={onDeleteHandler.bind(null, place.id, user.id)}
               />
-              <MainWeatherCard currentW={currentWeather.current.current} />
-              <FooterWeatherCard daily={currentWeather.days} />
+              <MainWeatherCard currentW={data?.getWeather.current.current} />
+              <FooterWeatherCard daily={data?.getWeather.days} />
             </WeatherCardStyled>
         }
       </ModalLayoutContext.Provider>

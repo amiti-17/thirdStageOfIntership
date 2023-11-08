@@ -37,7 +37,7 @@ model Locations {
 
   users         Users[]
   weather       Weathers?           @relation(fields: [weatherId], references: [id]) //, onDelete: Cascade
-  weatherId     Int?                 
+  weatherId     Int?                @unique
 
   @@unique(fields: [lat, lon], name: "ll")
 }
@@ -52,7 +52,7 @@ model Weathers {
   days          Days[]
   // Hours         Hours[]
 
-  locations     Locations[]           
+  locations     Locations?
 }
 
 model Current {

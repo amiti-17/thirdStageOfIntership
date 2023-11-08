@@ -17,6 +17,6 @@ export class Weather {
   @Field(() => [DaysW], { nullable: true })
   days?: DaysW[];
 
-  @Field(() => [Location], { nullable: 'items' })
-  locations?: Location[];
+  @Field(() => Location, { nullable: true })
+  locations?: Location;
 }

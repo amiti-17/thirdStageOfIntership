@@ -13,6 +13,13 @@ export class WeathersService {
     private daysWService: DaysWService,
   ) {}
 
+  async findOne(id: number) {
+    return await this.prisma.weathers.findUnique({
+      where: { id },
+      select: selectWeather,
+    });
+  }
+
   async fetchAndCreateAll(coordinates: Coordinates) {
     const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
     const { daily: fetchedDays } = fetchedWeather;
@@ -49,11 +56,20 @@ export class WeathersService {
     return localWeather;
   }
 
-  async findOne(id: number) {
-    return await this.prisma.weathers.findUnique({
-      where: { id },
-      select: selectWeather,
-    });
+  async findAndUpdateIfNeed(id: number) {
+    const currentWeather = await this.findOne(id);
+    const shouldBeUpdated = await this.isWeatherNeedUpdate(
+      currentWeather.current.dt,
+    );
+
+    if (shouldBeUpdated) {
+      return this.fetchAndUpdateAll(id, {
+        lat: currentWeather.locations.lat,
+        lon: currentWeather.locations.lon,
+      });
+    }
+
+    return currentWeather;
   }
 
   async fetchAndUpdateAll(id: number, coordinates: Coordinates) {
@@ -85,11 +101,15 @@ export class WeathersService {
     return await this.findOne(id);
   }
 
+  async isWeatherNeedUpdate(dt: number): Promise<boolean> {
+    // eslint-disable-next-line prettier/prettier
+    return await (new Date().getTime() / 1000) - dt > Number(process.env.OW_SHOULD_BE_REFRESHED);
+  }
+
   async removeWithAllRelated(weatherId: number) {
     const weather = await this.findOne(weatherId);
-    if (weather.locations.length > 1) return;
-    const deletedDays = await this.daysWService.removeMany(weather.id); // Ask: how make it better (unused variables...)
-    const deleteCurrentW = await this.prisma.current.delete({
+    await this.daysWService.removeMany(weather.id); // Ask: how make it better (unused variables...)
+    await this.prisma.current.delete({
       where: { id: weather.currentId },
     });
     return await this.prisma.weathers.delete({ where: { id: weather.id } });
