@@ -17,19 +17,20 @@ export const weathers = {
       }
     }
   `,
-  // updateWeather: gql`
-  //   mutation updateWeather($coordinates: CoordinatesInput!, $id: Int!){
-  //     updateWeather(coordinates: $coordinates, id: $id) {
-  //       id
-  //       current {
-  //         dt
-  //         current
-  //       }
-  //       days {
-  //         dt
-  //         daily
-  //       }
-  //     }
-  //   }
-  // `,
+  onWeatherUpdated: gql`
+    subscription onWeatherUpdated {
+      weatherUpdated {
+        id
+        currentId
+        current {
+          dt
+          current
+        }
+        days {
+          dt
+          daily
+        }
+      }
+    }
+  `,
 }

@@ -80,6 +80,7 @@ export default function LoginForm() {
         <RequiredTextField
           id="password"
           label="Password"
+          type="password"
           autoComplete="current-password"
           value={formik.values.password}
           onChange={formik.handleChange}

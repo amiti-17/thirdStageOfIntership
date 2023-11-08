@@ -7,7 +7,7 @@ export function FooterWeatherCard({ daily }: { daily: { dt: number, daily: strin
       {
         daily
           .sort((elA, elB) => elA.dt - elB.dt)
-          .map(day => <FutureDay key={day.dt} daily={day.daily} />)
+          .map(day => <FutureDay key={day.dt} dailyWeather={day.daily} />)
       }
     </FooterWeatherCardStyled>
   )

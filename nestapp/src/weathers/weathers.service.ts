@@ -5,6 +5,7 @@ import { DaysWService } from 'src/daysW/daysW.service';
 import { fetchWeatherByCoordinates } from 'src/functions/fetch/fetchWeatherByCoordinates';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { selectWeather } from './selectWeather';
+import { pubSub } from './pubSub';
 
 @Injectable()
 export class WeathersService {
@@ -98,6 +99,7 @@ export class WeathersService {
         JSON.stringify(fetchedWeather.daily[i]),
       );
     }
+    pubSub.publish('weatherUpdated', await this.findOne(id));
     return await this.findOne(id);
   }
 

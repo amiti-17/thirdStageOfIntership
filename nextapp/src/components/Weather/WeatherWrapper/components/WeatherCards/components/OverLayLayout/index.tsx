@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { useContext } from "react";
 import { ModalLayoutContext } from "Contexts/modalLayoutContext";
 import { OverLayStyled } from "./styled/OverLayStyled";

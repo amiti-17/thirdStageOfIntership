@@ -6,9 +6,9 @@ import { ShowTemperature } from 'components/Weather/WeatherWrapper/components/We
 import { CollapsedDetail } from './components/CollapsedDetail';
 import { FooterWeatherUl } from './styled/FooterWeatherUl';
 
-export function FutureDay({ daily }: { daily: string }) {
+export function FutureDay({ dailyWeather }: { dailyWeather: string }) {
 
-  const weather = JSON.parse(daily);
+  const weather = JSON.parse(dailyWeather);
   const currentTime = new Date(weather.dt * digits[1000]);
   const weatherDescription = weather.weather[0].main;
 
