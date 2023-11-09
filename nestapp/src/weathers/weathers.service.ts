@@ -99,8 +99,9 @@ export class WeathersService {
         JSON.stringify(fetchedWeather.daily[i]),
       );
     }
-    pubSub.publish('weatherUpdated', await this.findOne(id));
-    return await this.findOne(id);
+    const updatedWeather = await this.findOne(id);
+    pubSub.publish('weatherUpdated', updatedWeather);
+    return updatedWeather;
   }
 
   async isWeatherNeedUpdate(dt: number): Promise<boolean> {
@@ -110,7 +111,7 @@ export class WeathersService {
 
   async removeWithAllRelated(weatherId: number) {
     const weather = await this.findOne(weatherId);
-    await this.daysWService.removeMany(weather.id); // Ask: how make it better (unused variables...)
+    await this.daysWService.removeMany(weather.id);
     await this.prisma.current.delete({
       where: { id: weather.currentId },
     });

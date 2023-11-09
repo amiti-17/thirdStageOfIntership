@@ -1,35 +1,37 @@
 import { onError } from "@apollo/client/link/error";
 import { FetchResult, Observable } from "apollo-link";
 import { globalClient } from "Apollo";
-import { refreshAccessToken } from "Apollo/queries/refreshAccessToken";
-import CustomError from "CustomError";
+import { auth } from "Apollo/queries/auth";
 
 export const errorLink = (router) => onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {
     try {
       for (let err of graphQLErrors) {
-        switch (err.extensions.code) {
-          case '401_401': // user provides invalid credentials
-            router.refresh();
-            break;
+        switch (err.extensions?.code) {
           case 'UNAUTHENTICATED':
-            return new Observable<FetchResult>(observer => {
-              refreshAccessToken(globalClient)
-                .then(refreshResponse => {
-                  if (!refreshResponse?.refreshToken.status) throw new CustomError(CustomError.unauthorizedMsg);
-                })
-                .then(() => {
-                  const subscriber = {
-                    next: observer.next.bind(observer),
-                    error: observer.error.bind(observer),
-                    complete: observer.complete.bind(observer)
-                  };
-                  forward(operation).subscribe(subscriber);
-                })
-                .catch(err => {
-                  if (window.location.pathname !== '/') router.replace('/'); // if I wanna handle invalid user credential, here should be redirect to another login page with that error)
-                })
-            });
+              if (operation.operationName === 'GetNewAccessToken') {
+                return document.location.pathname === '/' ? '' : router.push('/');
+              };
+              return new Observable<FetchResult<Record<string, any>>>(
+                (observer) => {
+                  (async () => {
+                    try {
+                      await globalClient.mutate({
+                        mutation: auth.refreshToken,
+                    });
+                      const subscriber = {
+                        next: observer.next.bind(observer),
+                        error: observer.error.bind(observer),
+                        complete: observer.complete.bind(observer),
+                      };
+                      forward(operation).subscribe(subscriber);
+                    } catch (e) {
+                      // console.warn('onError apollo: ', e);
+                      observer.error(e);
+                    }
+                  })();
+                }
+              );
         }
       }
     } catch (error) {
@@ -37,6 +39,6 @@ export const errorLink = (router) => onError(({ graphQLErrors, networkError, ope
     }
   }
   if (networkError && window.location.pathname !== '/') {
-    router.replace('/')
+    router.push('/')
   }
 });

@@ -23,17 +23,22 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
   const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
   const { user } = useContext(UserContext);
 
-  const { loading: loadingQuery } = useQuery(weathers.getById, { variables: { input: place.id }, onCompleted(data) {
+  const { data: dataQuery, loading: loadingQuery } = useQuery(weathers.getById, { variables: { input: place.id }, onCompleted(data) {
     if (data?.getWeather) {
       setWeather(data?.getWeather);
     }
   }, });
 
-  const [ deletePlace ] = useMutation(locations.removeLocations);
+  const [ deletePlace ] = useMutation(locations.removeLocation);
 
-  useSubscription(weathers.onWeatherUpdated, { onData(options) {
-    setWeather(options.data?.data.weatherUpdated);
-  },});
+  useSubscription(weathers.onWeatherUpdated, {
+    variables: {
+      input: dataQuery?.getWeather.id,
+    },
+    onData(options) {
+      setWeather(options.data?.data.weatherUpdated);
+    },
+  });
 
   useEffect(() => {
     if (isModalOpen) {

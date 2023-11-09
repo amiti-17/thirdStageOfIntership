@@ -17,7 +17,7 @@ export function UserAvatar(props: {sx: SxProps, children: string, title: string}
   const logoutHandler = () => {
     logOut();
     setUser(null);
-    if (window.location.pathname !== '/') router.replace('/');
+    if (window.location.pathname !== '/') router.push('/');
   }
 
   return (

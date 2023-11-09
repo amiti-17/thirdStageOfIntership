@@ -59,7 +59,7 @@ export async function handleUnauthorized (
     if (error && error.graphQLErrors.find(el => el.message === CustomError.unauthorized)?.message === CustomError.unauthorized) {
       console.warn(error);
       localStorage.setItem(localStorageKeys.loginInfoMsg, CustomError.requiredLoginAgain);
-      router.replace('/');
+      router.push('/');
     } else throw error;
   }
 }

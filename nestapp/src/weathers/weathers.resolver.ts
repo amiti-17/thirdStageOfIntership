@@ -18,8 +18,14 @@ export class WeathersResolver {
   @Subscription(() => Weather, {
     name: 'weatherUpdated',
     resolve: (value) => value,
+    filter: (payload, variables) => {
+      return Boolean(payload.id === variables.weatherId);
+    },
   })
-  subscribeToLocationRemove() {
+  subscribeToLocationRemove(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Args('weatherId', { type: () => Int }) weatherId: number,
+  ) {
     return pubSub.asyncIterator('weatherUpdated');
   }
 }

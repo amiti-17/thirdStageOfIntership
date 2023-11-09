@@ -5,15 +5,8 @@ import CustomError from "CustomError";
 const customError = new CustomError('');
 
 export const graphqlErrorsHandler = (errors: GraphQLErrors): ShowMsgType => {
-  console.warn(errors.find(el => console.warn(el.extensions.code)));
-  if (errors.find(el => el.message === customError.unauthorized)) {
-    return {
-      message: CustomError.unauthorizedMsg,
-      severity: 'error',
-    }
-  }
 
-  if (errors.find(el => el.extensions.code === CustomError['401_401'])) {
+  if (errors.find(el => el.message === customError.unauthorized)) {
     return {
       message: CustomError.unauthorizedMsg,
       severity: 'error',

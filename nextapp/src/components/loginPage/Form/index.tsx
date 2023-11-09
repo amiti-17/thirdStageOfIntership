@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { Alert, Collapse } from "@mui/material";
@@ -21,6 +21,8 @@ export default function LoginForm() {
 
   const { user } = useContext(UserContext);
   const [ showMsg, setShowMsg ] = useState<ShowMsgType>(showMsgDefault);
+  const [ showMsgTimer, setShowMsgTimer ] = useState<NodeJS.Timeout>();
+  const [ shouldShowMsg, setShouldShowMsg ] = useState(false);
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ getTokenMutation ] = useMutation(auth.login);
   const router = useRouter();
@@ -35,16 +37,16 @@ export default function LoginForm() {
         password: getCryptPassword(values.password),
       };
       try {
-        const isUserOk = await getTokenMutation({
+        const isUser = await getTokenMutation({
           variables: { input: myCryptValues },
         });
 
-        if (isUserOk?.data?.login.status) {
+        if (isUser?.data?.login.status) {
           setShowMsg({
             message: CustomError.successfullyLogIn,
             severity: 'success',
           })
-          router.replace(pages.weather);
+          router.push(pages.weather);
         }
       } catch (error) {
 
@@ -56,12 +58,22 @@ export default function LoginForm() {
           setShowMsg(networkErrorsHandler(error.networkError));
         }
 
-        console.error('unrecognized error in Form => LoginForm => formik => onSubmit: ', error);
+        console.error('unrecognized warn in Form => LoginForm => formik => onSubmit: ', error);
       } finally {
         setIsLoading(false);
       }
     },
   });
+
+  useEffect(() => {
+    clearTimeout(showMsgTimer);
+    if (showMsg.message) {
+      setShouldShowMsg(true);
+      setShowMsgTimer(setTimeout(() => {
+        setShouldShowMsg(false);
+      }, 5000));
+    }
+  }, [showMsg]);
   
   return (
     <>
@@ -103,8 +115,8 @@ export default function LoginForm() {
         </LoginButtonGroup>
       </form>
       {
-        showMsg?.message && (
-          <Collapse in={Boolean(showMsg.message)}>
+        (
+          <Collapse in={Boolean(shouldShowMsg)}>
             <Alert severity={showMsg.severity}>{showMsg.message}</Alert>
           </Collapse>
         )

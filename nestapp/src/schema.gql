@@ -103,7 +103,7 @@ type SafeUser {
 type Subscription {
   locationAdded(usersId: Int!): Location!
   locationRemoved(usersId: Int!): Location!
-  weatherUpdated: Weather!
+  weatherUpdated(weatherId: Int!): Weather!
 }
 
 type User {

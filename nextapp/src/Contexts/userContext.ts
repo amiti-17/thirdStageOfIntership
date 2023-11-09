@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { SafeUserType } from "../Apollo/queries/users";
-
+import { SafeUserType } from "config/system/types/SafeUserType";
 
 export type UserContextType = {
   user: SafeUserType | null,

@@ -4,32 +4,26 @@ export const weathers = {
   getById: gql`
     query getWeather($input: Int!) {
       getWeather(id: $input) {
-        id
-        currentId
         current {
-          dt
-          current
+          ...CurrentFragment
         }
         days {
-          dt
-          daily
+          ...DaysFragment
         }
+        ...WeatherFragment
       }
     }
   `,
   onWeatherUpdated: gql`
-    subscription onWeatherUpdated {
-      weatherUpdated {
-        id
-        currentId
+    subscription onWeatherUpdated($input: Int!) {
+      weatherUpdated(weatherId: $input) {
         current {
-          dt
-          current
+          ...CurrentFragment
         }
         days {
-          dt
-          daily
+          ...DaysFragment
         }
+        ...WeatherFragment
       }
     }
   `,

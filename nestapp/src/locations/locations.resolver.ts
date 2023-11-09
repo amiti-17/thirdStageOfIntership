@@ -92,7 +92,7 @@ export class LocationsResolver {
   })
   subscribeToLocationRemove(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Args('usersId', { type: () => Int }) usersId: string,
+    @Args('usersId', { type: () => Int }) usersId: number,
   ) {
     return pubSub.asyncIterator('locationRemoved');
   }

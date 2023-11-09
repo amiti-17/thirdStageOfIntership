@@ -35,8 +35,8 @@ export function SearchInput() {
   const findAndSetCurrentObj = findAndSetCurrentObjExtended.bind(null, options);
 
   useEffect(() => {
-    if (myPlacesData) {
-      setOptions(myPlacesData.getListOfPlaces);
+    if (myPlacesData?.getListOfPlaces[0].id) {
+      setOptions(myPlacesData?.getListOfPlaces);
     }
   }, [myPlacesData]);
 
