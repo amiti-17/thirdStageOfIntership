@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { UsersModule } from './users/users.module';
-import { PrismaService } from './prisma/prisma.service';
-import { LocationsModule } from './locations/locations.module';
-import { AuthModule } from './auth/auth.module';
-import { WeathersModule } from './weathers/weathers.module';
-import { DaysWModule } from './daysW/daysW.module';
+import { UsersModule } from './modules/users/users.module';
+import { PrismaService } from './modules/prisma/prisma.service';
+import { LocationsModule } from './modules/locations/locations.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { WeathersModule } from './modules/weathers/weathers.module';
+import { DaysWModule } from './modules/daysW/daysW.module';
 
 @Module({
   imports: [
