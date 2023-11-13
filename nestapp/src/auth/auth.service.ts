@@ -3,14 +3,14 @@ import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
-import { Context } from 'graphql-ws';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { JwtService } from '@nestjs/jwt';
 import { regExp } from 'src/config/system/regExp';
-import { Request } from 'express';
+import { Response } from 'express';
 import { strConstants } from 'src/config/public/strConstants';
 import {
   accessCookieOptions,
+  defaultCookieOptions,
   refreshCookieOptions,
 } from 'src/config/system/cookiesOption';
 
@@ -33,20 +33,20 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async login(authLoginInput: AuthLoginInput, req: Request) {
+  async login(authLoginInput: AuthLoginInput, res: Response) {
     const user = await this.validateUser(
       authLoginInput.email,
       authLoginInput.password,
     );
     const accessToken = this.generateAccessToken(user);
     const refreshToken = this.generateRefreshToken(user);
-    this.attachTokens(req, accessToken, refreshToken);
+    this.attachTokens(res, accessToken, refreshToken);
     return {
       status: true,
     };
   }
 
-  generateAccessToken(user: User) {
+  generateAccessToken(user: User): string {
     const accessToken = this.jwtService.sign(
       {
         sub: user.id,
@@ -61,7 +61,7 @@ export class AuthService {
     return accessToken;
   }
 
-  generateRefreshToken(user: User) {
+  generateRefreshToken(user: User): string {
     const jwtExpiresSecond = process.env.EXPIRES_TIME.match(regExp.int)[0];
     const refreshToken = this.jwtService.sign(
       {
@@ -77,16 +77,31 @@ export class AuthService {
     return refreshToken;
   }
 
-  attachTokens(req, accessToken, refreshToken) {
-    req?.res.cookie(strConstants.accessToken, accessToken, accessCookieOptions);
-    req?.res.cookie(
+  attachTokens(res, accessToken: string, refreshToken: string): void {
+    console.log(res);
+    res?.res.cookie(strConstants.accessToken, accessToken, accessCookieOptions);
+    res?.res.cookie(
       strConstants.refreshToken,
       refreshToken,
       refreshCookieOptions,
     );
   }
 
-  async logout() {
+  attachDefaultTokens(res): void {
+    res.res?.cookie(
+      strConstants.accessToken,
+      strConstants.defaultCookieValue,
+      defaultCookieOptions,
+    );
+    res.res?.cookie(
+      strConstants.refreshToken,
+      strConstants.defaultCookieValue,
+      defaultCookieOptions,
+    );
+  }
+
+  async logout(res: Response) {
+    this.attachDefaultTokens(res);
     return {
       status: true,
     };
@@ -104,8 +119,13 @@ export class AuthService {
     });
   }
 
-  async refreshToken(context: Context): Promise<RefreshTokenResponse> {
-    console.log(context); // context.req.res.cookies (refreshToken|user(email | name | id));
+  async refreshToken(res, context): Promise<RefreshTokenResponse> {
+    const newAccessToken = this.generateAccessToken(context.req.user);
+    res?.res.cookie(
+      strConstants.accessToken,
+      newAccessToken,
+      accessCookieOptions,
+    );
     return { status: true };
   }
 }

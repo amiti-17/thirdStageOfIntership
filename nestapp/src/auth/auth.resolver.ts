@@ -4,12 +4,10 @@ import { AuthService } from './auth.service';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { LoginResponse } from './dto/login-response';
-// import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
-import { LogoutGuard } from './guards/logout.guard';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 
 @Resolver()
 export class AuthResolver {
@@ -18,21 +16,23 @@ export class AuthResolver {
   @Mutation(() => LoginResponse)
   async login(
     @Args('authLoginInput') authLoginInput: AuthLoginInput,
-    @Res() req: Request,
+    @Res() res: Response,
   ): Promise<LoginResponse> {
-    return await this.authService.login(authLoginInput, req);
+    return await this.authService.login(authLoginInput, res);
   }
 
   @Mutation(() => LoginResponse)
-  @UseGuards(LogoutGuard)
-  async logout() {
-    return await this.authService.logout();
+  async logout(@Res() res: Response) {
+    return await this.authService.logout(res);
   }
 
   @Mutation(() => RefreshTokenResponse)
   @UseGuards(JwtRefreshAuthGuard)
-  async refreshToken(@Context() context): Promise<RefreshTokenResponse> {
-    return this.authService.refreshToken(context);
+  async refreshToken(
+    @Res() res: Response,
+    @Context() context,
+  ): Promise<RefreshTokenResponse> {
+    return this.authService.refreshToken(res, context);
   }
 
   @Mutation(() => User, { name: 'createUser' })
