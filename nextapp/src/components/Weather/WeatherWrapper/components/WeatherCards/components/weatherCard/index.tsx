@@ -69,11 +69,11 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
           !(loadingQuery || !weather) &&
             <WeatherCardStyled direction='column' gap='10px'>
               <HeaderWeatherCard
-                name={place.name}
-                current={weather.current}
-                onDeleteHandler={onDeleteHandler.bind(null, place.id, user.id)}
-              />
-              <MainWeatherCard currentW={weather.current.current} />
+                  name={place.name}
+                  current={weather.current}
+                  onDeleteHandler={onDeleteHandler.bind(null, place.id, user.id)}
+                />
+              <MainWeatherCard currentWeather={weather.current.current} />
               <FooterWeatherCard daily={weather.days} />
             </WeatherCardStyled>
         }

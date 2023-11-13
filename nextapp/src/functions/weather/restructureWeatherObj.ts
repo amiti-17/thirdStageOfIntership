@@ -1,3 +1,5 @@
+import { strConstants } from "config/system/constants/strConstants";
+
 export function restructureWeatherObj(weather, modifier = '') {
   const myModifier = modifier ? modifier + '_' : '';
   const myWeather = {};
@@ -15,5 +17,6 @@ export function restructureWeatherObj(weather, modifier = '') {
         break;
     }
   });
+  myWeather['wind_speed/wind_deg'] = myWeather.wind_speed + strConstants.slash + myWeather.wind_deg;
   return myWeather;
 }

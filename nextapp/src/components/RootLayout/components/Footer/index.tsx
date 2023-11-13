@@ -1,7 +1,6 @@
-
-import React from 'react';
+import React, { memo } from 'react';
 import Copyright from './components/Copyright';
 
-export default function Footer() {
+export const Footer = memo(() => {
   return <Copyright />
-}
+})

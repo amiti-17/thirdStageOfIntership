@@ -1,9 +1,10 @@
 import { Stack } from "@mui/material";
 import { ShowTemperature } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/ShowTemperature";
 import { ShowDetails } from "./components/ShowDetails";
+import { memo } from "react";
 
-export function MainWeatherCard({currentW}: {currentW: string}) {
-  const current = JSON.parse(currentW);
+export const MainWeatherCard = memo(({currentWeather}: {currentWeather: string}) => {
+  const current = JSON.parse(currentWeather);
   return (
     <Stack
       direction='row'
@@ -14,4 +15,10 @@ export function MainWeatherCard({currentW}: {currentW: string}) {
       <ShowDetails current={current}></ShowDetails>
     </Stack>
   )
-}
+});
+
+// export const MainWeatherCardMemo = memo(({ currentWeather }: { currentWeather: string }) => {
+//   return (
+//     <MainWeatherCard currentWeather={currentWeather} />
+//   )
+// })

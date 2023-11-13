@@ -7,7 +7,6 @@ export const DetailedList = (props: DetailForWeatherType) => {
   const { weather } = props;
 
   const myWeather = restructureWeatherObj(weather);
-
   return (
     <>
       {Object.keys(myWeather).map(el => <DetailWeatherMatched key={el} name={el} item={myWeather[el]} />)}

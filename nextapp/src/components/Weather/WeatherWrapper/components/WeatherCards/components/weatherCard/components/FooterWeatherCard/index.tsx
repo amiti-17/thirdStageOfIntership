@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { FutureDay } from "./components/FutureDay";
 import { FooterWeatherCardStyled } from "./styled/FooterWeatherCardStyled";
 
-export function FooterWeatherCard({ daily }: { daily: { dt: number, daily: string }[] }) {
+export const FooterWeatherCard = memo(({ daily }: { daily: { dt: number, daily: string }[] }) => {
   return (
     <FooterWeatherCardStyled>
       {
@@ -11,4 +12,4 @@ export function FooterWeatherCard({ daily }: { daily: { dt: number, daily: strin
       }
     </FooterWeatherCardStyled>
   )
-}
+})

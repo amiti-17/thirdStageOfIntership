@@ -1,8 +1,15 @@
+import AirIcon from '@mui/icons-material/Air';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import KayakingIcon from '@mui/icons-material/Kayaking';
+import CompressIcon from '@mui/icons-material/Compress';
+import WaterDropIcon from '@mui/icons-material/WaterDrop';
+import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import { getTime } from "functions/timeAndDate/getTime";
 import { GetListOfItem } from "./components/GetListOfItem"
 import { strConstants } from "config/system/constants/strConstants";
 import { digits } from "config/system/constants/digits";
 import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
+import { WindAngleIcon } from './components/WindAngleIcon';
 
 type DetailWeatherMatchedType = {
   name: string,
@@ -27,21 +34,21 @@ const getPropsForTemp = (props: DetailWeatherMatchedType) => ({
   measure: strConstants.degreesCelsiusMeasure,
 })
 
-const getPropsForWind = (props: DetailWeatherMatchedType) => ({
-  name: getNormalName(props.name),
-  item: Math.round(Number(props.item)),
-  measure: strConstants.speedWindMeasure,
-})
+const getPropsForWind = (props: DetailWeatherMatchedType) => {
+  return {
+    item: Math.round(Number(props.item.split(strConstants.slash)[0])),
+    measure: strConstants.speedWindMeasure,
+  }
+}
 
 export const DetailWeatherMatched = (props: DetailWeatherMatchedType) => {
-
   const { name, item } = props;
   
   switch (name) {
     case strConstants.sunrise:
-      return <GetListOfItem {...getPropsForTime(props)} />
+      return <GetListOfItem {...getPropsForTime(props)}><WbTwilightIcon/></GetListOfItem>
     case strConstants.sunset:
-      return <GetListOfItem {...getPropsForTime(props)} />
+      return <GetListOfItem {...getPropsForTime(props)}><WbTwilightIcon/></GetListOfItem>
     case strConstants.tempDay:
       return <GetListOfItem {...getPropsForTemp(props)} />
     case strConstants.tempMin:
@@ -63,17 +70,15 @@ export const DetailWeatherMatched = (props: DetailWeatherMatchedType) => {
     case strConstants.feelsLikeEve:
       return <GetListOfItem {...getPropsForTemp(props)} />
     case strConstants.pressure:
-      return <GetListOfItem name={makeFirstCapitalize(strConstants.pressure)} item={item} measure={strConstants.pressureMeasure} />
+      return <GetListOfItem item={item} measure={strConstants.pressureMeasure} ><CompressIcon /></GetListOfItem>
     case strConstants.humidity:
-      return <GetListOfItem name={makeFirstCapitalize(strConstants.humidity)} item={item} measure={strConstants.humidityMeasure} />
-    case strConstants.windSpeed:
-      return <GetListOfItem {...getPropsForWind(props)} />
-    case strConstants.windDeg:
-      return <GetListOfItem {...getPropsForWind(props)} measure={strConstants.degreesMeasure} />
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.humidity)} item={item} measure={strConstants.humidityMeasure}><WaterDropIcon /></GetListOfItem>
+    case (strConstants.windSpeed + strConstants.slash + strConstants.windDeg):
+      return <GetListOfItem {...getPropsForWind(props)} ><><WindAngleIcon angle={Number(props.item.split(strConstants.slash)[1])} /><AirIcon /></></GetListOfItem>
     case strConstants.rain:
-      return <GetListOfItem name={makeFirstCapitalize(strConstants.rain)} item={item} measure={strConstants.waterMeasure} />
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.rain)} item={item} measure={strConstants.waterMeasure}><KayakingIcon/></GetListOfItem>
     case strConstants.snow:
-      return <GetListOfItem name={makeFirstCapitalize(strConstants.snow)} item={item} measure={strConstants.waterMeasure} />
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.snow)} item={item} measure={strConstants.waterMeasure}><AcUnitIcon/></GetListOfItem>
     default:
       return <></>
   }

@@ -3,7 +3,7 @@ import { ApolloProvider } from '@apollo/client';
 import { useRouter } from "next/navigation";
 import getClient from 'Apollo';
 import { UserContext } from 'Contexts/userContext';
-import Footer from 'components/RootLayout/components/Footer';
+import { Footer } from 'components/RootLayout/components/Footer';
 import { Header } from 'components/RootLayout/components/Header';
 import { UserType } from 'config/system/types/UserType';
 

@@ -9,7 +9,13 @@ import { strConstants } from "config/system/constants/strConstants";
 import { LogoutButton } from "./styled/LogoutButton";
 import { pages } from "config/system/pages";
 
-export function UserAvatar(props: {sx: SxProps, children: string, title: string}) {
+type UserAvatarType = {
+  sx: SxProps,
+  children: string,
+  title: string,
+}
+
+export function UserAvatar(props: UserAvatarType) {
 
   const [ logOut, { loading: logoutLoading } ] = useMutation(auth.logout);
   const { setUser } = useContext(UserContext);

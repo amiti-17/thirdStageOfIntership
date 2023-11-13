@@ -40,6 +40,6 @@ export const strConstants = {
   windDeg: 'wind_deg',
   rain: 'rain',
   snow: 'snow',
-  date: 'date,',
+  date: 'date',
   slash: '/',
 }

@@ -1,14 +1,16 @@
-import { Box } from "@mui/material";
+import { ReactNode } from "react";
+import { IconWithText } from "./styled/IconWithText";
 import { strConstants } from "config/system/constants/strConstants";
 
 type GetListOfItemType = {
-  name: string,
+  name?: string,
   item: string | number,
   measure?: string,
+  children?: ReactNode,
 }
 
-export function GetListOfItem({ name, item, measure = strConstants.emptyStr }: GetListOfItemType) {
+export function GetListOfItem({ name, item, measure = strConstants.emptyStr, children }: GetListOfItemType) {
   return (
-    <>{(item || (typeof item === strConstants.number && Number(item) === 0)) && <Box component='li'>{name}: {item}{measure}</Box>}</>
+    <>{(item || (typeof item === strConstants.number && Number(item) === 0)) && <IconWithText component='li'>{children}{name}: {item}{measure}</IconWithText>}</>
   )
 }

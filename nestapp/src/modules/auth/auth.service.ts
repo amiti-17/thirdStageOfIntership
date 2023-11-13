@@ -4,7 +4,6 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/modules/users/users.service';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserInput } from 'src/modules/users/dto/create-user.input';
-import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { JwtService } from '@nestjs/jwt';
 import { regExp } from 'src/config/system/regExp';
@@ -14,6 +13,7 @@ import {
   defaultCookieOptions,
   refreshCookieOptions,
 } from 'src/config/system/cookiesOption';
+import { StatusOutput } from './dto/status.output';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +33,10 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async login(authLoginInput: AuthLoginInput, res: Response) {
+  async login(
+    authLoginInput: AuthLoginInput,
+    res: Response,
+  ): Promise<StatusOutput> {
     const user = await this.validateUser(
       authLoginInput.email,
       authLoginInput.password,
@@ -99,7 +102,7 @@ export class AuthService {
     );
   }
 
-  async logout(res: Response) {
+  logout(res: Response): StatusOutput {
     this.attachDefaultTokens(res);
     return {
       status: true,
@@ -122,7 +125,7 @@ export class AuthService {
     });
   }
 
-  async refreshToken(res, context): Promise<RefreshTokenResponse> {
+  refreshToken(res, context): StatusOutput {
     const newAccessToken = this.generateAccessToken(context.req.user);
     res?.res.cookie(
       strConstants.accessToken,

@@ -1,6 +1,11 @@
-import { Box, Stack } from "@mui/material"
+import { Box, Stack } from "@mui/material";
 
-export const ShowTemperature = ({temperature, fontSize}: { temperature: number, fontSize: number }) => {
+type ShowTemperatureType = {
+  temperature: number,
+  fontSize: number,
+}
+
+export const ShowTemperature = ({temperature, fontSize}: ShowTemperatureType) => {
   return (
     <Stack direction='row'>
       <Box

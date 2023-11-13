@@ -2,7 +2,12 @@ import { Stack } from "@mui/material";
 import { NameForCard } from "./components/NameForCard";
 import { Caption } from "./styled/Caption";
 
-export function NameAndCaption({ name, caption }: { name: string, caption?: string }) {
+type NameAndCaptionType = {
+  name: string,
+  caption?: string,
+}
+
+export function NameAndCaption({ name, caption }: NameAndCaptionType) {
 
   return (
     <Stack direction='column'>

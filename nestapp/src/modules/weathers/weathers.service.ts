@@ -5,6 +5,7 @@ import { DailyWeatherService } from 'src/modules/dailyWeather/dailyWeather.servi
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { pubSub } from './pubSub';
 import { WeatherAPI } from 'src/modules/weatherAPI/weatherAPI.service';
+import { Weather } from './entities/weather.entity';
 
 @Injectable()
 export class WeathersService {
@@ -14,7 +15,7 @@ export class WeathersService {
     private weatherAPI: WeatherAPI,
   ) {}
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Weather> {
     return await this.prisma.weathers.findUnique({
       where: { id },
       select: this.selectWeather,
@@ -57,7 +58,7 @@ export class WeathersService {
     return localWeather;
   }
 
-  async findAndUpdateIfNeed(id: number) {
+  async findAndUpdateIfNeed(id: number): Promise<Weather> {
     const currentWeather = await this.findOne(id);
     const shouldBeUpdated = this.isWeatherNeedUpdate(currentWeather.current.dt);
 
@@ -71,7 +72,10 @@ export class WeathersService {
     return currentWeather;
   }
 
-  async fetchAndUpdateAll(id: number, coordinates: Coordinates) {
+  async fetchAndUpdateAll(
+    id: number,
+    coordinates: Coordinates,
+  ): Promise<Weather> {
     const fetchedWeather = await this.weatherAPI.getWeather(coordinates);
     const weather = await this.prisma.weathers.update({
       where: {
@@ -107,7 +111,7 @@ export class WeathersService {
     return (new Date().getTime() / 1000) - dt > Number(process.env.OW_SHOULD_BE_REFRESHED);
   }
 
-  async removeWithAllRelated(weatherId: number) {
+  async removeWithAllRelated(weatherId: number): Promise<Weather> {
     const weather = await this.findOne(weatherId);
     await this.dailyWeatherWService.removeMany({ weatherId: weather.id });
     await this.prisma.currentWeather.delete({

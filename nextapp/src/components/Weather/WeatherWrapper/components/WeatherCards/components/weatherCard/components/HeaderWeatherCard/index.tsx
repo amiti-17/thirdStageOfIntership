@@ -4,8 +4,15 @@ import { Current } from "config/system/types/Current";
 import { HeaderWeatherCardStyled } from "./styled/HeaderWeather";
 import { IconAndName } from "./styled/IconAndName";
 import { DeleteButton } from "./components/DeleteButton";
+import { memo } from "react";
 
-export function HeaderWeatherCard({ name, current, onDeleteHandler }: { name: string, current: Current, onDeleteHandler: () => {} }) {
+type HeaderWeatherCard = {
+  name: string,
+  current: Current,
+  onDeleteHandler: () => {},
+}
+
+export const HeaderWeatherCard = memo(({ name, current, onDeleteHandler }: HeaderWeatherCard) => {
 
   const currentData = JSON.parse(current.current);
   
@@ -18,4 +25,8 @@ export function HeaderWeatherCard({ name, current, onDeleteHandler }: { name: st
       <DeleteButton onDeleteHandler={onDeleteHandler} />
     </HeaderWeatherCardStyled>
   )
-}
+})
+
+// export const HeaderWeatherCardMemo = memo(({name, current, onDeleteHandler}: HeaderWeatherCard) => (
+//   <HeaderWeatherCard name={name} current={current} onDeleteHandler={onDeleteHandler} />
+// ));

@@ -1,10 +1,13 @@
 import { Collapse, Stack } from "@mui/material";
 import { DetailedList } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailedList";
+import { Weather } from "config/system/types/Weather";
 
-export const CollapsedDetail = ({ checked, weather }: { 
+type CollapsedDetailType = {
   checked: boolean, 
-  weather
-}) => {
+  weather: any,
+}
+
+export const CollapsedDetail = ({ checked, weather }: CollapsedDetailType) => {
   return (
     <Collapse in={ checked }>
       <Stack direction='column' alignItems='center' width='fit-content' >

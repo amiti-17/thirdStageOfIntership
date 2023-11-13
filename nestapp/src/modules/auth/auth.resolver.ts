@@ -2,36 +2,32 @@ import { Resolver, Args, Mutation, Context } from '@nestjs/graphql';
 import { Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
-import { LoginResponse } from './dto/login-response';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserInput } from 'src/modules/users/dto/create-user.input';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
+import { StatusOutput } from './dto/status.output';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => LoginResponse)
+  @Mutation(() => StatusOutput)
   async login(
     @Args('authLoginInput') authLoginInput: AuthLoginInput,
     @Res() res: Response,
-  ): Promise<LoginResponse> {
+  ): Promise<StatusOutput> {
     return await this.authService.login(authLoginInput, res);
   }
 
-  @Mutation(() => LoginResponse)
-  async logout(@Res() res: Response) {
-    return await this.authService.logout(res);
+  @Mutation(() => StatusOutput)
+  logout(@Res() res: Response): StatusOutput {
+    return this.authService.logout(res);
   }
 
-  @Mutation(() => RefreshTokenResponse)
+  @Mutation(() => StatusOutput)
   @UseGuards(JwtRefreshAuthGuard)
-  async refreshToken(
-    @Res() res: Response,
-    @Context() context,
-  ): Promise<RefreshTokenResponse> {
+  refreshToken(@Res() res: Response, @Context() context): StatusOutput {
     return this.authService.refreshToken(res, context);
   }
 

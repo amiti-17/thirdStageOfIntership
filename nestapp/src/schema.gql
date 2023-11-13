@@ -60,16 +60,12 @@ type Location {
   weatherId: Int
 }
 
-type LoginResponse {
-  status: Boolean!
-}
-
 type Mutation {
   createLocation(locationInput: CreateLocationInput!, usersId: Int!): Location!
   createUser(createUserInput: CreateUserInput!): User!
-  login(authLoginInput: AuthLoginInput!): LoginResponse!
-  logout: LoginResponse!
-  refreshToken: RefreshTokenResponse!
+  login(authLoginInput: AuthLoginInput!): StatusOutput!
+  logout: StatusOutput!
+  refreshToken: StatusOutput!
   removeLocation(locationsId: Int!, usersId: Int!): Location!
   removeUser(id: Int!): User!
 }
@@ -87,7 +83,7 @@ type Query {
   users: [User!]!
 }
 
-type RefreshTokenResponse {
+type StatusOutput {
   status: Boolean!
 }
 

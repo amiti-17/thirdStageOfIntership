@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { ModalLayoutContext } from "Contexts/modalLayoutContext";
 import { OverLayStyled } from "./styled/OverLayStyled";
 
-export function OverLayLayout({ children } : { children?: React.ReactNode }) {
+export const OverLayLayout = memo(({ children } : { children?: React.ReactNode }) => {
 
   const { setIsModalOpen } = useContext(ModalLayoutContext);
 
@@ -14,4 +14,4 @@ export function OverLayLayout({ children } : { children?: React.ReactNode }) {
       {children}
     </OverLayStyled>
   )
-}
+})

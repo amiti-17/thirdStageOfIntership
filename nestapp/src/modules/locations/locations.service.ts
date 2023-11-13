@@ -14,11 +14,13 @@ export class LocationsService {
     private weathersService: WeathersService,
   ) {}
 
-  async findAll() {
+  async findAll(): Promise<Location[]> {
     return await this.prisma.locations.findMany();
   }
 
-  async findOne(filter: { id: number } | { ll: CoordinatesInput }) {
+  async findOne(
+    filter: { id: number } | { ll: CoordinatesInput },
+  ): Promise<Location> {
     return await this.prisma.locations.findUnique({
       where: filter,
       select: this.selectLocation,
@@ -63,7 +65,7 @@ export class LocationsService {
   async createWithWeather(
     createLocationInput: CreateLocationInput,
     usersId: number,
-  ) {
+  ): Promise<Location> {
     const coordinates: Coordinates = {
       lat: createLocationInput.lat,
       lon: createLocationInput.lon,
