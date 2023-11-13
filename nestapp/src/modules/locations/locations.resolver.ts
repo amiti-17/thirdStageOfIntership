@@ -65,7 +65,7 @@ export class LocationsResolver {
     locationsId: number,
     @Args('usersId', { type: () => Int }) usersId: number,
   ): Promise<Location> {
-    return await this.locationsService.remove(locationsId, usersId);
+    return await this.locationsService.remove({ id: locationsId }, usersId);
   }
 
   @Subscription(() => Location, {
