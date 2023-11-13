@@ -1,10 +1,10 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { JsonValue } from '@prisma/client/runtime/library';
-import GraphQLJSON from 'graphql-type-json';
 import { Weather } from 'src/modules/weathers/entities/weather.entity';
+import GraphQLJSON from 'graphql-type-json';
 
 @ObjectType()
-export class CurrentW {
+export class DailyWeather {
   @Field(() => Int)
   id: number;
 
@@ -12,7 +12,7 @@ export class CurrentW {
   dt: number;
 
   @Field(() => GraphQLJSON)
-  current: JsonValue;
+  daily: JsonValue;
 
   @Field(() => Weather, { nullable: true })
   weather?: Weather;

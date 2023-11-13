@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
+import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/modules/users/users.service';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserInput } from 'src/modules/users/dto/create-user.input';
@@ -23,8 +24,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.usersServices.findOneUnsafe(email);
-
-    if (user && user.password === password) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...safeUser } = user;
       return safeUser;
@@ -115,6 +115,10 @@ export class AuthService {
 
     return await this.usersServices.create({
       ...createUserInput,
+      password: await bcrypt.hash(
+        createUserInput.password,
+        process.env.SALT_FOR_PASSWORD,
+      ),
     });
   }
 

@@ -6,16 +6,17 @@ import { useFormik } from "formik";
 import { SubmitOutlinedButton } from "./components/SubmitOutlinedButton";
 import { RequiredTextField } from "./components/RequiredTextField";
 import CustomError from "CustomError";
-import { ShowMsgType, showMsgDefault } from "CustomError/ShowMshType";
+import { ShowMsgType, showMsgDefault } from "CustomError/ShowMsgType";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
 import { networkErrorsHandler } from "CustomError/networkErrorsHandler";
 import { getCryptPassword } from "functions/getCryptPassword";
 import { auth } from "Apollo/queries/auth";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
-import { pages } from "config/system/pages";
 import { UserContext } from "Contexts/userContext";
 import { LoginPageButton } from "./styled/LoginPageButton";
 import { LoginButtonGroup } from "./styled/LoginButtonGroup";
+import { strConstants } from "config/system/constants/strConstants";
+import { pages } from "config/system/pages";
 
 export default function LoginForm() {
 
@@ -28,7 +29,10 @@ export default function LoginForm() {
   const router = useRouter();
 
   const formik = useFormik({
-    initialValues: { email: '', password: '' },
+    initialValues: { 
+      email: strConstants.emptyStr, 
+      password: strConstants.emptyStr,
+    },
     validationSchema: yupValidationSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
@@ -107,7 +111,7 @@ export default function LoginForm() {
               <LoginPageButton 
                 fullWidth
                 variant='outlined'
-                onClick={() => router.push('/weather')}
+                onClick={() => router.push(pages.weather)}
               >
                 {user.name} {'=>'}
               </LoginPageButton>

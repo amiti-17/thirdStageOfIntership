@@ -1,5 +1,8 @@
 import { getTime } from "functions/timeAndDate/getTime";
 import { GetListOfItem } from "./components/GetListOfItem"
+import { strConstants } from "config/system/constants/strConstants";
+import { digits } from "config/system/constants/digits";
+import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
 
 type DetailWeatherMatchedType = {
   name: string,
@@ -7,25 +10,27 @@ type DetailWeatherMatchedType = {
 }
 
 const getNormalName = (name: string) => {
-  return [name[0].toUpperCase(), name.slice(1,)].join('').split('_').join(' ')
+  return [
+    name[0].toUpperCase(), 
+    name.slice(1,)].join(strConstants.emptyStr).split(strConstants.underlineStr).join(strConstants.spaceStr)
 }
 
 const getPropsForTime = (props: DetailWeatherMatchedType) => ({
-  name: [props.name[0].toUpperCase(), props.name.slice(1,)].join(''),
-  item: getTime(new Date(Number(props.item) * 1000)),
-  measure: '',
+  name: [props.name[0].toUpperCase(), props.name.slice(1,)].join(strConstants.emptyStr),
+  item: getTime(new Date(Number(props.item) * digits[1000])),
+  measure: strConstants.emptyStr,
 })
 
 const getPropsForTemp = (props: DetailWeatherMatchedType) => ({
   name: getNormalName(props.name),
   item: Math.round(Number(props.item)),
-  measure: '°C',
+  measure: strConstants.degreesCelsiusMeasure,
 })
 
 const getPropsForWind = (props: DetailWeatherMatchedType) => ({
   name: getNormalName(props.name),
   item: Math.round(Number(props.item)),
-  measure: ' metre/sec',
+  measure: strConstants.speedWindMeasure,
 })
 
 export const DetailWeatherMatched = (props: DetailWeatherMatchedType) => {
@@ -33,42 +38,42 @@ export const DetailWeatherMatched = (props: DetailWeatherMatchedType) => {
   const { name, item } = props;
   
   switch (name) {
-    case 'sunrise':
+    case strConstants.sunrise:
       return <GetListOfItem {...getPropsForTime(props)} />
-    case 'sunset':
+    case strConstants.sunset:
       return <GetListOfItem {...getPropsForTime(props)} />
-    case 'temp_day':
+    case strConstants.tempDay:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'temp_min':
+    case strConstants.tempMin:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'temp_max':
+    case strConstants.tempMax:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'temp_night':
+    case strConstants.tempNight:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'temp_eve':
+    case strConstants.tempEve:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'temp_morn':
+    case strConstants.tempMorn:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'feels_like_day':
+    case strConstants.feelsLikeDay:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'feels_like_night':
+    case strConstants.feelsLikeNight:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'feels_like_eve':
+    case strConstants.feelsLikeMorn:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'feels_like_morn':
+    case strConstants.feelsLikeEve:
       return <GetListOfItem {...getPropsForTemp(props)} />
-    case 'pressure':
-      return <GetListOfItem name={"Pressure"} item={item} measure={' hPa'} />
-    case 'humidity':
-      return <GetListOfItem name={"Humidity"} item={item} measure={'%'} />
-    case 'wind_speed':
+    case strConstants.pressure:
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.pressure)} item={item} measure={strConstants.pressureMeasure} />
+    case strConstants.humidity:
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.humidity)} item={item} measure={strConstants.humidityMeasure} />
+    case strConstants.windSpeed:
       return <GetListOfItem {...getPropsForWind(props)} />
-    case 'wind_deg':
-      return <GetListOfItem {...getPropsForWind(props)} measure="°"/>
-    case 'rain':
-      return <GetListOfItem name={"Rain"} item={item} measure={' mm'} />
-    case 'snow':
-      return <GetListOfItem name={"Snow"} item={item} measure={' mm'} />
+    case strConstants.windDeg:
+      return <GetListOfItem {...getPropsForWind(props)} measure={strConstants.degreesMeasure} />
+    case strConstants.rain:
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.rain)} item={item} measure={strConstants.waterMeasure} />
+    case strConstants.snow:
+      return <GetListOfItem name={makeFirstCapitalize(strConstants.snow)} item={item} measure={strConstants.waterMeasure} />
     default:
       return <></>
   }

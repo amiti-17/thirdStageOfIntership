@@ -7,7 +7,7 @@ import { PrismaService } from './modules/prisma/prisma.service';
 import { LocationsModule } from './modules/locations/locations.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { WeathersModule } from './modules/weathers/weathers.module';
-import { DaysWModule } from './modules/daysW/daysW.module';
+import { DailyWeatherModule } from './modules/dailyWeather/dailyWeather.module';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { DaysWModule } from './modules/daysW/daysW.module';
     LocationsModule,
     AuthModule,
     WeathersModule,
-    DaysWModule,
+    DailyWeatherModule,
   ],
   providers: [PrismaService],
 })

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { WeathersResolver } from './weathers.resolver';
 import { WeathersService } from './weathers.service';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { DaysWModule } from 'src/modules/daysW/daysW.module';
+import { DailyWeatherModule } from 'src/modules/dailyWeather/dailyWeather.module';
 
 @Module({
-  imports: [DaysWModule],
+  imports: [DailyWeatherModule],
   providers: [PrismaService, WeathersService, WeathersResolver],
   exports: [WeathersService],
 })

@@ -7,6 +7,7 @@ import { UserContext } from "Contexts/userContext";
 import CircularIndeterminate from "components/Common/CircularIndeterminate";
 import { strConstants } from "config/system/constants/strConstants";
 import { LogoutButton } from "./styled/LogoutButton";
+import { pages } from "config/system/pages";
 
 export function UserAvatar(props: {sx: SxProps, children: string, title: string}) {
 
@@ -17,7 +18,7 @@ export function UserAvatar(props: {sx: SxProps, children: string, title: string}
   const logoutHandler = async () => {
     await logOut();
     setUser(null);
-    if (window.location.pathname !== '/') router.push('/');
+    if (window.location.pathname !== pages.root) router.push(pages.root);
   }
 
   return (

@@ -10,6 +10,7 @@ class CreateRegexp {
     upperCase: "[A-Z]",
     lowerCase: "[a-z]",
     digit: "\\d",
+    url: "(.*?\\/\\/.*?)\\/.*",
   }
 }
 

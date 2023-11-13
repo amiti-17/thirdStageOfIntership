@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { Coordinates } from 'src/config/types/coordinates';
-import { DaysWService } from 'src/modules/daysW/daysW.service';
-import { fetchWeatherByCoordinates } from 'src/functions/fetch/fetchWeatherByCoordinates';
+import { DailyWeatherService } from 'src/modules/dailyWeather/dailyWeather.service';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { pubSub } from './pubSub';
+import { WeatherAPI } from 'src/modules/weatherAPI/weatherAPI.service';
 
 @Injectable()
 export class WeathersService {
   constructor(
     private prisma: PrismaService,
-    private daysWService: DaysWService,
+    private dailyWeatherWService: DailyWeatherService,
+    private weatherAPI: WeatherAPI,
   ) {}
 
   async findOne(id: number) {
@@ -21,13 +22,13 @@ export class WeathersService {
   }
 
   async fetchAndCreateAll(coordinates: Coordinates) {
-    const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
+    const fetchedWeather = await this.weatherAPI.getWeather(coordinates);
     const { daily: fetchedDays } = fetchedWeather;
 
     const localDays = [];
     for (let i = 0; i < fetchedDays.length; i++) {
       localDays.push(
-        await this.daysWService.create(
+        await this.dailyWeatherWService.create(
           fetchedDays[i].dt,
           JSON.stringify(fetchedDays[i]),
         ),
@@ -71,7 +72,7 @@ export class WeathersService {
   }
 
   async fetchAndUpdateAll(id: number, coordinates: Coordinates) {
-    const fetchedWeather = await fetchWeatherByCoordinates(coordinates);
+    const fetchedWeather = await this.weatherAPI.getWeather(coordinates);
     const weather = await this.prisma.weathers.update({
       where: {
         id,
@@ -89,7 +90,7 @@ export class WeathersService {
       select: this.selectWeather,
     });
     for (let i = 0; i < weather.days.length; i++) {
-      await this.daysWService.update(
+      await this.dailyWeatherWService.update(
         { id: weather.days[i].id },
         weather.id,
         fetchedWeather.daily[i].dt,
@@ -108,8 +109,8 @@ export class WeathersService {
 
   async removeWithAllRelated(weatherId: number) {
     const weather = await this.findOne(weatherId);
-    await this.daysWService.removeMany({ weatherId: weather.id });
-    await this.prisma.current.delete({
+    await this.dailyWeatherWService.removeMany({ weatherId: weather.id });
+    await this.prisma.currentWeather.delete({
       where: { id: weather.currentId },
     });
     return await this.prisma.weathers.delete({ where: { id: weather.id } });

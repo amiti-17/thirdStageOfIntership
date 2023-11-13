@@ -1,5 +1,5 @@
 import { GraphQLErrors } from "@apollo/client/errors";
-import { ShowMsgType, showMsgDefault } from "./ShowMshType";
+import { ShowMsgType, showMsgDefault } from "./ShowMsgType";
 import CustomError from "CustomError";
 
 const customError = new CustomError('');

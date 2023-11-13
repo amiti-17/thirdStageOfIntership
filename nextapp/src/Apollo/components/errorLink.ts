@@ -26,7 +26,7 @@ export const errorLink = (router) => onError(({ graphQLErrors, networkError, ope
                       };
                       forward(operation).subscribe(subscriber);
                     } catch (e) {
-                      // console.warn('onError apollo: ', e);
+                      console.warn('onError apollo: ', e);
                       observer.error(e);
                     }
                   })();

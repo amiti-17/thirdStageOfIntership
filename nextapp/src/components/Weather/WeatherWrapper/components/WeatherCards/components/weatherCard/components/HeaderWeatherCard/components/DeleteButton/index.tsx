@@ -4,7 +4,6 @@ import { ButtonStyled } from "./styled/ButtonStyled";
 export function DeleteButton({ onDeleteHandler }: { onDeleteHandler: () => {} }) {
   return (
     <ButtonStyled
-      
       size="small"
       onClick={(e) => {
         e.preventDefault();

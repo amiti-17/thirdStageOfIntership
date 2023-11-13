@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
-export class DaysWService {
+export class DailyWeatherService {
   constructor(private prisma: PrismaService) {}
 
   async create(dt: number, daily: string) {
-    return await this.prisma.days.create({
+    return await this.prisma.dailyWeather.create({
       data: {
         dt,
         daily,
@@ -21,7 +21,7 @@ export class DaysWService {
     dt: number,
     daily: string,
   ) {
-    return await this.prisma.days.update({
+    return await this.prisma.dailyWeather.update({
       where: filter,
       data: { dt, daily, weather: { connect: { id: weatherId } } },
       select: this.selectDay,
@@ -29,11 +29,11 @@ export class DaysWService {
   }
 
   async remove(filter: { id: number }) {
-    return await this.prisma.days.delete({ where: filter });
+    return await this.prisma.dailyWeather.delete({ where: filter });
   }
 
   async removeMany(filter: { weatherId: number }) {
-    return await this.prisma.days.deleteMany({ where: filter });
+    return await this.prisma.dailyWeather.deleteMany({ where: filter });
   }
 
   private selectDay = {

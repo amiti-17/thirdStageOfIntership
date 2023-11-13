@@ -10,11 +10,6 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Mutation(() => User)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return await this.usersService.create(createUserInput);
-  }
-
   @Query(() => [User], { name: 'users' })
   @UseGuards(JwtAuthGuard)
   async findAll() {
@@ -40,6 +35,11 @@ export class UsersResolver {
   @Query(() => UserWithPassword, { name: 'userUnsafe' }) // used for testing
   async findOneUnsafe(@Args('email') email: string) {
     return await this.usersService.findOneUnsafe(email);
+  }
+
+  @Mutation(() => User)
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return await this.usersService.create(createUserInput);
   }
 
   @Mutation(() => User)
