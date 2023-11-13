@@ -1,27 +1,26 @@
-import { Resolver, Args, Mutation, Query } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { Resolver, Args, Mutation, Context } from '@nestjs/graphql';
+import { Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { LoginResponse } from './dto/login-response';
-import { GqlAuthGuard } from './guards/gql-auth.guard';
-import { SafeUser } from 'src/users/entities/safe-user.entity';
+// import { GqlAuthGuard } from './guards/gql-auth.guard';
+import { User } from 'src/users/entities/user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
 import { LogoutGuard } from './guards/logout.guard';
+import { Response, Request } from 'express';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Mutation(() => LoginResponse)
-  @UseGuards(GqlAuthGuard)
   async login(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Args('authLoginInput') authLoginInput: AuthLoginInput,
+    @Res() req: Request,
   ): Promise<LoginResponse> {
-    return await this.authService.login();
+    return await this.authService.login(authLoginInput, req);
   }
 
   @Mutation(() => LoginResponse)
@@ -30,19 +29,13 @@ export class AuthResolver {
     return await this.authService.logout();
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Query(() => Boolean, { name: 'ping' })
-  async ping() {
-    return true;
-  }
-
-  @UseGuards(JwtRefreshAuthGuard)
   @Mutation(() => RefreshTokenResponse)
-  async refreshToken(): Promise<RefreshTokenResponse> {
-    return this.authService.refreshToken();
+  @UseGuards(JwtRefreshAuthGuard)
+  async refreshToken(@Context() context): Promise<RefreshTokenResponse> {
+    return this.authService.refreshToken(context);
   }
 
-  @Mutation(() => SafeUser)
+  @Mutation(() => User, { name: 'createUser' })
   async signup(@Args('createUserInput') createUserInput: CreateUserInput) {
     return await this.authService.signup(createUserInput);
   }

@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Location } from 'src/locations/entities/location.entity';
 
 @ObjectType()
-export class SafeUser {
+export class UserWithPassword {
   @Field(() => Int)
   id: number;
 
@@ -11,6 +11,9 @@ export class SafeUser {
 
   @Field()
   email: string;
+
+  @Field()
+  password: string;
 
   @Field(() => [Location], { nullable: 'items' })
   locations?: Location[];

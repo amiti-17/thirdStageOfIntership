@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
-import { SafeUser } from 'src/users/entities/safe-user.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Weather } from 'src/weathers/entities/weather.entity';
 
 @ObjectType()
@@ -22,8 +22,8 @@ export class Location {
   @Field({ nullable: true })
   country?: string;
 
-  @Field(() => [SafeUser], { nullable: 'items' })
-  users?: SafeUser[];
+  @Field(() => [User], { nullable: 'items' })
+  users?: User[];
 
   @Field(() => Weather, { nullable: true })
   weather?: Weather;

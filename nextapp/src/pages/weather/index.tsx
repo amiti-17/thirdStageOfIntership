@@ -11,14 +11,16 @@ import { users } from "Apollo/queries/users";
 export default function WeatherPage() {
   
   const { user, setUser } = useContext(UserContext);
-  const { data: currentUserData} = useQuery(users.getCurrentUser);
   const [ places, setPlaces ] = useState<LocationFetchedFromSearchString[]>([]);
 
-  useEffect(() => {
-    if (currentUserData?.getCurrentUser.email && user?.email !== currentUserData?.getCurrentUser.email) {
-      setUser(currentUserData?.getCurrentUser);
-    }
-  }, [currentUserData]);
+  useQuery(users.getCurrentUser, {
+    fetchPolicy: 'network-only',
+    onCompleted(data) {
+      if (data?.getCurrentUser.email &&  user?.email !== data?.getCurrentUser.email) {
+        setUser(data?.getCurrentUser);
+      }
+    },
+  });
 
   useEffect(() => {
     if (user?.email) {

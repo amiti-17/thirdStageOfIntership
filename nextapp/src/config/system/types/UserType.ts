@@ -1,6 +1,6 @@
 import { LocationType } from "./locations"
 
-export type SafeUserType = {
+export type UserType = {
   name: string,
   email: string,
   locations: LocationType[],

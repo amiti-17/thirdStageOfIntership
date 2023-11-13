@@ -18,6 +18,7 @@ import { DaysWModule } from './daysW/daysW.module';
           path: '/subscriptions',
         },
       },
+      context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),

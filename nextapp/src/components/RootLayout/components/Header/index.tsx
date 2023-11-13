@@ -1,5 +1,3 @@
-import { useQuery } from "@apollo/client";
-import { users } from "Apollo/queries/users";
 import { avatarFromString } from "./stringAvatar";
 import { Logo } from "./components/Logo";
 import { MyHeader } from "./styled/MyHeader";
@@ -11,7 +9,6 @@ import { UserContext } from "Contexts/userContext";
 export function Header() {
 
   const { user } = useContext(UserContext);
-  const { data: currentUserData} = useQuery(users.getCurrentUser);
   const userAvatarData = avatarFromString(user?.name ?? strConstants.usersName);
 
   return (

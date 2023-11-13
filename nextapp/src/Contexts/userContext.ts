@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { SafeUserType } from "config/system/types/SafeUserType";
+import { UserType } from "config/system/types/UserType";
 
 export type UserContextType = {
-  user: SafeUserType | null,
-  setUser: Dispatch<SetStateAction<SafeUserType>>,
+  user: UserType | null,
+  setUser: Dispatch<SetStateAction<UserType>>,
 }
 
 export const defaultUserContext: UserContextType = {

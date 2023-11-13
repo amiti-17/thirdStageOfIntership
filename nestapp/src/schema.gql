@@ -55,7 +55,7 @@ type Location {
   lon: Float!
   name: String!
   state: String
-  users: [SafeUser]!
+  users: [User]!
   weather: Weather
   weatherId: Int
 }
@@ -66,38 +66,29 @@ type LoginResponse {
 
 type Mutation {
   createLocation(locationInput: CreateLocationInput!, usersId: Int!): Location!
-  createUser(createUserInput: CreateUserInput!): SafeUser!
+  createUser(createUserInput: CreateUserInput!): User!
   login(authLoginInput: AuthLoginInput!): LoginResponse!
   logout: LoginResponse!
   refreshToken: RefreshTokenResponse!
   removeLocation(locationsId: Int!, usersId: Int!): Location!
-  removeUser(id: Int!): SafeUser!
-  signup(createUserInput: CreateUserInput!): SafeUser!
+  removeUser(id: Int!): User!
 }
 
 type Query {
-  findById(id: Float!): SafeUser!
-  getCurrentUser: SafeUser!
+  findById(id: Float!): User!
+  getCurrentUser: User!
   getListOfPlaces(quantity: Int!): [Location!]!
   getWeather(id: Int!): Weather!
   locationByCoordinates(coordinates: FindOneByFetchedObjInput!): Location!
   locationById(id: Int!): Location!
   locations: [Location!]!
-  ping: Boolean!
-  user(email: String!): SafeUser!
-  userUnsafe(email: String!): User!
-  users: [SafeUser!]!
+  user(email: String!): User!
+  userUnsafe(email: String!): UserWithPassword!
+  users: [User!]!
 }
 
 type RefreshTokenResponse {
   status: Boolean!
-}
-
-type SafeUser {
-  email: String!
-  id: Int!
-  locations: [Location]!
-  name: String!
 }
 
 type Subscription {
@@ -107,6 +98,13 @@ type Subscription {
 }
 
 type User {
+  email: String!
+  id: Int!
+  locations: [Location]!
+  name: String!
+}
+
+type UserWithPassword {
   email: String!
   id: Int!
   locations: [Location]!

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
-import { SafeUser } from './entities/safe-user.entity';
 import { User } from './entities/user.entity';
+import { UserWithPassword } from './entities/user-password.entity';
 import { Location } from 'src/locations/entities/location.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { selectUser } from './selectUser';
@@ -11,7 +11,7 @@ import { selectUser } from './selectUser';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserInput: CreateUserInput): Promise<SafeUser> {
+  async create(createUserInput: CreateUserInput): Promise<User> {
     return await this.prisma.users.create({
       data: {
         ...createUserInput,
@@ -20,31 +20,19 @@ export class UsersService {
     });
   }
 
-  async findAll(): Promise<SafeUser[]> {
+  async findAll(): Promise<User[]> {
     return await this.prisma.users.findMany({
       select: selectUser,
     });
   }
 
-  async findOne(email: string): Promise<SafeUser> {
+  async findOne(filter: { email: string } | { id: number }): Promise<User> {
     return await this.prisma.users.findUnique({
-      where: { email },
+      where: filter,
       select: selectUser,
     });
   }
-
-  async findById(id: number): Promise<SafeUser> {
-    return await this.prisma.users.findUnique({
-      where: { id },
-      select: selectUser,
-    });
-  }
-
-  async getCurrentUser(context: any): Promise<SafeUser> {
-    return await context.req.user;
-  }
-
-  async findOneUnsafe(email: string): Promise<User> {
+  async findOneUnsafe(email: string): Promise<UserWithPassword> {
     return await this.prisma.users.findUnique({
       where: { email },
       select: {
@@ -66,7 +54,7 @@ export class UsersService {
     return locations;
   }
 
-  async remove(id: number): Promise<SafeUser> {
+  async remove(id: number): Promise<User> {
     return await this.prisma.users.delete({
       where: { id },
       select: selectUser,

@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { SafeUser } from 'src/users/entities/safe-user.entity';
+import { User } from 'src/users/entities/user.entity';
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return null;
   }
 
-  async validate(payload: any): Promise<SafeUser> {
+  async validate(payload: any): Promise<User> {
     return { id: payload.sub, email: payload.email, name: payload.name };
   }
 }

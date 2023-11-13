@@ -14,8 +14,8 @@ export function UserAvatar(props: {sx: SxProps, children: string, title: string}
   const { setUser } = useContext(UserContext);
   const router = useRouter();
 
-  const logoutHandler = () => {
-    logOut();
+  const logoutHandler = async () => {
+    await logOut();
     setUser(null);
     if (window.location.pathname !== '/') router.push('/');
   }
