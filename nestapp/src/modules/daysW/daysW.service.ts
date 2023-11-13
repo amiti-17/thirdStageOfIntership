@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { selectDay } from './selectDay';
 
 @Injectable()
 export class DaysWService {
@@ -12,23 +11,35 @@ export class DaysWService {
         dt,
         daily,
       },
-      select: selectDay,
+      select: this.selectDay,
     });
   }
 
-  async update(id: number, weatherId: number, dt: number, daily: string) {
+  async update(
+    filter: { id: number },
+    weatherId: number,
+    dt: number,
+    daily: string,
+  ) {
     return await this.prisma.days.update({
-      where: { id },
+      where: filter,
       data: { dt, daily, weather: { connect: { id: weatherId } } },
-      select: selectDay,
+      select: this.selectDay,
     });
   }
 
-  async remove(id) {
-    return await this.prisma.days.delete({ where: { id } });
+  async remove(filter: { id: number }) {
+    return await this.prisma.days.delete({ where: filter });
   }
 
-  async removeMany(weatherId: number) {
-    return await this.prisma.days.deleteMany({ where: { weatherId } });
+  async removeMany(filter: { weatherId: number }) {
+    return await this.prisma.days.deleteMany({ where: filter });
   }
+
+  private selectDay = {
+    id: true,
+    dt: true,
+    daily: true,
+    weather: true,
+  };
 }

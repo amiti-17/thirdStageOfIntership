@@ -5,7 +5,6 @@ import { User } from './entities/user.entity';
 import { UserWithPassword } from './entities/user-password.entity';
 import { Location } from 'src/modules/locations/entities/location.entity';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { selectUser } from './selectUser';
 
 @Injectable()
 export class UsersService {
@@ -16,20 +15,27 @@ export class UsersService {
       data: {
         ...createUserInput,
       },
-      select: selectUser,
+      select: this.selectUser,
     });
   }
 
   async findAll(): Promise<User[]> {
     return await this.prisma.users.findMany({
-      select: selectUser,
+      select: this.selectUser,
     });
   }
 
   async findOne(filter: { email: string } | { id: number }): Promise<User> {
     return await this.prisma.users.findUnique({
       where: filter,
-      select: selectUser,
+      select: this.selectUser,
+    });
+  }
+
+  async remove(id: number): Promise<User> {
+    return await this.prisma.users.delete({
+      where: { id },
+      select: this.selectUser,
     });
   }
 
@@ -37,7 +43,7 @@ export class UsersService {
     return await this.prisma.users.findUnique({
       where: { email },
       select: {
-        ...selectUser,
+        ...this.selectUser,
         password: true,
       },
     });
@@ -55,10 +61,10 @@ export class UsersService {
     return locations;
   }
 
-  async remove(id: number): Promise<User> {
-    return await this.prisma.users.delete({
-      where: { id },
-      select: selectUser,
-    });
-  }
+  private selectUser = {
+    name: true,
+    email: true,
+    id: true,
+    locations: true,
+  };
 }

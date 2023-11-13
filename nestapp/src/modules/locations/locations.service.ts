@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/createLocation.input';
 import { CoordinatesInput } from './dto/coordinates.input';
 import { Location } from './entities/location.entity';
-import { selectLocation } from './selectLocation';
 import { Coordinates } from 'src/config/types/coordinates';
 import { WeathersService } from 'src/modules/weathers/weathers.service';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
@@ -14,6 +13,52 @@ export class LocationsService {
     private prisma: PrismaService,
     private weathersService: WeathersService,
   ) {}
+
+  async findAll() {
+    return await this.prisma.locations.findMany();
+  }
+
+  async findOne(filter: { id: number } | { ll: CoordinatesInput }) {
+    return await this.prisma.locations.findUnique({
+      where: filter,
+      select: this.selectLocation,
+    });
+  }
+
+  async remove(
+    filter: { id: number } | { ll: CoordinatesInput },
+    usersId: number,
+  ): Promise<Location> {
+    const location = await this.findOne(filter);
+    if (location.users.length > 1) {
+      const currentLocation = await this.prisma.locations.update({
+        where: filter,
+        data: {
+          users: {
+            disconnect: { id: usersId },
+          },
+        },
+        select: this.selectLocation,
+      });
+      pubSub.publish('locationRemoved', currentLocation);
+      return location;
+    }
+    await this.weathersService.removeWithAllRelated(location.weatherId);
+    const currentLocation = await this.prisma.locations.delete({
+      where: filter,
+      select: this.selectLocation,
+    });
+    currentLocation.users = [];
+    pubSub.publish('locationRemoved', currentLocation);
+    return currentLocation;
+  }
+
+  async getListOfPlaces(quantity: number = 5): Promise<Location[]> {
+    const amountOfLocations = await this.prisma.locations.count();
+    return amountOfLocations > quantity
+      ? await this.prisma.locations.findMany({ take: 5 })
+      : await this.prisma.locations.findMany({});
+  }
 
   async createWithWeather(
     createLocationInput: CreateLocationInput,
@@ -39,7 +84,7 @@ export class LocationsService {
             },
           },
         },
-        select: selectLocation,
+        select: this.selectLocation,
       });
     } else {
       await this.prisma.locations.create({
@@ -51,7 +96,7 @@ export class LocationsService {
             },
           },
         },
-        select: selectLocation,
+        select: this.selectLocation,
       });
       await this.weathersService.fetchAndCreateAll(coordinates);
     }
@@ -60,49 +105,15 @@ export class LocationsService {
     return currentLocation;
   }
 
-  async findAll() {
-    return await this.prisma.locations.findMany();
-  }
-
-  async findOne(filter: { id: number } | { ll: CoordinatesInput }) {
-    return await this.prisma.locations.findUnique({
-      where: filter,
-      select: selectLocation,
-    });
-  }
-
-  async getListOfPlaces(quantity: number = 5): Promise<Location[]> {
-    const amountOfLocations = await this.prisma.locations.count();
-    return amountOfLocations > quantity
-      ? await this.prisma.locations.findMany({ take: 5 })
-      : await this.prisma.locations.findMany({});
-  }
-
-  async remove(
-    filter: { id: number } | { ll: CoordinatesInput },
-    usersId: number,
-  ): Promise<Location> {
-    const location = await this.findOne(filter);
-    if (location.users.length > 1) {
-      const currentLocation = await this.prisma.locations.update({
-        where: filter,
-        data: {
-          users: {
-            disconnect: { id: usersId },
-          },
-        },
-        select: selectLocation,
-      });
-      pubSub.publish('locationRemoved', currentLocation);
-      return location;
-    }
-    await this.weathersService.removeWithAllRelated(location.weatherId);
-    const currentLocation = await this.prisma.locations.delete({
-      where: filter,
-      select: selectLocation,
-    });
-    currentLocation.users = [];
-    pubSub.publish('locationRemoved', currentLocation);
-    return currentLocation;
-  }
+  private selectLocation = {
+    id: true,
+    lat: true,
+    lon: true,
+    name: true,
+    state: true,
+    country: true,
+    weather: true,
+    weatherId: true,
+    users: true,
+  };
 }

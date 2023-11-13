@@ -1,5 +1,6 @@
 import { Resolver, Args, Mutation, Context } from '@nestjs/graphql';
 import { Res, UseGuards } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
@@ -7,7 +8,6 @@ import { LoginResponse } from './dto/login-response';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserInput } from 'src/modules/users/dto/create-user.input';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-token.guard';
-import { Response } from 'express';
 
 @Resolver()
 export class AuthResolver {

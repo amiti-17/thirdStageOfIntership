@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Response } from 'express';
 import { UsersService } from 'src/modules/users/users.service';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserInput } from 'src/modules/users/dto/create-user.input';
@@ -6,7 +7,6 @@ import { RefreshTokenResponse } from './dto/refreshToken-response';
 import { AuthLoginInput } from './dto/auth-login.input';
 import { JwtService } from '@nestjs/jwt';
 import { regExp } from 'src/config/system/regExp';
-import { Response } from 'express';
 import { strConstants } from 'src/config/public/strConstants';
 import {
   accessCookieOptions,
