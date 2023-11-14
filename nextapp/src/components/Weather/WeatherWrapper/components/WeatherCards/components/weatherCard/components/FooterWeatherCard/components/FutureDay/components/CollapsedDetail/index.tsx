@@ -1,6 +1,5 @@
 import { Collapse, Stack } from "@mui/material";
 import { DetailedList } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailedList";
-import { Weather } from "config/system/types/Weather";
 
 type CollapsedDetailType = {
   checked: boolean, 

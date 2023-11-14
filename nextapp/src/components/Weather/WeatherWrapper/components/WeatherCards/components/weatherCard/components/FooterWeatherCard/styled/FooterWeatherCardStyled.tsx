@@ -6,4 +6,7 @@ export const FooterWeatherCardStyled = styled(Box)({
   flexWrap: 'nowrap',
   flexDirection: 'row',
   justifyContent: 'space-between',
+  alignItems: 'center',
+  justifyItems: 'center',
+  
 })

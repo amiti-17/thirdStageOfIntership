@@ -1,5 +1,6 @@
 import { Collapse } from "@mui/material";
 import { useState } from "react";
+import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
 import { getDate } from "functions/timeAndDate/getDate";
 import { ShowCurrentTempWithIcon } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailWeather/DetailHeader/components/ShowCurrentTempWithIcon";
 import { DetailList } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailWeather/DetailFooter/components/DailyFooterItem/components/DetailList";
@@ -7,7 +8,6 @@ import { DetailedList } from "components/Weather/WeatherWrapper/components/Weath
 import { GetListOfItem } from "components/Weather/WeatherWrapper/components/WeatherCards/components/weatherCard/components/DetailedList/components/DetailWeatherMatched/components/GetListOfItem";
 import { DailyFooterStyled } from "./styled/DailyFooterStyled";
 import { strConstants } from "config/system/constants/strConstants";
-import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
 import { digits } from "config/system/constants/digits";
 
 export function DailyFooterItem({ item }: { item: string }) {
@@ -30,7 +30,7 @@ export function DailyFooterItem({ item }: { item: string }) {
           setIsOpen(prev => !prev)
         }}
       >
-        <ShowCurrentTempWithIcon icon={weather[0].icon} temp={temp.eve} summary={summary} />
+        <ShowCurrentTempWithIcon icon={weather[0].icon} temp={temp.eve} summary={summary} margin={'0 auto'} />
         <GetListOfItem name={makeFirstCapitalize(strConstants.date)} item={getDate(new Date(Number(dt) * digits[1000]))} />
         <Collapse in={isOpen}>
           <DetailedList weather={currentDay}/>

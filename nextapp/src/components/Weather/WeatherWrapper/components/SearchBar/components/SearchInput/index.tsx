@@ -12,6 +12,7 @@ import style from "./style.module.css";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 import { eventConstants } from "config/system/constants/eventConstants";
 import { digits } from "config/system/constants/digits";
+import { strConstants } from "config/system/constants/strConstants";
 
 export function SearchInput() {
 
@@ -125,11 +126,11 @@ export function SearchInput() {
         setInputValue(currentValue);
         if (reason === eventConstants.clear || (reason === eventConstants.reset && currentValue)) {
           setDefaultOptions();
-          setInputValue('');
+          setInputValue(strConstants.emptyStr);
         }
         if (reason === eventConstants.reset && currentValue && event) {
           findAndSetCurrentObj(currentValue);
-          setInputValue('');
+          setInputValue(strConstants.emptyStr);
           setDefaultOptions();
         }
         if (currentValue && reason === eventConstants.input) {

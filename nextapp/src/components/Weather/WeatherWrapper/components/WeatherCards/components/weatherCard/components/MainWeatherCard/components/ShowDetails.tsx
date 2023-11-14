@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
+import { memo } from "react";
 
-export function ShowDetails({current}: {current: { pressure: number, humidity: number, wind_speed: number}}) {
+export const ShowDetails = memo(({current}: {current: { pressure: number, humidity: number, wind_speed: number}}) => {
   const { pressure, humidity, wind_speed: windSpeed } = current;
   return (
     <Stack
@@ -11,4 +12,4 @@ export function ShowDetails({current}: {current: { pressure: number, humidity: n
       {windSpeed && <>Wind: {windSpeed} metre/sec</>}
     </Stack>
   )
-}
+})

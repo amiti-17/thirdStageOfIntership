@@ -18,7 +18,7 @@ export function FutureDay({ dailyWeather }: { dailyWeather: string }) {
         component='ul'
         direction='column'
       >
-        <Stack direction='row' gap='5px'>
+        <Stack gap='5px' direction='row'>
           <WeatherIcon icon={weather.weather[0].icon} width={'40px'} />
           <ShowTemperature temperature={weather.temp.eve} fontSize={25}/>
         </Stack>

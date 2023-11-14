@@ -12,11 +12,10 @@ type DetailHeaderType = {
 
 export function DetailHeader({ place, weather }: DetailHeaderType) {
 
-  const { description, icon } = weather.weather[0];
+  const { description } = weather.weather[0];
   return (
     <>
       <Name place={ place } description={ description } />
-      <ShowCurrentTempWithIcon icon={icon} temp={weather.temp} summary={description}/>
     </>
   )
 }

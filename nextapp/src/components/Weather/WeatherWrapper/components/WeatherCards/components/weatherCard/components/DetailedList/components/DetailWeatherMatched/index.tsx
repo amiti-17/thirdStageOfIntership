@@ -10,39 +10,41 @@ import { strConstants } from "config/system/constants/strConstants";
 import { digits } from "config/system/constants/digits";
 import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
 import { WindAngleIcon } from './components/WindAngleIcon';
+import { useCallback } from 'react';
 
 type DetailWeatherMatchedType = {
   name: string,
   item: string,
 }
 
-const getNormalName = (name: string) => {
-  return [
-    name[0].toUpperCase(), 
-    name.slice(1,)].join(strConstants.emptyStr).split(strConstants.underlineStr).join(strConstants.spaceStr)
-}
-
-const getPropsForTime = (props: DetailWeatherMatchedType) => ({
-  name: [props.name[0].toUpperCase(), props.name.slice(1,)].join(strConstants.emptyStr),
-  item: getTime(new Date(Number(props.item) * digits[1000])),
-  measure: strConstants.emptyStr,
-})
-
-const getPropsForTemp = (props: DetailWeatherMatchedType) => ({
-  name: getNormalName(props.name),
-  item: Math.round(Number(props.item)),
-  measure: strConstants.degreesCelsiusMeasure,
-})
-
-const getPropsForWind = (props: DetailWeatherMatchedType) => {
-  return {
-    item: Math.round(Number(props.item.split(strConstants.slash)[0])),
-    measure: strConstants.speedWindMeasure,
-  }
-}
-
 export const DetailWeatherMatched = (props: DetailWeatherMatchedType) => {
   const { name, item } = props;
+
+  // but I am not sure that this useCallback are useful..)
+  const getNormalName = useCallback((name: string) => {
+    return [
+      name[0].toUpperCase(), 
+      name.slice(1,)].join(strConstants.emptyStr).split(strConstants.underlineStr).join(strConstants.spaceStr)
+  }, [name]);
+  
+  const getPropsForTime = useCallback((props: DetailWeatherMatchedType) => ({
+    name: [props.name[0].toUpperCase(), props.name.slice(1,)].join(strConstants.emptyStr),
+    item: getTime(new Date(Number(props.item) * digits[1000])),
+    measure: strConstants.emptyStr,
+  }), [props]);
+  
+  const getPropsForTemp = useCallback((props: DetailWeatherMatchedType) => ({
+    name: getNormalName(props.name),
+    item: Math.round(Number(props.item)),
+    measure: strConstants.degreesCelsiusMeasure,
+  }), [props]);
+  
+  const getPropsForWind = useCallback((props: DetailWeatherMatchedType) => {
+    return {
+      item: Math.round(Number(props.item.split(strConstants.slash)[0])),
+      measure: strConstants.speedWindMeasure,
+    }
+  }, [props]);
   
   switch (name) {
     case strConstants.sunrise:

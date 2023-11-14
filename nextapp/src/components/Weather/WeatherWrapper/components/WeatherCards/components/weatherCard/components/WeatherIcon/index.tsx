@@ -1,11 +1,15 @@
 import { getUrlForIcon2x } from "functions/getUrlForIcon";
-import { Box } from "@mui/material";
+import { weatherIconStyled } from "./styled/WeatherIconStyled";
+import { memo } from "react";
 
 export function WeatherIcon({ icon, width = '50px' }: { icon: string, width?: string }) {
-  return <Box
+
+  const WeatherIcon = memo(weatherIconStyled(width));
+
+  return <WeatherIcon
     width={width}
     component='img' 
-    src={getUrlForIcon2x(icon)} 
+    src={getUrlForIcon2x(icon)}
     loading="lazy"
   />
 }
