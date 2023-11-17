@@ -10,7 +10,16 @@ type GetListOfItemType = {
 }
 
 export function GetListOfItem({ name, item, measure = strConstants.emptyStr, children }: GetListOfItemType) {
+
+  if ((item || (typeof item === strConstants.number && Number(item) === 0))) {
+    return (
+      <IconWithText component='li'>
+        {children}{name}: {item}{measure}
+      </IconWithText>
+    )
+  }
+
   return (
-    <>{(item || (typeof item === strConstants.number && Number(item) === 0)) && <IconWithText component='li'>{children}{name}: {item}{measure}</IconWithText>}</>
+    <></>
   )
 }

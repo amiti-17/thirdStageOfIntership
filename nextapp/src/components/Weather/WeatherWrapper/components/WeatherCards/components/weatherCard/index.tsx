@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { weathers } from "Apollo/queries/weathers";
 import { Box } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { locations } from "Apollo/queries/locations";
 import CircularIndeterminate from "components/Common/CircularIndeterminate";
 import { HeaderWeatherCard } from "./components/HeaderWeatherCard";
@@ -48,14 +48,14 @@ export function WeatherCard({ place }: {place: LocationFetchedFromSearchString})
     }
   }, [isModalOpen]);
 
-  const onDeleteHandler = (locationsId, usersId) => {
+  const onDeleteHandler = useCallback((locationsId: number, usersId: number) => {
     deletePlace({
       variables: {
         locationsId,
         usersId,
       }
     })
-  }
+  }, [place.id, user.id]);
 
   return (
     <Box onClick={() => setIsModalOpen(prev => !prev)}>

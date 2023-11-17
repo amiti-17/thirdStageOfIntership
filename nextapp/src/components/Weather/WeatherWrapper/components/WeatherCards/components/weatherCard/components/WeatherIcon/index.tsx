@@ -1,6 +1,6 @@
-import { getUrlForIcon2x } from "functions/getUrlForIcon";
-import { weatherIconStyled } from "./styled/WeatherIconStyled";
 import { memo } from "react";
+import { weatherIconStyled } from "./styled/weatherIconStyled";
+import { getUrlForIcon2x } from "functions/getUrlForIcon";
 
 export function WeatherIcon({ icon, width = '50px' }: { icon: string, width?: string }) {
 

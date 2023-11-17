@@ -1,7 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useMutation, useQuery } from "@apollo/client";
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { useMutation } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import { locations } from "Apollo/queries/locations";
 import { PlacesContext } from "Contexts/placesContext";
 import { AlertSearchBarContext } from "Contexts/alertSearchBarContext";
@@ -15,44 +15,29 @@ import { digits } from "config/system/constants/digits";
 import { strConstants } from "config/system/constants/strConstants";
 
 export function SearchInput() {
-
-  const { data: myPlacesData } = useQuery(
-    locations.getOptions, 
-    { variables: { input: Number(process.env.NEXT_PUBLIC_QUANTITY_FOR_OPTIONS) } }
-  );
-
-  const cities: LocationFetchedFromSearchString[] = [
-    { name: 'Kyiv', lat: 0, lon: 0, id: 0 }
-  ];
   
   const { user } = useContext(UserContext);
   const { setAlertText } = useContext(AlertSearchBarContext);
   const { places } = useContext(PlacesContext);
   const [ inputValue, setInputValue ] = useState<string>('');
-  const [ options, setOptions ] = useState<LocationFetchedFromSearchString[]>(cities);
+  const [ options, setOptions ] = useState<LocationFetchedFromSearchString[]>([]);
   const [ createPlace ] = useMutation(locations.createLocation);
 
-  const setValuePush = setValuePushExtended.bind(null);
-  const isUniqValue = isUniqValueExtended.bind(null, places);
-  const setDefaultOptions = setDefaultOptionsExtended.bind(null, setOptions);
-  const findAndSetCurrentObj = findAndSetCurrentObjExtended.bind(null, options);
-
   useEffect(() => {
-    if (myPlacesData?.getListOfPlaces[0]?.id) {
-      setOptions(myPlacesData?.getListOfPlaces);
-    }
-  }, [myPlacesData]);
+    setDefaultOptionsExtended();
+  }, []);
 
   function setOptionsWrapper(options: LocationFetchedFromSearchString[]) {
     setOptions(options);
   }
 
-  function setDefaultOptionsExtended(setOptions: Dispatch<SetStateAction<LocationFetchedFromSearchString[]>>) {
-    setOptions(places ? places : (myPlacesData.getListOfPlaces ?? cities));
+  async function setDefaultOptionsExtended() {
+    await fetchCoordinatesAndSetOptions(strConstants.alphabet.a);
   }
 
-  async function fetchCoordinatesAndSetOptions(nameOfPlace) {
+  async function fetchCoordinatesAndSetOptions(nameOfPlace: string) {
     const mySupposesPlaces = await getLocationsAttr(nameOfPlace);
+    console.log(mySupposesPlaces)
     const filteredSupposesPlaces = mySupposesPlaces.reduce((accumulator, place) => {
       if (!accumulator.find(el => el.lat === place.lat && el.lon === place.lon)) {
         accumulator.push(place);
@@ -66,11 +51,7 @@ export function SearchInput() {
     values: LocationFetchedFromSearchString[], 
     value: LocationFetchedFromSearchString,
     ): boolean {
-    const isUniq = !values.find(el => {
-      value.lat = Math.round(value.lat * digits[1000000000000]) / digits[1000000000000];
-      value.lon = Math.round(value.lon * digits[1000000000000]) / digits[1000000000000];
-      return el.lat === value.lat && el.lon === value.lon;
-    });
+    const isUniq = !values.find(el => el.lat === Number(value.lat.toFixed(12)) && el.lon === Number(value.lon.toFixed(12)));
     if (!isUniq) setAlertText('This place have already exists');
     return isUniq;
   }
@@ -96,6 +77,11 @@ export function SearchInput() {
       setValuePush(currentObj);
     }
   }
+
+  const setValuePush = setValuePushExtended.bind(null);
+  const isUniqValue = isUniqValueExtended.bind(null, places);
+  const setDefaultOptions = setDefaultOptionsExtended.bind(null, setOptions);
+  const findAndSetCurrentObj = findAndSetCurrentObjExtended.bind(null, options);
 
   return (
     <Autocomplete

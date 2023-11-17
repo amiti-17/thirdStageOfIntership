@@ -11,17 +11,19 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => [User], { name: 'users' })
-  @UseGuards(JwtAuthGuard)
-  async findAll() {
+  async findAll(@Context() context) {
+    console.log(context);
     return await this.usersService.findAll();
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(JwtAuthGuard)
   async findOne(@Args('email') email: string) {
     return await this.usersService.findOne({ email });
   }
 
   @Query(() => User, { name: 'findById' })
+  @UseGuards(JwtAuthGuard)
   async findById(@Args('id') id: number) {
     return await this.usersService.findOne({ id });
   }
@@ -33,6 +35,7 @@ export class UsersResolver {
   }
 
   @Query(() => UserWithPassword, { name: 'userUnsafe' }) // used for testing
+  @UseGuards(JwtAuthGuard)
   async findOneUnsafe(@Args('email') email: string) {
     return await this.usersService.findOneUnsafe(email);
   }
