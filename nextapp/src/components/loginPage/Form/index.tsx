@@ -9,7 +9,6 @@ import CustomError from "CustomError";
 import { ShowMsgType, showMsgDefault } from "CustomError/ShowMsgType";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
 import { networkErrorsHandler } from "CustomError/networkErrorsHandler";
-import { getCryptPassword } from "functions/getCryptPassword";
 import { auth } from "Apollo/queries/auth";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { UserContext } from "Contexts/userContext";
@@ -36,13 +35,9 @@ export default function LoginForm() {
     validationSchema: yupValidationSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
-      const myCryptValues = {
-        email: values.email,
-        password: getCryptPassword(values.password),
-      };
       try {
         const isUser = await getTokenMutation({
-          variables: { input: myCryptValues },
+          variables: { input: values },
         });
 
         if (isUser?.data?.login.status) {
