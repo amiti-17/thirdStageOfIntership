@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.7",
     "@expo/webpack-config": "^19.0.0",
+    "@react-native-cookies/cookies": "^6.2.1",
     "@react-navigation/native-stack": "^6.9.17",
     "apollo-link": "^1.2.14",
     "expo": "~49.0.15",

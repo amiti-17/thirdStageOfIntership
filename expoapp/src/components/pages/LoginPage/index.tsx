@@ -5,7 +5,7 @@ export const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <LoginForm/>
+      <LoginForm />
       <Text>Login Screen</Text>
       <Button title='press to continue' onPress={() => {
         navigation.navigate('Weather');

@@ -1,14 +1,16 @@
 import { Formik } from "formik";
-import { Button, GestureResponderEvent, TextInput } from "react-native";
+import { useContext } from "react";
 import { useMutation } from "@apollo/client";
+import { Button, GestureResponderEvent } from "react-native";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { auth } from "Apollo/queries/auth";
 import CustomError from "CustomError";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
 import { networkErrorsHandler } from "CustomError/networkErrorsHandler";
 import { strConstants } from "config/system/constants/strConstants";
-import { useContext } from "react";
 import { MessageContext } from "context/MessageContext";
+import { TextInputWithClue } from "./components/TextInputWithClue";
+import { formConstants } from "config/system/constants/formConstants";
 
 export const LoginForm = () => {
 
@@ -22,11 +24,12 @@ export const LoginForm = () => {
 
   const onSubmitHandler = async (values) => {
     try {
-      const isUser = await getTokenMutation({
+      const userStatus = await getTokenMutation({
         variables: { input: values },
       });
 
-      if (isUser?.data?.login.status) {
+      if (userStatus?.data?.login.status) {
+        console.log(userStatus);
         setMessage({
           message: CustomError.successfullyLogIn,
           title: 'Success',
@@ -47,53 +50,31 @@ export const LoginForm = () => {
     }
   }
 
-  // const formik = useFormik({
-  //   ,
-  //   validationSchema: yupValidationSchema,
-  //   onSubmit: async (values) => {
-  //     try {
-  //       const isUser = await getTokenMutation({
-  //         variables: { input: values },
-  //       });
-
-  //       if (isUser?.data?.login.status) {
-  //         Alert({
-  //           message: CustomError.successfullyLogIn,
-  //           severity: 'success',
-  //         })
-  //         router.push(pages.weather);
-  //       }
-  //     } catch (error) {
-
-  //       if (error.graphQLErrors[0]) {
-  //         Alert(graphqlErrorsHandler(error.graphQLErrors));
-  //       }
-
-  //       if (error.networkError) {
-  //         Alert(networkErrorsHandler(error.networkError));
-  //       }
-
-  //       console.error('unrecognized warn in Form => LoginForm => formik => onSubmit: ', error);
-  //     }
-  //   },
-  // });
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={yupValidationSchema}
       onSubmit={onSubmitHandler}
     >
-      {(prop) => { //: { handleChange, handleBlur, handleSubmit, values }
-        console.log(prop);
+      {({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting }) => {
+        
         return (
           <>
-            <TextInput
-              onChangeText={prop.handleChange('email')}
-              onBlur={prop.handleBlur('email')}
-              value={prop.values.email}
+            <TextInputWithClue
+              type={formConstants.email}
+              value={values.email}
+              error={errors.email}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
-            <Button onPress={prop.handleSubmit as unknown as (e: GestureResponderEvent) => void} title="Submit" />
+            <TextInputWithClue
+              type={formConstants.password}
+              value={values.password}
+              error={errors.password}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+            />
+            <Button onPress={handleSubmit as unknown as (e: GestureResponderEvent) => void} title="Submit" disabled={isSubmitting} />
           </>
         )
       }}

@@ -1,4 +1,11 @@
-export const strConstants = {
+export const strConstants: {
+  currentPassword: 'current-password',
+  none: 'none',
+  emailAddress: 'email-address',
+  default: 'default',
+  center: 'center',
+  [index: string]: string | { [index: string]: string },
+} = {
   alphabet: {
     a: 'a',
   },
@@ -45,4 +52,9 @@ export const strConstants = {
   snow: 'snow',
   date: 'date',
   slash: '/',
+  currentPassword: 'current-password',
+  none: 'none',
+  emailAddress: 'email-address',
+  default: 'default',
+  center: 'center',
 }
