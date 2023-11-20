@@ -1,16 +1,17 @@
 import { Formik } from "formik";
 import { useContext } from "react";
 import { useMutation } from "@apollo/client";
-import { Button, GestureResponderEvent } from "react-native";
+import { Button, GestureResponderEvent, Platform, StyleSheet } from "react-native";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { auth } from "Apollo/queries/auth";
 import CustomError from "CustomError";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
 import { networkErrorsHandler } from "CustomError/networkErrorsHandler";
-import { strConstants } from "config/system/constants/strConstants";
 import { MessageContext } from "context/MessageContext";
 import { TextInputWithClue } from "./components/TextInputWithClue";
 import { formConstants } from "config/system/constants/formConstants";
+import { strConstants } from "config/system/constants/strConstants";
+import { cssConstants } from "config/system/constants/cssConstants";
 
 export const LoginForm = () => {
 
@@ -81,3 +82,13 @@ export const LoginForm = () => {
     </Formik>
   )
 }
+
+const style = StyleSheet.create({
+  generalFromWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '100%',
+    height: '100%',
+  }
+})

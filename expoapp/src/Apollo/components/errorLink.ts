@@ -1,7 +1,7 @@
 import { onError } from "@apollo/client/link/error";
 import { FetchResult, Observable } from "apollo-link";
 import { auth } from "Apollo/queries/auth";
-import { globalClient } from "Apollo/";
+import { globalClientObj } from "./globalClientObj";
 
 export const errorLink = () => onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {
@@ -18,7 +18,7 @@ export const errorLink = () => onError(({ graphQLErrors, networkError, operation
                 (observer) => {
                   (async () => {
                     try {
-                      await globalClient?.mutate({
+                      await globalClientObj.client?.mutate({
                         mutation: auth.refreshToken,
                     });
                       const subscriber = {

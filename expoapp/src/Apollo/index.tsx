@@ -3,8 +3,7 @@ import { ApolloClient, ApolloProvider, from } from '@apollo/client';
 import { splitLink } from "./components/splitLink";
 import { errorLink } from "./components/errorLink";
 import { cache } from "./components/cache";
-
-export let globalClient;
+import { globalClientObj } from './components/globalClientObj';
 
 const client = new ApolloClient({
   link: from([ errorLink(), splitLink ]),
@@ -12,7 +11,7 @@ const client = new ApolloClient({
   cache,
 });
 
-globalClient = client;
+globalClientObj.client = client;
 
 export const MyApollo = ({ children }: { children: ReactNode}) => (
   <ApolloProvider client={client}>

@@ -1,6 +1,6 @@
 import { formConstants } from "config/system/constants/formConstants"
 import { ChangeEvent, FocusEvent } from "react";
-import { StyleSheet, Text, TextInput } from "react-native";
+import { StyleSheet, Text, TextInput, Platform } from "react-native";
 import { FormikErrors } from "formik";
 import { strConstants } from "config/system/constants/strConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
@@ -15,6 +15,17 @@ type TextInputWithClueProps = {
 
 export const TextInputWithClue = ({handleBlur, handleChange, value, error, type }: TextInputWithClueProps) => {
 
+  function getTextInputStyle(Platform: Platform, style) {
+    switch (Platform.OS) {
+      case 'android':
+        return style.textInputAndroid;
+      case 'android':
+        return style.textInputWeb;
+      default:
+        return style.default;
+    }
+  }
+
   return (
     <>
       <TextInput
@@ -22,24 +33,45 @@ export const TextInputWithClue = ({handleBlur, handleChange, value, error, type 
         onChangeText={handleChange(type)}
         onBlur={handleBlur(type)}
         value={value}
-        style={style.textInput}
+        style={getTextInputStyle(Platform, style)}
         autoComplete={type === formConstants.email ? type : strConstants.currentPassword}
         inputMode={type === formConstants.email ? type : strConstants.none}
         keyboardType={type === formConstants.email ? strConstants.emailAddress : strConstants.default}
         maxLength={200}
         placeholder={type}
       />
-      { error && <Text>{ String(error) }</Text>}
+      { error && <Text style={style.errorText}>{ String(error) }</Text>}
     </>
   )
 }
 
 const style = StyleSheet.create({
-  textInput: {
+  textInputAndroid: {
     height: 40,
     padding: 5,
+    paddingLeft: 10,
     margin: 3,
     color: cssConstants.mainColor,
+    backgroundColor: '#d6e3f0',
+    borderRadius: 50,
+    width: '90%',
+  },
+  textInputWeb: {
     outlineColor: cssConstants.mainColor,
+    height: 40,
+    padding: 5,
+    paddingLeft: 10,
+    margin: 3,
+    color: cssConstants.mainColor,
+    backgroundColor: '#d6e3f0',
+    borderRadius: 50,
+    maxWidth: 300,
+    width: '90%',
+  },
+  errorText: {
+    marginBottom: 5,
+  },
+  default: {
+
   },
 })
