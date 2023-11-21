@@ -27,7 +27,7 @@ export const SuggestedBlock = memo(() => {
   return (
     <View style={style.optionWrapper}>
       { 
-        (!getSuggestionsList(suggestionList)[0] && !currentUser?.locations[0].lat) && (<Text style={style.defaultText}>
+        (!getSuggestionsList(suggestionList)[0] && !currentUser?.locations[0]?.lat) && (<Text style={style.defaultText}>
             Try to start entering any place...
           </Text>)
       }

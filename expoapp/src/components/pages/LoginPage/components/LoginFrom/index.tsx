@@ -19,7 +19,7 @@ import { CurrentUserContext } from "context/CurrentUserContext";
 
 export const LoginForm = ({ navigation }) => {
 
-  const [ getTokenMutation, { data: tokenData } ] = useMutation(auth.login);
+  const [ getTokenMutation, { data: tokenData, loading } ] = useMutation(auth.login);
   const [ getCurrentUser, { data: userData } ] = useLazyQuery(users.getCurrentUser);
   const { setMessage } = useContext(MessageContext);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
@@ -47,7 +47,7 @@ export const LoginForm = ({ navigation }) => {
     if (userData?.getCurrentUser.email || currentUser?.email) {
       navigation.navigate(pages.weather);
     }
-  }, [ userData]);
+  }, [ userData, loading]);
 
   const onSubmitHandler = async (values) => {
     try {
@@ -104,7 +104,7 @@ export const LoginForm = ({ navigation }) => {
               disabled={isSubmitting}
               style={[ style.submitButtonStyle, isSubmitting ? style.disabledColor : style.mainColor ]}
             >
-              <Text style={style.buttonText}>Submit</Text>
+              <Text style={style.buttonText} disabled={loading}>Submit</Text>
             </Pressable>
           </>
         )

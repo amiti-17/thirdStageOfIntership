@@ -40,7 +40,7 @@ export const Card = ({ location }: CardProps) => {
   });
 
   useSubscription(locations.onLocationAdded, {
-    variables: { input: currentUser.id },
+    variables: { input: currentUser?.id },
     onData(options) {
       setLocations(prev => {
         if (prev.find(el => el.id === options.data?.data.locationAdded.id)) {
@@ -52,7 +52,7 @@ export const Card = ({ location }: CardProps) => {
   });
 
   useSubscription(locations.onLocationRemoved, {
-    variables: { input: currentUser.id },
+    variables: { input: currentUser?.id },
     onData(options) {
       setLocations(prev => {
         return [ ...prev.filter(el => !(el.id === options.data?.data.locationRemoved.id)) ];
@@ -81,7 +81,7 @@ export const Card = ({ location }: CardProps) => {
         title={getNameOfPlace(location)}
         description={weather?.current && currentWeather ? currentWeather.weather[0].description : strConstants.emptyStr}
         loadingDelete={loadingDelete}
-        onDeleteHandler={onDeleteHandler.bind(null, location.id, currentUser.id)}
+        onDeleteHandler={onDeleteHandler.bind(null, location.id, currentUser?.id)}
       />
       <WeatherMain current={weather?.current} />
       <WeatherFooter />

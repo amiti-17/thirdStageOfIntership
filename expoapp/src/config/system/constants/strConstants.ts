@@ -5,6 +5,7 @@ export const strConstants: {
   emailAddress: 'email-address',
   default: 'default',
   center: 'center',
+  text: 'text',
 } = {
   emptyStr: '',
   text: 'text',

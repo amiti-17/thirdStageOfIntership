@@ -28,7 +28,7 @@ export const RenderSuggestion = ({
         state: item.state,
         country: item.country,
       },
-      usersId: currentUser.id,
+      usersId: currentUser?.id,
     }
   });
 
