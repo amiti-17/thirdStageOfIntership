@@ -11,7 +11,7 @@ export const errorLink = (navigator) => onError(({ graphQLErrors, networkError, 
         switch (err.extensions?.code) {
           case 'UNAUTHENTICATED':
             if (operation.operationName === 'GetNewAccessToken') {
-              navigator.push(pages.login);
+              navigator.navigate(pages.login);
               return '';
             };
             return new Observable<FetchResult<Record<string, any>>>(
@@ -41,7 +41,7 @@ export const errorLink = (navigator) => onError(({ graphQLErrors, networkError, 
     }
   }
   if (networkError) {
-    navigator.push(pages.login);
+    navigator.navigate(pages.login);
     return;
   }
 });

@@ -1,15 +1,11 @@
 export const strConstants: {
+  [index: string]: string,
   currentPassword: 'current-password',
   none: 'none',
   emailAddress: 'email-address',
   default: 'default',
   center: 'center',
-  alphabet: { [index: string]: string },
-  [index: string]: string | { [index: string]: string },
 } = {
-  alphabet: {
-    a: 'a',
-  },
   emptyStr: '',
   text: 'text',
   less: 'less',
@@ -29,10 +25,11 @@ export const strConstants: {
   underlineStr: '_',
   degreesMeasure: '°',
   degreesCelsiusMeasure: '°C',
-  speedWindMeasure: ' metre/sec',
+  speedMeasure: ' metre/sec',
   pressureMeasure: ' hPa',
   humidityMeasure: '%',
   waterMeasure: ' mm',
+  lengthMeasure: 'km',
   percentage: '%',
   sunrise: 'sunrise',
   sunset: 'sunset',
@@ -59,4 +56,5 @@ export const strConstants: {
   emailAddress: 'email-address',
   default: 'default',
   center: 'center',
+  wind: 'wind',
 }

@@ -2,12 +2,14 @@ import { memo, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { LocationType } from "config/system/types/Locations";
 import { SuggestionListContext } from "context/SuggestionListContext";
+import { CurrentUserContext } from "context/CurrentUserContext";
 import { RenderSuggestion } from "./components/RenderSuggestion";
 import { getComposedKey } from "functions/places/getComposedKey";
 
 export const SuggestedBlock = memo(() => {
 
   const { suggestionList, setSuggestionList } = useContext(SuggestionListContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   const getSuggestionsList = (suggestedLocations: LocationType[]) => {
     const mySuggestedLocations = suggestedLocations.reduce((accumulator, place) => {
@@ -25,10 +27,9 @@ export const SuggestedBlock = memo(() => {
   return (
     <View style={style.optionWrapper}>
       { 
-        !getSuggestionsList(suggestionList)[0] && 
-          <Text style={style.defaultText}>
+        (!getSuggestionsList(suggestionList)[0] && !currentUser?.locations[0].lat) && (<Text style={style.defaultText}>
             Try to start entering any place...
-          </Text> 
+          </Text>)
       }
       {
         getSuggestionsList(suggestionList)[0] && getSuggestionsList(suggestionList).map(

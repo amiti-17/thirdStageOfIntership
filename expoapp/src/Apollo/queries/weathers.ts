@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const weathers = {
-  getById: gql`
+  getOne: gql`
     query getWeather($input: Int!) {
       getWeather(id: $input) {
         current {

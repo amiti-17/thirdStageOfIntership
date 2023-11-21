@@ -1,12 +1,12 @@
 import { useLazyQuery } from "@apollo/client";
 import { useContext, useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { NavigatorContext } from "context/NavigatorContext";
+import { StyleSheet, View } from "react-native";
+import { users } from "Apollo/queries/users";
+import { SuggestionListProvider } from "./components/SuggestionListProvider";
 import { WeatherCards } from "./components/WeatherCards";
 import { WeatherProvider } from "./components/WeatherProvider";
 import { CurrentUserContext } from "context/CurrentUserContext";
-import { users } from "Apollo/queries/users";
-import { SuggestionListProvider } from "./components/SuggestionListProvider";
+import { NavigatorContext } from "context/NavigatorContext";
 
 export const WeatherScreen = ({ navigation }) => {
 
@@ -24,17 +24,17 @@ export const WeatherScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (userData?.getCurrentUser.email) {
-      setCurrentUser(userData?.getCurrentUser);
+      setCurrentUser(() => userData?.getCurrentUser);
     }
   }, [userData]);
 
   return (
-    <ScrollView style={style.weatherWrapper}>
+    <View style={style.weatherWrapper}>
       <WeatherProvider>
         <SuggestionListProvider />
         <WeatherCards />
       </WeatherProvider>
-    </ScrollView>
+    </View>
   );
 }
 
