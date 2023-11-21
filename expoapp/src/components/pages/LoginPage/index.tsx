@@ -7,7 +7,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const { setNavigator } = useContext(NavigatorContext);
   useEffect(() => {
-    setNavigator(navigation);
+    setNavigator(() => navigation);
   }, []);
 
   return (
