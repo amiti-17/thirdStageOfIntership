@@ -1,18 +1,20 @@
+import FlashMessage from "react-native-flash-message";
 import { StatusBar } from "react-native";
-import { MyApollo } from "Apollo/";
+import { ApolloAndNavigationProviders } from "components/ApolloAndNavigationProviders";
 import { CurrentUser } from "components/GeneralAppWrapper/components/CurrentUser";
-import { NavigatorProvider } from "components/GeneralAppWrapper/components/NavigatorProvider";
+import { StackScreen } from "./components/StackScreen";
 import { Message } from "./components/Message";
 
 export const GeneralAppWrapper = () => {
   return (
-    <MyApollo>
+    <ApolloAndNavigationProviders>
       <CurrentUser>
         <Message>
           <StatusBar />
-          <NavigatorProvider />
+          <StackScreen />
+          <FlashMessage position="top" />
         </Message>
       </CurrentUser>
-    </MyApollo>
+    </ApolloAndNavigationProviders>
   )
 }

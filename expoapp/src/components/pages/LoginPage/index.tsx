@@ -1,15 +1,18 @@
-import { Button, Text, View } from "react-native";
+import { View } from "react-native";
 import { LoginForm } from "./components/LoginFrom";
+import { useContext, useEffect } from "react";
+import { NavigatorContext } from "context/NavigatorContext";
 
 export const LoginScreen = ({ navigation }) => {
 
+  const { setNavigator } = useContext(NavigatorContext);
+  useEffect(() => {
+    setNavigator(navigation);
+  }, []);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <LoginForm />
-      <Text>Login Screen</Text>
-      <Button title='press to continue' onPress={() => {
-        navigation.navigate('Weather');
-      }}/>
+      <LoginForm navigation={navigation} />
     </View>
   );
 }

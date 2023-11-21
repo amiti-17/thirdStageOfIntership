@@ -1,6 +1,6 @@
 import { FontAwesome5 } from '@expo/vector-icons';
-import { cssConstants } from 'config/system/constants/cssConstants';
 import { StyleSheet, Text, View } from 'react-native';
+import { cssConstants } from 'config/system/constants/cssConstants';
 
 export const HeaderTitle = () => {
   
@@ -14,9 +14,9 @@ export const HeaderTitle = () => {
 
 const style = StyleSheet.create({
   headerTitle: {
-    flex: 1,
     justifyContent: 'center',
-    flexFlow: 'row nowrap',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
     alignContent: 'center',
     gap: 10,
   },

@@ -1,4 +1,4 @@
 export const pages = {
-  weather: '/weather',
-  root: '/',
+  weather: 'Weather',
+  login: 'Login',
 }

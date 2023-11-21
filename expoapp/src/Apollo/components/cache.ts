@@ -8,6 +8,12 @@ import { WeatherFragment } from "./fragments/WeatherFragment";
 import { DaysFragment } from "./fragments/DaysFragment";
 
 export const cache = new InMemoryCache({
+  typePolicies: {
+    UnconventionalRootQuery: {
+      queryType: true,
+      mutationType: true,
+    },
+  },
   fragments: createFragmentRegistry(gql`
     ${UserFragment}
     ${UserIdObjFragment}

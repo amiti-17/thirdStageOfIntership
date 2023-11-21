@@ -11,7 +11,6 @@ import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
 import style from "./style.module.css";
 import { LocationFetchedFromSearchString } from "config/system/types/locationsFetched";
 import { eventConstants } from "config/system/constants/eventConstants";
-import { digits } from "config/system/constants/digits";
 import { strConstants } from "config/system/constants/strConstants";
 
 export function SearchInput() {
@@ -37,7 +36,6 @@ export function SearchInput() {
 
   async function fetchCoordinatesAndSetOptions(nameOfPlace: string) {
     const mySupposesPlaces = await getLocationsAttr(nameOfPlace);
-    console.log(mySupposesPlaces)
     const filteredSupposesPlaces = mySupposesPlaces.reduce((accumulator, place) => {
       if (!accumulator.find(el => el.lat === place.lat && el.lon === place.lon)) {
         accumulator.push(place);

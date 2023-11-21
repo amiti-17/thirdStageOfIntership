@@ -4,12 +4,14 @@ export const strConstants: {
   emailAddress: 'email-address',
   default: 'default',
   center: 'center',
+  alphabet: { [index: string]: string },
   [index: string]: string | { [index: string]: string },
 } = {
   alphabet: {
     a: 'a',
   },
   emptyStr: '',
+  text: 'text',
   less: 'less',
   spaceStr: ' ',
   usersName: 'users name',

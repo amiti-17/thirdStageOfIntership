@@ -1,5 +1,4 @@
 import { MessageType } from "config/system/types/Message";
-import { UserType } from "config/system/types/UserType";
 import React, { Dispatch, SetStateAction } from "react";
 
 type MessageContextType = {

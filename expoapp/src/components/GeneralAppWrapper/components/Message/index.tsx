@@ -8,7 +8,9 @@ type MessageProps = {
 }
 
 export const Message = ({ children }: MessageProps) => {
+  
   const [ message, setMessage ] = useState<MessageType>({} as MessageType);
+  useEffect(console.log.bind(null, message), [message]);
 
   const myAlert = (message) => Alert.alert(message.title, message.message, [
     {

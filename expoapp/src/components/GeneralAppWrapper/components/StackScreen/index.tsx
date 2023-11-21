@@ -5,8 +5,8 @@ import { WeatherScreen } from 'components/pages/WeatherPage';
 import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderRight } from './components/HeaderRight';
 
-export const NavigatorProvider = () => {
-
+export const StackScreen = () => {
+  
   const Stack = createNativeStackNavigator();
 
   const screenOptions = {
@@ -17,9 +17,9 @@ export const NavigatorProvider = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login' screenOptions={ screenOptions }>
-        <Stack.Screen name='Login' component={LoginScreen} options={{title: 'Login'}}></Stack.Screen>
-        <Stack.Screen name='Weather' component={WeatherScreen}></Stack.Screen>
+      <Stack.Navigator initialRouteName='Weather' screenOptions={ screenOptions }>
+        <Stack.Screen name='Login' component={LoginScreen} options={{title: 'Login'}} />
+        <Stack.Screen name='Weather' component={WeatherScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

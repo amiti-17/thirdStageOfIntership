@@ -1,5 +1,5 @@
 import { fetchConstants } from "config/system/constants/fetchConstants";
-import CustomError from "../../CustomError";
+import CustomError from "CustomError";
 
 export async function fetchPost(url: string, data: any) {
   const headers = new Headers;
@@ -23,8 +23,4 @@ export async function fetchPost(url: string, data: any) {
     }
     throw new CustomError(CustomError.unrecognizedFetchError);
   }
-  
-  
-  
-  
 }

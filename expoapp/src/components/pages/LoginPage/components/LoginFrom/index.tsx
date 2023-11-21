@@ -1,7 +1,8 @@
 import { Formik } from "formik";
-import { useContext } from "react";
-import { useMutation } from "@apollo/client";
-import { Button, GestureResponderEvent, Platform, StyleSheet } from "react-native";
+import { useContext, useEffect } from "react";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { auth } from "Apollo/queries/auth";
 import CustomError from "CustomError";
@@ -12,30 +13,54 @@ import { TextInputWithClue } from "./components/TextInputWithClue";
 import { formConstants } from "config/system/constants/formConstants";
 import { strConstants } from "config/system/constants/strConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
+import { pages } from "config/system/pages";
+import { users } from "Apollo/queries/users";
+import { CurrentUserContext } from "context/CurrentUserContext";
 
-export const LoginForm = () => {
+export const LoginForm = ({ navigation }) => {
 
-  const [ getTokenMutation ] = useMutation(auth.login);
+  const [ getTokenMutation, { data: tokenData } ] = useMutation(auth.login);
+  const [ getCurrentUser, { data: userData } ] = useLazyQuery(users.getCurrentUser);
   const { setMessage } = useContext(MessageContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
 
-  const initialValues = { 
-    email: strConstants.emptyStr, 
+  const initialValues = {
+    email: strConstants.emptyStr,
     password: strConstants.emptyStr,
   }
+
+  useEffect(() => {
+    if (tokenData?.login.status) {
+      getCurrentUser({
+        fetchPolicy: 'network-only',
+      });
+    }
+    if (currentUser?.email) {
+      navigation.navigate(pages.weather);
+    }
+  }, [ tokenData ]);
+
+  useEffect(() => {
+    if (userData?.getCurrentUser.email !== currentUser?.email) {
+      setCurrentUser(userData?.getCurrentUser);
+    }
+    if (userData?.getCurrentUser.email || currentUser?.email) {
+      navigation.navigate(pages.weather);
+    }
+  }, [ userData]);
 
   const onSubmitHandler = async (values) => {
     try {
       const userStatus = await getTokenMutation({
         variables: { input: values },
+        fetchPolicy: 'network-only',
       });
 
       if (userStatus?.data?.login.status) {
-        console.log(userStatus);
-        setMessage({
+        showMessage({
           message: CustomError.successfullyLogIn,
-          title: 'Success',
+          type: 'success', // is it magic string? I think no.
         })
-        // router.push(pages.weather); TODO: perform this features
       }
     } catch (error) {
 
@@ -46,8 +71,6 @@ export const LoginForm = () => {
       if (error.networkError) {
         setMessage(networkErrorsHandler(error.networkError));
       }
-
-      console.error('unrecognized warn in Form => LoginForm => formik => onSubmit: ', error);
     }
   }
 
@@ -57,14 +80,14 @@ export const LoginForm = () => {
       validationSchema={yupValidationSchema}
       onSubmit={onSubmitHandler}
     >
-      {({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting }) => {
-        
+      {({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting, touched }) => {
         return (
           <>
             <TextInputWithClue
               type={formConstants.email}
               value={values.email}
               error={errors.email}
+              touched={touched}
               handleChange={handleChange}
               handleBlur={handleBlur}
             />
@@ -72,10 +95,17 @@ export const LoginForm = () => {
               type={formConstants.password}
               value={values.password}
               error={errors.password}
+              touched={touched}
               handleChange={handleChange}
               handleBlur={handleBlur}
             />
-            <Button onPress={handleSubmit as unknown as (e: GestureResponderEvent) => void} title="Submit" disabled={isSubmitting} />
+            <Pressable 
+              onPress={handleSubmit as unknown as (e: GestureResponderEvent) => void}
+              disabled={isSubmitting}
+              style={[ style.submitButtonStyle, isSubmitting ? style.disabledColor : style.mainColor ]}
+            >
+              <Text style={style.buttonText}>Submit</Text>
+            </Pressable>
           </>
         )
       }}
@@ -84,11 +114,23 @@ export const LoginForm = () => {
 }
 
 const style = StyleSheet.create({
-  generalFromWrapper: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '100%',
-    height: '100%',
+  submitButtonStyle: {
+    marginTop: 10,
+    width: '50%',
+    padding: 10,
+    borderRadius: 50,
+    minWidth: 150,
+    maxWidth: 300,
+    backgroundColor: cssConstants.mainColor,
+  },
+  mainColor: {
+    backgroundColor: cssConstants.mainColor,
+  },
+  disabledColor: {
+    backgroundColor: 'gray',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   }
 })
