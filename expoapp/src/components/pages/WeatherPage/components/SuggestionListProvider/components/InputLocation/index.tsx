@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { StyleSheet, TextInput, Platform, View } from "react-native";
+import { weatherConstants } from "config/system/constants/weatherConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
 import { defaultOption } from "config/system/constants/defaultOption";
 import { LocationType } from "config/system/types/Locations";
@@ -7,7 +8,6 @@ import { isArray } from "functions/validations/loginInput/isArray";
 import { getTextInputStyle } from "functions/styles/getTextInputStyle";
 import { getLocationsAttr } from "functions/fetch/searchFetchOptions";
 import { SuggestedBlock } from "./components/SuggestedBlock";
-import { weatherConstants } from "config/system/constants/weatherConstants";
 import { SuggestionListContext } from "context/SuggestionListContext";
 import { CurrentUserContext } from "context/CurrentUserContext";
 

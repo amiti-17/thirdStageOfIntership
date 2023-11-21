@@ -5,6 +5,7 @@ import { GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native
 import { showMessage } from "react-native-flash-message";
 import { yupValidationSchema } from "functions/validations/loginInput/yupValidationSchema";
 import { auth } from "Apollo/queries/auth";
+import { users } from "Apollo/queries/users";
 import CustomError from "CustomError";
 import { graphqlErrorsHandler } from "CustomError/graphqlErrorsHandler";
 import { networkErrorsHandler } from "CustomError/networkErrorsHandler";
@@ -14,7 +15,6 @@ import { formConstants } from "config/system/constants/formConstants";
 import { strConstants } from "config/system/constants/strConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
 import { pages } from "config/system/pages";
-import { users } from "Apollo/queries/users";
 import { CurrentUserContext } from "context/CurrentUserContext";
 
 export const LoginForm = ({ navigation }) => {

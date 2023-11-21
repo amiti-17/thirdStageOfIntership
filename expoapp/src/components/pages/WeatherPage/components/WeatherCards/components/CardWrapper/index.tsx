@@ -1,7 +1,7 @@
-import { LocationType } from "config/system/types/Locations";
 import { StyleSheet, View } from "react-native";
 import { Card } from "./components/Card";
 import { cssConstants } from "config/system/constants/cssConstants";
+import { LocationType } from "config/system/types/Locations";
 
 type CardWrapperProps = {
   location: LocationType,

@@ -1,7 +1,7 @@
-import { formConstants } from "config/system/constants/formConstants"
 import { ChangeEvent, FocusEvent } from "react";
 import { StyleSheet, Text, TextInput, Platform } from "react-native";
 import { FormikErrors } from "formik";
+import { formConstants } from "config/system/constants/formConstants";
 import { strConstants } from "config/system/constants/strConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
 import { getTextInputStyle } from "functions/styles/getTextInputStyle";

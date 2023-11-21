@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from "react-native";
 import { cssConstants } from "config/system/constants/cssConstants";
 
 type RenderElementProps = {
