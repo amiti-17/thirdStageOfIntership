@@ -17,7 +17,7 @@ export const StackScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Weather' screenOptions={ screenOptions }>
+      <Stack.Navigator initialRouteName='Login' screenOptions={ screenOptions }>
         <Stack.Screen name='Login' component={LoginScreen} options={{title: 'Login'}} />
         <Stack.Screen name='Weather' component={WeatherScreen} />
       </Stack.Navigator>

@@ -3,7 +3,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { RenderElement } from "./components/RenderElement";
 import { makeFirstCapitalize } from "functions/makeFirstCapitalize";
-import { getDate } from "functions/timeAndDate/getDate";
 import { detailedElementsKeys } from "config/system/constants/detailedElementsKeys";
 import { digits } from "config/system/constants/digits";
 import { strConstants } from "config/system/constants/strConstants";
