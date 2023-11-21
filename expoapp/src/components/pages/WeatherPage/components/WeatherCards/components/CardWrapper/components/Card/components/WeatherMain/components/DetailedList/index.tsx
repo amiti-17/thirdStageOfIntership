@@ -9,7 +9,7 @@ type DetailedListProps = {
 export const DetailedList = ({current}: DetailedListProps) => {
 
   const currentWeather: currentAfterParsing = current?.current && JSON.parse(current?.current);
-  console.log(currentWeather);
+  
   return (
     <View style={style.wrapper}>
       {

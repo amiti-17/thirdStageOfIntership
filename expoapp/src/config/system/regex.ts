@@ -5,7 +5,6 @@ class CreateRegexp {
       this.regex[regexKey] = new RegExp(this.regexStr[regexKey]);
     })
   }
-
   regexStr = {
     upperCase: "[A-Z]",
     lowerCase: "[a-z]",

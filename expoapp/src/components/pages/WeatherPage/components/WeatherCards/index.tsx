@@ -12,7 +12,6 @@ export const WeatherCards = () => {
 
   useEffect(() => {
     setLocations(() => currentUser?.locations);
-    console.log(locations)
   }, []);
   
   return (

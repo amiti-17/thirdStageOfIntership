@@ -18,8 +18,6 @@ type DetailedElementProps = {
 
 export const DetailedElement = ({ keyValue, value }: DetailedElementProps) => {
 
-  console.log(keyValue);
-
   switch (keyValue) {
     case detailedElementsKeys.sunrise:
       return <RenderElement
