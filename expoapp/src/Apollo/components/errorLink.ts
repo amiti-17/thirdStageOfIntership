@@ -6,41 +6,38 @@ import { pages } from "config/system/pages";
 
 export const errorLink = (navigator) => onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {
-    try {
-      for (let err of graphQLErrors) {
-        switch (err.extensions?.code) {
-          case 'UNAUTHENTICATED':
-            if (operation.operationName === 'GetNewAccessToken') {
-              navigator?.navigate(pages.login);
-              return
-            };
-            return new Observable<FetchResult<Record<string, any>>>(
-              (observer) => {
-                (async () => {
-                  try {
-                    await globalClientObj.client?.mutate({
-                      mutation: auth.refreshToken,
+    for (let err of graphQLErrors) {
+      switch (err.extensions?.code) {
+        case 'UNAUTHENTICATED':
+          if (operation.operationName === 'GetNewAccessToken') {
+            if (!navigator?.navigate) return
+            navigator?.navigate(pages.login);
+            return
+          };
+          return new Observable<FetchResult<Record<string, any>>>(
+            (observer) => {
+              (async () => {
+                try {
+                  await globalClientObj.client?.mutate({
+                    mutation: auth.refreshToken,
                   });
-                    const subscriber = {
-                      next: observer.next.bind(observer),
-                      error: observer.error.bind(observer),
-                      complete: observer.complete.bind(observer),
-                    };
-                    forward(operation).subscribe(subscriber);
-                  } catch (e) {
-                    // console.warn('onError apollo: ', e);
-                    observer.error(e);
-                  }
-                })();
-              }
-            );
-        }
+                  const subscriber = {
+                    next: observer.next.bind(observer),
+                    error: observer.error.bind(observer),
+                    complete: observer.complete.bind(observer),
+                  };
+                  forward(operation).subscribe(subscriber);
+                } catch (e) {
+                  observer.error(e);
+                }
+              })();
+            }
+          );
       }
-    } catch (error) {
-      // console.warn(error);
     }
   }
   if (networkError) {
+    if (!navigator?.navigate) return
     navigator?.navigate(pages.login);
     return;
   }

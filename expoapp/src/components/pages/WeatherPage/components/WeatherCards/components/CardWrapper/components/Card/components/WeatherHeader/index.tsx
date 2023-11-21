@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { cssConstants } from "config/system/constants/cssConstants";
 import { MyActivityLoader } from "components/MyActivityLoader";
+import { iconsName } from "config/system/constants/iconsName";
 
 type WeatherHeaderProps = {
   title: string,
@@ -19,7 +20,7 @@ export const WeatherHeader = ({ title, description, onDeleteHandler, loadingDele
       </View>
       
       <Pressable onPress={() => !loadingDelete && onDeleteHandler()} style={style.pressableHeader}>
-        { !loadingDelete && <MaterialIcons name="delete" size={28} color={cssConstants.mainColor} /> }
+        { !loadingDelete && <MaterialIcons name={iconsName.delete} size={28} color={cssConstants.mainColor} /> }
         { loadingDelete && <MyActivityLoader /> }
       </Pressable>
     </View>
@@ -39,6 +40,8 @@ const style = StyleSheet.create({
   },
   headerTextStyle: {
     fontSize: 20,
+    overflow: 'hidden',
+    height: 30,
   },
   pressableHeader: {
     height: 30,

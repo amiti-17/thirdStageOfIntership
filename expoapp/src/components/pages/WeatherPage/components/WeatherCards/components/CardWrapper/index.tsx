@@ -8,6 +8,7 @@ type CardWrapperProps = {
 }
 
 export const CardWrapper = ({ location }: CardWrapperProps) => {
+
   return (
     <View style={style.cardWrapper}>
       <Card location={location} />

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { StyleSheet, TextInput, Platform, View } from "react-native";
 import { weatherConstants } from "config/system/constants/weatherConstants";
 import { cssConstants } from "config/system/constants/cssConstants";
@@ -16,6 +16,7 @@ export const InputLocation = () => {
   const [ isFocused, setIsFocused ] = useState(false);
   const { setSuggestionList } = useContext(SuggestionListContext)
   const { currentUser } = useContext(CurrentUserContext);
+  const MyInput = useRef(TextInput);
 
   const handleInputChange = async (value: string) => {
     if (!value) return;
@@ -38,13 +39,15 @@ export const InputLocation = () => {
 
   return (
     <View style={[ style.wrapperIndexDefault, isFocused && style.wrapperIndex ]}>
-      <TextInput
+      <MyInput.current
         onChangeText={handleInputChange}
         style={getTextInputStyle(Platform, style)}
         inputMode='text'
         maxLength={200}
         placeholderTextColor='gray'
         placeholder={weatherConstants.defaultPlaceHolder}
+        autoCapitalize="sentences"
+        clearButtonMode="while-editing"
         onBlur={() => {
           setSuggestionList([]);
           setIsFocused(false);

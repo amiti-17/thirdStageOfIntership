@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useCallback, useContext, useState } from "react";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { weathers } from "Apollo/queries/weathers";
@@ -7,7 +7,7 @@ import { getNameOfPlace } from "functions/places/getNameOfPlace";
 import { WeatherHeader } from "./components/WeatherHeader/index";
 import { WeatherMain } from "./components/WeatherMain";
 import { MyActivityLoader } from "components/MyActivityLoader";
-import { WeatherFooter } from "./components/WeatherFooter";
+import { WeatherModal } from "./components/WeatherModal";
 import { CurrentUserContext } from "context/CurrentUserContext";
 import { WeatherContext } from "context/WeatherContext";
 import { LocationType } from "config/system/types/Locations";
@@ -23,7 +23,7 @@ export const Card = ({ location }: CardProps) => {
   const [ weather, setWeather ] = useState<Weather>();
   const [ deletePlace, { loading: loadingDelete } ] = useMutation(locations.removeLocation);
   const { currentUser } = useContext(CurrentUserContext);
-  const { setLocations } = useContext(WeatherContext);
+  const { setLocations, setModalData, setIsModal } = useContext(WeatherContext);
   const { data: dataQuery, loading: loadingQuery } = useQuery(weathers.getOne, { variables: { input: location.id }, onCompleted(data) {
     if (data?.getWeather) {
       setWeather(data?.getWeather);
@@ -76,16 +76,24 @@ export const Card = ({ location }: CardProps) => {
   }
 
   return (
-    <View style={style.card}>
-      <WeatherHeader
-        title={getNameOfPlace(location)}
-        description={weather?.current && currentWeather ? currentWeather.weather[0].description : strConstants.emptyStr}
-        loadingDelete={loadingDelete}
-        onDeleteHandler={onDeleteHandler.bind(null, location.id, currentUser?.id)}
-      />
-      <WeatherMain current={weather?.current} />
-      <WeatherFooter />
-    </View>
+    <Pressable onPress={() => {
+      setModalData(() => ({
+        days: weather?.days,
+        nameOfPlace: getNameOfPlace(location),
+      }));
+      setIsModal(prev => !prev);
+    }}>
+      <View style={style.card}>
+        <WeatherHeader
+          title={getNameOfPlace(location)}
+          description={weather?.current && currentWeather ? currentWeather.weather[0].description : strConstants.emptyStr}
+          loadingDelete={loadingDelete}
+          onDeleteHandler={onDeleteHandler.bind(null, location.id, currentUser?.id)}
+        />
+        <WeatherMain current={weather?.current} />
+        <WeatherModal />
+      </View>
+    </Pressable>
   )
 }
 
